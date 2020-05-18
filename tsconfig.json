@@ -5,10 +5,12 @@
         "experimentalDecorators": true,
         "lib": ["dom", "es6"],
         "module": "commonjs",
-        "target": "es5",
+        "target": "es6",
         "moduleResolution": "node",
         "sourceMap": true
 
     },
-    "files": ["src/index.ts"]
+    "files": [
+        "src/index"
+    ]
 }

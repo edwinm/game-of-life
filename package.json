@@ -5,6 +5,7 @@
     "main": "gameoflife.js",
     "scripts": {
         "start": "http-server -o",
+        "build": "rollup --config --sourcemap",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
@@ -26,6 +27,7 @@
         "@rollup/plugin-typescript": "^4.1.1",
         "http-server": "^0.12.3",
         "rollup": "^2.10.2",
+        "tslib": "^2.0.0",
         "typescript": "^3.9.2"
     }
 }

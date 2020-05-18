@@ -19,7 +19,7 @@ export class GofCanvas extends HTMLElement {
       </style>
       
       <div id="canvas">
-        <h1>canvas</h1>
+        <h1>canvas 1</h1>
       </div>  
     `;
 
