@@ -3,7 +3,7 @@ $(function () {
   var infoButton = $('#info');
   var infoSection = $('.info');
 
-  var info = new Info(infoButton.first, infoSection.first);
+  // var info = new Info(infoButton.first, infoSection.first);
   var canvas = new Canvas(canvasElement.first);
   var shape = new Shape(canvas);
   var gameoflife = new GameOfLife(canvas);
