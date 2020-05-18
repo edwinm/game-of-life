@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>John Conway's Game of Life</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Play John Conway’s Game of Life right now in your browser."/>
+    <meta name="keywords" content="John Conway Conways Game of Life cellular automaton math mathematica"/>
+    <meta property="og:title" content="John Conway’s Game of Life">
+    <meta property="og:description" content="Play John Conway’s Game of Life right now in your browser.">
+    <meta property="og:image" content="https://playgameoflife.com/pix/share.gif">
+    <meta property="og:url" content="https://playgameoflife.com/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@juke_nl">
+    <meta name="twitter:creator" content="@juke_nl">
+
+    <link rel="canonical" href="https://playgameoflife.com/">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png">
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="mclass-min.js"></script>
+    <script src="miq-min.js"></script>
+    <script src="gameoflife.js"></script>
+</head>
+<body class="whitebox">
+
+<main>
+
+    <header>
+    </header>
+
+    <canvas class="gof-canvas"></canvas>
+
+    <form>
+        <select id="shapes">
+        </select>
+        <input id="next" type="button" value="Next">
+        <input id="start" type="button" value="Start">
+        <label class="generation" title="Generations" aria-label="Generations">0</label>
+        <nowrap>
+        <img src="pix/speeddial.svg" alt="" width="20" height="20">
+        <input id="speed" type="range" min="10" max="500" step="49" value="10" title="Speed dial" aria-label="Speed dial">
+        </nowrap>
+        <nowrap>
+        <img src="pix/grid.svg" alt="" width="20" height="20">
+        <input id="size" type="range" min="2" max="11" value="2" title="Grid size" aria-label="Grid size">
+        </nowrap>
+        <input id="info" type="button" value="Info">
+    </form>
+</main>
+
+
+<section class="info">
+    <button class="close-button" data-close aria-label="Close"></button>
+    <div class="info-content">
+        <h1>John Conway’s Game of Life</h1>
+
+        <h3>The Game</h3>
+
+        <p>The Game of Life is not your typical computer game. It is a cellular
+            automaton, and was invented by Cambridge mathematician John Conway.</p>
+
+        <p>This game became widely known when it was mentioned in an article published
+            by Scientific American in 1970. It consists of a collection of cells which,
+            based on a few mathematical rules, can live, die or multiply. Depending on
+            the initial conditions, the cells form various patterns throughout the course of the game.
+
+        <h3>The Rules</h3>
+
+        <dl>
+            <dt><b>For a space that is populated:</b>
+            <dd>Each cell with one or no neighbors dies, as if by solitude.
+            <dd>Each cell with four or more neighbors dies, as if by overpopulation.
+            <dd>Each cell with two or three neighbors survives.
+            <dt><b>For a space that is empty or unpopulated</b>
+            <dd>Each cell with three neighbors becomes populated.
+        </dl>
+
+        <h3>The Controls</h3>
+
+        <p>Choose a figure from the pull-down menu or make one yourself by clicking on
+            the cells with a mouse. A new generation of cells (corresponding to one
+            iteration of the rules) is initiated by the 'Next' button. The 'Start'
+            button advances the game by several generations.
+            Game speed is regulated by the speed dial and the size of the cells with the size dial.</p>
+
+        <p class="center"><button data-close>Close</button></p>
+
+        <p><a href="/">Edwin Martin</a> &lt;<a href="mailto:edwin@bitstorm.org">edwin@bitstorm.org</a>&gt;</p>
+    </div>
+</section>
+
+</body>
+</html>
