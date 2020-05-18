@@ -1,23 +1,31 @@
 {
-  "name": "game-of-life",
-  "version": "1.0.0",
-  "description": "Game of Life",
-  "main": "gameoflife.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/edwinm/game-of-life.git"
-  },
-  "author": {
-      "name": "Edwin Martin",
-      "email": "edwin@bitstorm.org",
-      "url": "https://bitstorm.org/"
-  },
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/edwinm/game-of-life/issues"
-  },
-  "homepage": "https://github.com/edwinm/game-of-life#readme"
+    "name": "game-of-life",
+    "version": "1.0.0",
+    "description": "Game of Life",
+    "main": "gameoflife.js",
+    "scripts": {
+        "start": "http-server -o",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/edwinm/game-of-life.git"
+    },
+    "author": {
+        "name": "Edwin Martin",
+        "email": "edwin@bitstorm.org",
+        "url": "https://bitstorm.org/"
+    },
+    "license": "UNLICENSED",
+    "bugs": {
+        "url": "https://github.com/edwinm/game-of-life/issues"
+    },
+    "homepage": "https://github.com/edwinm/game-of-life#readme",
+    "dependencies": {},
+    "devDependencies": {
+        "@rollup/plugin-typescript": "^4.1.1",
+        "http-server": "^0.12.3",
+        "rollup": "^2.10.2",
+        "typescript": "^3.9.2"
+    }
 }
