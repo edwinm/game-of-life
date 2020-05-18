@@ -1,4 +1,5 @@
 export class GofCanvas extends HTMLElement {
+  canvas: HTMLCanvasElement;
 
   static get observedAttributes() {
     return [];
@@ -19,7 +20,7 @@ export class GofCanvas extends HTMLElement {
       </style>
       
       <div id="canvas">
-        <h1>canvas 1</h1>
+        <h1>canvas 3</h1>
       </div>  
     `;
 
