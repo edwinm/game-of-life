@@ -129,7 +129,7 @@ var Canvas = mClass(function () {
 
         if (this.ctxOffscreen) {
           var bitmap = this.offscreen.transferToImageBitmap();
-          this.ctxOffscreen.transferImageBitmap(bitmap);
+          this.ctxOffscreen.transferFromImageBitmap(bitmap);
         }
       },
 
