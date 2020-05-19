@@ -1,5 +1,6 @@
 import typescript from '@rollup/plugin-typescript';
-import livereload from 'rollup-plugin-livereload'
+import livereload from 'rollup-plugin-livereload';
+import { terser } from "rollup-plugin-terser";
 
 export default {
   input: 'src/index.ts',
@@ -8,5 +9,5 @@ export default {
     format: 'iife',
     name: 'bundle',
   },
-  plugins: [typescript(), livereload()],
+  plugins: [typescript(), terser(), livereload()],
 };
