@@ -8,20 +8,21 @@ export class GofCanvas extends HTMLElement {
   constructor() {
     super();
 
-    const shadowRoot = this.attachShadow({ mode: 'open' });
+    const shadowRoot = this.attachShadow({mode: 'open'});
 
     shadowRoot.innerHTML = `
       <style>
         :host {
           background: green;
           display: block;
-          width: 50vw;
+        }
+        #canvas{
+          width: 100%;
+          height: 100%;
         }
       </style>
       
-      <div id="canvas">
-        <h1>canvas 3</h1>
-      </div>  
+      <canvas id="canvas"></canvas>
     `;
 
     this.canvas = this.shadowRoot.querySelector('#canvas');
@@ -32,6 +33,10 @@ export class GofCanvas extends HTMLElement {
   }
 
   attributeChangedCallback(attr, oldValue, newValue) {
+  }
+
+  getCanvas() {
+    return this.canvas;
   }
 }
 

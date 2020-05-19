@@ -1,10 +1,11 @@
 $(function () {
-  var canvasElement = $('.gof-canvas');
+  var canvasElement = $('gof-canvas');
   var infoButton = $('#info');
   var infoSection = $('.info');
 
   // var info = new Info(infoButton.first, infoSection.first);
-  var canvas = new Canvas(canvasElement.first);
+
+  var canvas = new Canvas(canvasElement.first.getCanvas());
   var shape = new Shape(canvas);
   var gameoflife = new GameOfLife(canvas);
   var controls = new Controls(canvas, shape, gameoflife);
@@ -14,7 +15,7 @@ $(function () {
   controls.shape.redraw();
 
   window.addEventListener('resize', function () {
-    canvas.calculateDimensions(canvasElement.first);
+    canvas.calculateDimensions(canvasElement.first.getCanvas());
     shape.redraw();
   });
 });
@@ -22,6 +23,7 @@ $(function () {
 if (window.navigator.standalone) {
   document.documentElement.classList.add('standalone');
 }
+
 
 var Info = mClass(function () {
   var visible = true;
