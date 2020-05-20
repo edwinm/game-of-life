@@ -1,9 +1,7 @@
 $(function () {
   var canvasElement = $('gof-canvas');
-  var infoButton = $('#info');
-  var infoSection = $('.info');
 
-  var info = new Info(infoButton.first, infoSection.first);
+  // var info = new Info(infoButton.first, infoSection.first);
   var canvas = new Canvas(canvasElement.first.getCanvas());
   var shape = new Shape(canvas);
   var gameoflife = new GameOfLife(canvas);
@@ -22,57 +20,6 @@ $(function () {
 if (window.navigator.standalone) {
   document.documentElement.classList.add('standalone');
 }
-
-
-var Info = mClass(function () {
-  var visible = true;
-  var infoElement;
-
-  return {
-    construct: function (button, section) {
-      infoElement = this;
-      this.section = section;
-
-      button.addEventListener('click', function () {
-        infoElement.toggle();
-        $('body').addClass('whitebox');
-      });
-
-      $($(section).find('[data-close]')).on('click', function () {
-        infoElement.close();
-        $('body').removeClass('whitebox');
-      });
-
-      $('body').on('keyup', function (e) {
-        if (e.key == 'Escape') {
-          infoElement.close();
-          $('body').removeClass('whitebox');
-        }
-      });
-
-      $('body').on('click', function (e) {
-        if (e.target.classList.contains('whitebox')) {
-          infoElement.close();
-          $('body').removeClass('whitebox');
-        }
-      });
-    },
-    public: {
-      close: function () {
-        visible = false;
-        $(this.section).addClass('hide');
-      },
-      toggle: function () {
-        visible = !visible;
-        if (visible) {
-          $(this.section).removeClass('hide');
-        } else {
-          $(this.section).addClass('hide');
-        }
-      },
-    },
-  }
-});
 
 var Canvas = mClass(function () {
   var canvas;

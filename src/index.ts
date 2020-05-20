@@ -1,2 +1,4 @@
 import {GofCanvas} from "./components/canvas";
-console.log(GofCanvas && "Game of Life");
+import {GofInfo} from "./components/info";
+
+console.log(GofCanvas && GofInfo && "Game of Life");
