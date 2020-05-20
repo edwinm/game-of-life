@@ -3,7 +3,7 @@ import { GofCanvas } from "./canvas";
 export class Shape {
   canvas: GofCanvas;
   current: Cell[];
-  collection: { name: string; data: Cell[]; }[];
+  collection: Collection;
 
   constructor(canvas: GofCanvas) {
     this.canvas = canvas;
@@ -105,6 +105,4 @@ export class Shape {
   }
 }
 
-interface Cell {
-  [index: number]: number;
-}
+

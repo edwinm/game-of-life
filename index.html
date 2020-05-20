@@ -12,8 +12,7 @@
   <meta property="og:url" content="https://playgameoflife.com/">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@juke_nl">
-  <meta name="twitter:creator" content="@juke_nl">
+  <meta name="twitter:creator" content="@edwinm">
 
   <link rel="canonical" href="https://playgameoflife.com/">
   <link rel="manifest" href="/manifest.json">
@@ -32,22 +31,7 @@
 
   <gof-canvas class="gof-canvas"></gof-canvas>
 
-  <form>
-    <select id="shapes">
-    </select>
-    <input id="next" type="button" value="Next">
-    <input id="start" type="button" value="Start">
-    <label class="generation" title="Generations" aria-label="Generations">0</label>
-    <nowrap>
-      <img src="pix/speeddial.svg" alt="" width="20" height="20">
-      <input id="speed" type="range" min="10" max="500" step="49" value="10" title="Speed dial" aria-label="Speed dial">
-    </nowrap>
-    <nowrap>
-      <img src="pix/grid.svg" alt="" width="20" height="20">
-      <input id="size" type="range" min="2" max="11" value="2" title="Grid size" aria-label="Grid size">
-    </nowrap>
-    <input id="info" type="button" value="Info">
-  </form>
+  <gof-controls></gof-controls>
 </main>
 
 

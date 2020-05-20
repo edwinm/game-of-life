@@ -14,10 +14,6 @@ export class GofCanvas extends HTMLElement {
   cellX: number;
   cellY: number;
 
-  static get observedAttributes() {
-    return [];
-  }
-
   constructor() {
     super();
 
@@ -26,12 +22,11 @@ export class GofCanvas extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>
         :host {
+          display: flex;
           background: green;
-          display: block;
         }
         #canvas{
-          width: 100%;
-          height: 100%;
+          flex: 1 1;
         }
       </style>
       
@@ -95,7 +90,7 @@ export class GofCanvas extends HTMLElement {
     }
   }
 
-  calculateDimensions(canvasDomElement) {
+  calculateDimensions(canvasDomElement: HTMLCanvasElement) {
     let rect = canvasDomElement.getBoundingClientRect();
     let width = document.documentElement.clientWidth;
     let height = rect.height;
@@ -109,7 +104,7 @@ export class GofCanvas extends HTMLElement {
     this.height = height / this.cellSize;
   }
 
-  action (fn) {
+  action (fn: (evt: ClickEvent)=>void) {
     this.obj.on('click', (evt) => {
       var rect = this.obj.first.getBoundingClientRect();
       var left = Math.floor(rect.left + window.pageXOffset);
@@ -132,6 +127,10 @@ export class GofCanvas extends HTMLElement {
     this.cellSize = size;
     this.width = Math.floor(this.pixelWidth / this.cellSize);
     this.height = Math.floor(this.pixelHeight / this.cellSize);
+  }
+
+  getCanvas() {
+    return this.canvasDomElement;
   }
 }
 
