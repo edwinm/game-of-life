@@ -40,6 +40,12 @@ export class GofControls extends HTMLElement {
           width: 80px;
           vertical-align: bottom;
         }
+        
+        .generation {
+          font-family: helvetica, arial, sans-serif;
+          font-size: smaller;
+          margin-left: 2em;
+        }
       </style>
       
       <form>

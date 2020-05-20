@@ -1,6 +1,6 @@
 html {
   box-sizing: border-box;
-  /*overflow: hidden;*/
+  overflow: hidden;
   background-color: #999;
 }
 
@@ -21,30 +21,27 @@ body {
 }
 
 main {
-  display: flex;
   flex-direction: column;
   align-items: center;
   padding: 0;
   height: 100vh;
-  max-height: 100vh;
 }
 
 header {
-  flex: 0 0 18vw;
   background: url(/pix/header.png) no-repeat, url(/pix/header-bg.png) repeat-x;
   background-size: contain;
   width: 100vw;
   border-bottom: 3px solid #2A4E97;
-  max-height: 100px;
+  height: 100px;
 }
 
 gof-canvas {
-  flex: 1 1;
+  height: calc(100vh - 200px);
   width: 100%;
 }
 
 gof-controls {
-  flex: 0 0 100px;
+  height: 100px;
 }
 
 .header-img {
@@ -64,8 +61,4 @@ gof-controls {
   height: 100%;
 }
 
-.generation {
-  font-family: helvetica, arial, sans-serif;
-  font-size: smaller;
-  margin-left: 2em;
-}
+
