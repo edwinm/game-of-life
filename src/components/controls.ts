@@ -2,6 +2,7 @@ import $ from '../miq';
 import { GofCanvas } from "./canvas";
 import { Shape } from "./shape";
 import { GofGameOfLife } from "./gameoflife";
+import { GofInfo } from "./info";
 
 export class GofControls extends HTMLElement {
   canvas: GofCanvas;
@@ -71,7 +72,7 @@ export class GofControls extends HTMLElement {
 
   }
 
-  construct1(canvas: GofCanvas, shape: Shape, gameoflife: GofGameOfLife) {
+  construct(canvas: GofCanvas, shape: Shape, gameoflife: GofGameOfLife, info: GofInfo) {
     this.canvas = canvas;
     this.shape = shape;
     this.gameoflife = gameoflife;
@@ -79,6 +80,8 @@ export class GofControls extends HTMLElement {
     this.timer = null;
     this.generation = 0;
     this.generationElement = $(this.shadowRoot).find('.generation').first;
+
+    $(this.shadowRoot).find('#info').on('click', () => info.open());
   }
 
   init(shapes: Collection) {

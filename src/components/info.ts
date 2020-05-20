@@ -1,10 +1,6 @@
 import $ from '../miq';
 
 export class GofInfo extends HTMLElement {
-  static get observedAttributes() {
-    return [];
-  }
-
   constructor() {
     super();
 
@@ -39,6 +35,10 @@ export class GofInfo extends HTMLElement {
           right: 0.5em;
           top: 0.5em;
           background: url(pix/close.svg) no-repeat;
+        }
+        
+        section {
+          background: white;
         }
       </style>
       
