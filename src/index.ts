@@ -2,8 +2,8 @@ import { GofCanvas } from "./components/canvas";
 import { GofInfo } from "./components/info";
 import { GofGameOfLife } from "./components/gameoflife";
 import { GofControls } from "./components/controls";
-import $ from './miq';
 import { Shape } from "./components/shape";
+import $ from './lib/miq';
 
 $(function () {
   const canvas = <GofCanvas>$('gof-canvas').first;

@@ -1,4 +1,4 @@
-import $ from '../miq';
+import $ from '../lib/miq';
 
 export class GofSkeleton extends HTMLElement {
   constructor() {

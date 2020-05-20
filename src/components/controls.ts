@@ -1,4 +1,4 @@
-import $ from '../miq';
+import $ from '../lib/miq';
 import { GofCanvas } from "./canvas";
 import { Shape } from "./shape";
 import { GofGameOfLife } from "./gameoflife";
