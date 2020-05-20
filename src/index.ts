@@ -1,4 +1,9 @@
 import {GofCanvas} from "./components/canvas";
 import {GofInfo} from "./components/info";
+import {GofGameOfLife} from "./components/gameoflife";
+import Gof from "./gameoflife";
+import $ from './miq';
 
-console.log(GofCanvas && GofInfo && "Game of Life");
+$(Gof);
+
+console.log(GofCanvas && GofInfo && GofGameOfLife && "Game of Life");

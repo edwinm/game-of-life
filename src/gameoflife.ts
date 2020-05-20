@@ -1,8 +1,12 @@
-$(function () {
+import $ from './miq';
+import { GofGameOfLife } from "./components/gameoflife";
+import mClass from "./mclass";
+
+export default function () {
   var canvas = $('gof-canvas').first;
 
   var shape = new Shape(canvas);
-  var gameoflife = new GameOfLife(canvas);
+  var gameoflife = new GofGameOfLife(canvas);
   var controls = new Controls(canvas, shape, gameoflife);
   controls.init(shape.collection);
   controls.shape.copy(shape.collection[1].data);
@@ -13,11 +17,11 @@ $(function () {
     canvas.calculateDimensions(canvas.getCanvas());
     shape.redraw();
   });
-});
+};
 
-if (window.navigator.standalone) {
-  document.documentElement.classList.add('standalone');
-}
+// if (window.navigator.standalone) {
+//   document.documentElement.classList.add('standalone');
+// }
 
 var Shape = mClass(function () {
   return {
@@ -103,7 +107,7 @@ var Shape = mClass(function () {
         this.redraw();
 
         function cellIndex(cell) {
-          index = -1;
+          let index = -1;
           shape.current.forEach(function (c, i) {
             if (c[0] == cell[0] && c[1] == cell[1]) {
               index = i;
@@ -158,7 +162,7 @@ var Controls = mClass(function () {
 
         function sizeListener() {
           var oldGridSize = controls.canvas.getGridSize();
-          var newGridSize = 13 - parseInt(size.value);
+          var newGridSize = 13 - parseInt($('#size').val());
           var dimension = controls.canvas.getDimension();
 
           var dx = Math.round((dimension.width / newGridSize - dimension.width / oldGridSize) / 2);
@@ -168,25 +172,6 @@ var Controls = mClass(function () {
           controls.canvas.setGridSize(newGridSize);
           controls.shape.redraw();
         }
-
-        $('#canvas-div').on('wheel', function (evt) {
-          wheelDy += parseInt(evt.deltaY);
-          if (wheelDy > wheelDrag) {
-            var gridSize = parseInt(size.value);
-            if (gridSize > parseInt(size.getAttribute('min'))) {
-              size.value = gridSize - 1;
-            }
-            wheelDy -= wheelDrag;
-          } else if (wheelDy < -wheelDrag) {
-            var gridSize = parseInt(size.value);
-            if (gridSize < parseInt(size.getAttribute('max'))) {
-              size.value = gridSize + 1;
-            }
-            wheelDy += wheelDrag;
-          }
-          evt.preventDefault();
-          sizeListener();
-        });
 
         var speed = $('#speed');
         this.speed = 520 - parseInt(speed.first.value);
@@ -239,80 +224,4 @@ var Controls = mClass(function () {
       },
     },
   }
-});
-
-var GameOfLife = mClass(function () {
-  return {
-    public: {
-      next: function (shape) {
-        var neighbours = {};
-        var newShape = [];
-        shape.forEach(function (cell, i) {
-          var index;
-
-          index = 'c' + (cell[0] - 1) + ',' + (cell[1] - 1);
-          if (neighbours[index]) {
-            neighbours[index].n++;
-          } else {
-            neighbours[index] = { n: 1, cell: [cell[0] - 1, cell[1] - 1] };
-          }
-          index = 'c' + (cell[0]) + ',' + (cell[1] - 1);
-          if (neighbours[index]) {
-            neighbours[index].n++;
-          } else {
-            neighbours[index] = { n: 1, cell: [cell[0], cell[1] - 1] };
-          }
-          index = 'c' + (cell[0] + 1) + ',' + (cell[1] - 1);
-          if (neighbours[index]) {
-            neighbours[index].n++;
-          } else {
-            neighbours[index] = { n: 1, cell: [cell[0] + 1, cell[1] - 1] };
-          }
-          index = 'c' + (cell[0] - 1) + ',' + (cell[1]);
-          if (neighbours[index]) {
-            neighbours[index].n++;
-          } else {
-            neighbours[index] = { n: 1, cell: [cell[0] - 1, cell[1]] };
-          }
-          index = 'c' + (cell[0] + 1) + ',' + (cell[1]);
-          if (neighbours[index]) {
-            neighbours[index].n++;
-          } else {
-            neighbours[index] = { n: 1, cell: [cell[0] + 1, cell[1]] };
-          }
-          index = 'c' + (cell[0] - 1) + ',' + (cell[1] + 1);
-          if (neighbours[index]) {
-            neighbours[index].n++;
-          } else {
-            neighbours[index] = { n: 1, cell: [cell[0] - 1, cell[1] + 1] };
-          }
-          index = 'c' + (cell[0]) + ',' + (cell[1] + 1);
-          if (neighbours[index]) {
-            neighbours[index].n++;
-          } else {
-            neighbours[index] = { n: 1, cell: [cell[0], cell[1] + 1] };
-          }
-          index = 'c' + (cell[0] + 1) + ',' + (cell[1] + 1);
-          if (neighbours[index]) {
-            neighbours[index].n++;
-          } else {
-            neighbours[index] = { n: 1, cell: [cell[0] + 1, cell[1] + 1] };
-          }
-        });
-        shape.forEach(function (cell, i) {
-          index = 'c' + cell[0] + ',' + cell[1];
-          if (neighbours[index]) {
-            neighbours[index].populated = true;
-          }
-        });
-
-        for (index in neighbours) {
-          if ((neighbours[index].n == 2 && neighbours[index].populated) || neighbours[index].n == 3) {
-            newShape.push(neighbours[index].cell);
-          }
-        }
-        return newShape;
-      },
-    },
-  };
 });
