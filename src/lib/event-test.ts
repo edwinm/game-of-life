@@ -1,9 +1,15 @@
-import {Event} from "./event";
+import {Eventer} from "./Eventer";
 
-const test1$ = new Event<string>();
+const test1$ = new Eventer<string>();
+
+const test3$ = test1$.pipe((val) => `[${val}]`);
 
 test1$.subscribe((value) => {
   console.log(`event1 value ${value}`);
+})
+
+test3$.subscribe((value) => {
+  console.log(`event3 value ${value}`);
 })
 
 test1$.dispatch("a1");
@@ -27,3 +33,4 @@ function test2(value: string) {
 test1$.unsubscribe(test2);
 
 test1$.dispatch("a3");
+
