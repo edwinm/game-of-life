@@ -1,35 +1,46 @@
-export {Event};
+export { Event };
 
 class Event<T> {
-  private value: T;
+  private val: T;
   private subscribers: Set<(value: T) => void> = new Set();
+  private dispatched = false;
 
   dispatch(value: T) {
-    this.value = value;
+    this.val = value;
+    this.dispatched = true;
     this.subscribers.forEach((fn) =>
       fn(value)
     );
   }
 
-  subscribe(fn: (value: T) => void) {
+  subscribeNext(fn: (value: T) => void) {
     this.subscribers.add(fn);
+    return {
+      unsubscribe: () => {
+        this.subscribers.delete(fn)
+      }
+    }
+  }
+
+  subscribe(fn: (value: T) => void) {
+    fn(this.val);
+    return this.subscribeNext(fn);
   }
 
   unsubscribe(fn: (value: T) => void) {
     this.subscribers.delete(fn);
   }
 
-  getValue() {
-    return this.value;
+  value() {
+    return this.val;
   }
 
   promise() {
     return new Promise<T>((resolve) => {
-      const fn = (value) => {
-        this.unsubscribe(fn);
+      const subscription = this.subscribe((value) => {
+        subscription.unsubscribe();
         resolve(value);
-      };
-      this.subscribe(fn);
+      });
     });
   }
 }
