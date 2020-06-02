@@ -1,11 +1,10 @@
-import $ from '../lib/miq';
+import { $ } from 'carbonium';
 
 export class GofCanvas extends HTMLElement {
   canvasDomElement: HTMLCanvasElement;
   offscreen: OffscreenCanvas;
   ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
   ctxOffscreen: ImageBitmapRenderingContext;
-  obj: $;
   cellSize: number;
   pixelWidth: number;
   pixelHeight: number;
@@ -36,22 +35,26 @@ export class GofCanvas extends HTMLElement {
   }
 
   connectedCallback() {
-    this.canvasDomElement = $(this.shadowRoot).find('#canvas').first;
+    this.canvasDomElement = $('#canvas', this.shadowRoot);
 
     if (!this.canvasDomElement.getContext) {
       return;
     }
 
-    try {
-      let rect = this.canvasDomElement.getBoundingClientRect();
-      this.offscreen = new OffscreenCanvas(rect.width, rect.height);
-      this.ctx = this.offscreen.getContext('2d', {alpha: false});
-      this.ctxOffscreen = this.canvasDomElement.getContext('bitmaprenderer');
-    } catch(e) {
-      this.ctx = this.canvasDomElement.getContext('2d', {alpha: false});
-    }
+    // try {
+    //   let rect = this.canvasDomElement.getBoundingClientRect();
+    //   this.offscreen = new OffscreenCanvas(rect.width, rect.height);
+    //   this.ctx = this.offscreen.getContext('2d', {alpha: false});
+    //   this.ctxOffscreen = this.canvasDomElement.getContext('bitmaprenderer');
+    // } catch(e) {
+    //   this.ctx = this.canvasDomElement.getContext('2d', {alpha: false});
+    // }
 
-    this.obj = $(this.canvasDomElement);
+    this.ctx = this.canvasDomElement.getContext('2d', {alpha: false});
+
+    console.log('this.ctx', this.ctx);
+
+    // this.canvasDomElement = this.canvasDomElement;
     this.setGridSize(11);
     this.calculateDimensions(this.canvasDomElement);
   }
@@ -97,7 +100,8 @@ export class GofCanvas extends HTMLElement {
     let widthMod = width % this.cellSize;
     width = width - widthMod;
     height = height - height % this.cellSize;
-    $(canvasDomElement).css('left', `${widthMod / 2}px`);
+    // canvasDomElement.css('left', `${widthMod / 2}px`);
+    canvasDomElement.style.left = `${widthMod / 2}px`;
     this.pixelWidth = canvasDomElement.width = width;
     this.pixelHeight = canvasDomElement.height = height;
     this.width = width / this.cellSize;
@@ -105,8 +109,8 @@ export class GofCanvas extends HTMLElement {
   }
 
   action (fn: (evt: ClickEvent)=>void) {
-    this.obj.on('click', (evt) => {
-      var rect = this.obj.first.getBoundingClientRect();
+    this.canvasDomElement.addEventListener('click', (evt) => {
+      var rect = this.canvasDomElement.getBoundingClientRect();
       var left = Math.floor(rect.left + window.pageXOffset);
       var top = Math.floor(rect.top + window.pageYOffset);
       var cellSize = this.cellSize;

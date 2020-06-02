@@ -1,8 +1,8 @@
-import {Eventer} from "./Eventer";
+import {Observable} from "./observable";
 
-const test1$ = new Eventer<string>();
+const test1$ = new Observable<string>();
 
-const test3$ = test1$.pipe((val) => `[${val}]`);
+const test3$ = test1$.map((val) => `[${val}]`);
 
 test1$.subscribe((value) => {
   console.log(`event1 value ${value}`);
