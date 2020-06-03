@@ -1,4 +1,4 @@
-import $ from '../lib/miq';
+import { $ } from 'carbonium';
 
 export class GofInfo extends HTMLElement {
   constructor() {
@@ -55,18 +55,18 @@ export class GofInfo extends HTMLElement {
   }
 
   connectedCallback() {
-    $(this.shadowRoot).find('[data-close]').on('click', () => {
+    $('[data-close]', this.shadowRoot).addEventListener('click', () => {
       this.close();
     });
 
-    $(document.documentElement).on('keyup', (e) => {
+    document.documentElement.addEventListener('keyup', (e) => {
       if (e.key == 'Escape') {
         this.close();
       }
     });
 
-    $(document.documentElement).on('click', (e) => {
-      if (e.target.classList.contains('whitebox')) {
+    document.documentElement.addEventListener('click', (e) => {
+      if ((<HTMLElement>e.target).classList.contains('whitebox')) {
         this.close();
       }
     });
@@ -74,12 +74,12 @@ export class GofInfo extends HTMLElement {
 
   open() {
     this.removeAttribute('hidden');
-    $(document.body).addClass('whitebox');
+    document.body.classList.add('whitebox');
   }
 
   close() {
     this.setAttribute('hidden', '');
-    $(document.body).removeClass('whitebox');
+    document.body.classList.remove('whitebox');
   }
 }
 
