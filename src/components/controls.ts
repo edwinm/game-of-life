@@ -1,4 +1,4 @@
-import $ from '../lib/miq';
+import { $ } from 'carbonium';
 import { GofCanvas } from "./canvas";
 import { Shape } from "./shape";
 import { GofGameOfLife } from "./gameoflife";
@@ -79,36 +79,36 @@ export class GofControls extends HTMLElement {
     this.started = false;
     this.timer = null;
     this.generation = 0;
-    this.generationElement = $(this.shadowRoot).find('.generation').first;
+    this.generationElement = $('.generation', this.shadowRoot);
 
-    $(this.shadowRoot).find('#info').on('click', () => info.open());
+    $('#info', this.shadowRoot).addEventListener('click', () => info.open());
   }
 
   init(shapes: Collection) {
-    var shapesSelect = $(this.shadowRoot).find('#shapes');
+    var shapesSelect = $('#shapes', this.shadowRoot);
     shapes.forEach((shape, i) => {
       var option = document.createElement('option');
       option.text = shape.name;
-      shapesSelect.first.appendChild(option);
+      shapesSelect.appendChild(option);
     });
-    shapesSelect.on('change', (e) => {
+    shapesSelect.addEventListener('change', (e) => {
       this.setGeneration(0);
-      this.shape.copy(shapes[shapesSelect.first.selectedIndex].data);
+      this.shape.copy(shapes[shapesSelect.selectedIndex].data);
       this.shape.center();
       this.shape.redraw();
     });
 
-    $(this.shadowRoot).find('#next').on('click', () => {
+    $('#next', this.shadowRoot).addEventListener('click', () => {
       this.next();
     });
 
-    $(this.shadowRoot).find('#size')
-      .on('change', sizeListener)
-      .on('input', sizeListener);
+    $('#size', this.shadowRoot)
+      .addEventListener('change', sizeListener.bind(this))
+      .addEventListener('input', sizeListener.bind(this));
 
     function sizeListener() {
       var oldGridSize = this.canvas.getGridSize();
-      var newGridSize = 13 - parseInt($(this.shadowRoot).find('#size').val());
+      var newGridSize = 13 - parseInt($('#size', this.shadowRoot).value);
       var dimension = this.canvas.getDimension();
 
       var dx = Math.round((dimension.width / newGridSize - dimension.width / oldGridSize) / 2);
@@ -119,26 +119,26 @@ export class GofControls extends HTMLElement {
       this.shape.redraw();
     }
 
-    var speed = $(this.shadowRoot).find('#speed');
-    this.speed = 520 - parseInt(speed.first.value);
-    speed.on('change', speedListener);
-    speed.on('input', speedListener);
+    var speed = $('#speed', this.shadowRoot);
+    this.speed = 520 - parseInt(speed.value);
+    speed.addEventListener('change', speedListener.bind(this));
+    speed.addEventListener('input', speedListener.bind(this));
 
     function speedListener() {
-      this.speed = 520 - parseInt(speed.first.value);
+      this.speed = 520 - parseInt(speed.value);
       if (this.started) {
         this.animate1();
       }
     }
 
-    var startStop = $(this.shadowRoot).find('#start');
-    startStop.on('click', () => {
+    var startStop = $('#start', this.shadowRoot);
+    startStop.addEventListener('click', () => {
       this.started = !this.started;
       if (this.started) {
-        startStop.first.value = 'Stop';
+        startStop.value = 'Stop';
         this.animate1();
       } else {
-        startStop.first.value = 'Start';
+        startStop.value = 'Start';
         clearInterval(this.timer);
       }
     });
