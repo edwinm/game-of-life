@@ -84,6 +84,7 @@ export class GofControls extends HTMLElement {
     $('#info', this.shadowRoot).addEventListener('click', () => info.open());
   }
 
+
   init(shapes: Collection) {
     var shapesSelect = $('#shapes', this.shadowRoot);
     shapes.forEach((shape, i) => {
