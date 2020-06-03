@@ -41,20 +41,15 @@ export class GofCanvas extends HTMLElement {
       return;
     }
 
-    // try {
-    //   let rect = this.canvasDomElement.getBoundingClientRect();
-    //   this.offscreen = new OffscreenCanvas(rect.width, rect.height);
-    //   this.ctx = this.offscreen.getContext('2d', {alpha: false});
-    //   this.ctxOffscreen = this.canvasDomElement.getContext('bitmaprenderer');
-    // } catch(e) {
-    //   this.ctx = this.canvasDomElement.getContext('2d', {alpha: false});
-    // }
+    try {
+      let rect = this.canvasDomElement.getBoundingClientRect();
+      this.offscreen = new OffscreenCanvas(rect.width, rect.height);
+      this.ctx = this.offscreen.getContext('2d', {alpha: false});
+      this.ctxOffscreen = this.canvasDomElement.getContext('bitmaprenderer');
+    } catch(e) {
+      this.ctx = this.canvasDomElement.getContext('2d', {alpha: false});
+    }
 
-    this.ctx = this.canvasDomElement.getContext('2d', {alpha: false});
-
-    console.log('this.ctx', this.ctx);
-
-    // this.canvasDomElement = this.canvasDomElement;
     this.setGridSize(11);
     this.calculateDimensions(this.canvasDomElement);
   }
