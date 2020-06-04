@@ -1,4 +1,5 @@
 import { $ } from 'carbonium';
+import { Cuprum } from "cuprum";
 
 export class GofCanvas extends HTMLElement {
   canvasDomElement: HTMLCanvasElement;
@@ -26,6 +27,7 @@ export class GofCanvas extends HTMLElement {
         }
         #canvas{
           flex: 1 1;
+          margin-left: var(--x-mod, 0);
         }
       </style>
       
@@ -46,12 +48,18 @@ export class GofCanvas extends HTMLElement {
       this.offscreen = new OffscreenCanvas(rect.width, rect.height);
       this.ctx = this.offscreen.getContext('2d', {alpha: false});
       this.ctxOffscreen = this.canvasDomElement.getContext('bitmaprenderer');
-    } catch(e) {
+    } catch (e) {
       this.ctx = this.canvasDomElement.getContext('2d', {alpha: false});
     }
 
     this.setGridSize(11);
-    this.calculateDimensions(this.canvasDomElement);
+    this.calculateDimensions();
+  }
+
+  setResize(resize$: Cuprum<Event>) {
+    resize$.subscribe(() => {
+      this.calculateDimensions();
+    });
   }
 
   draw(cells) {
@@ -88,40 +96,41 @@ export class GofCanvas extends HTMLElement {
     }
   }
 
-  calculateDimensions(canvasDomElement: HTMLCanvasElement) {
-    let rect = canvasDomElement.getBoundingClientRect();
+  calculateDimensions() {
+    const rect = this.canvasDomElement.getBoundingClientRect();
     let width = document.documentElement.clientWidth;
     let height = rect.height;
     let widthMod = width % this.cellSize;
     width = width - widthMod;
     height = height - height % this.cellSize;
-    // canvasDomElement.css('left', `${widthMod / 2}px`);
-    canvasDomElement.style.left = `${widthMod / 2}px`;
-    this.pixelWidth = canvasDomElement.width = width;
-    this.pixelHeight = canvasDomElement.height = height;
+    this.canvasDomElement.style.setProperty('--x-mod', `${widthMod / 2}px`);
+    this.pixelWidth = this.canvasDomElement.width = width;
+    this.pixelHeight = this.canvasDomElement.height = height;
     this.width = width / this.cellSize;
     this.height = height / this.cellSize;
   }
 
-  action (fn: (evt: ClickEvent)=>void) {
+  action(fn: (evt: ClickEvent) => void) {
     this.canvasDomElement.addEventListener('click', (evt) => {
       var rect = this.canvasDomElement.getBoundingClientRect();
       var left = Math.floor(rect.left + window.pageXOffset);
       var top = Math.floor(rect.top + window.pageYOffset);
       var cellSize = this.cellSize;
       var clickEvent = <ClickEvent>{};
-      clickEvent.cellX = Math.floor((evt.clientX - left + window.pageXOffset) / cellSize);
+      clickEvent.cellX = Math.floor((evt.clientX - left + window.pageXOffset - 7) / cellSize);
       clickEvent.cellY = Math.floor((evt.clientY - top + window.pageYOffset - 5) / cellSize); // TODO: Where's offset coming from?
       fn(clickEvent);
     });
   }
 
-  getDimension () {
-    return { width: this.pixelWidth, height: this.pixelHeight };
+  getDimension() {
+    return {width: this.pixelWidth, height: this.pixelHeight};
   }
-  getGridSize () {
+
+  getGridSize() {
     return this.cellSize;
   }
+
   setGridSize(size) {
     this.cellSize = size;
     this.width = Math.floor(this.pixelWidth / this.cellSize);
