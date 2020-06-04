@@ -5,6 +5,7 @@ export class Shape {
   canvas: GofCanvas;
   current: Cell[];
   collection: Collection;
+  redraw$ = new Cuprum<Cell[]>();
 
   constructor(canvas: GofCanvas) {
     this.canvas = canvas;
@@ -55,7 +56,7 @@ export class Shape {
   }
 
   redraw() {
-    this.canvas.draw(this.current);
+    this.redraw$.dispatch(this.current);
   }
 
   center() {

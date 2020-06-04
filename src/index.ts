@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
   controls.shape.center();
   controls.shape.redraw();
 
+  canvas.setRedraw(controls.shape.redraw$);
+
   const resize$ = fromEvent(window, 'resize');
   canvas.setResize(resize$);
   controls.shape.setResize(resize$);

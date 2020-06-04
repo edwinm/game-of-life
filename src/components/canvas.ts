@@ -62,6 +62,12 @@ export class GofCanvas extends HTMLElement {
     });
   }
 
+  setRedraw(redraw$: Cuprum<Cell[]>) {
+    redraw$.subscribe((cells) => {
+      this.draw(cells);
+    });
+  }
+
   draw(cells) {
     var ctx = this.ctx;
     var size = this.cellSize;
