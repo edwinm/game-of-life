@@ -108,15 +108,16 @@ export class GofControls extends HTMLElement {
       .addEventListener('input', sizeListener.bind(this));
 
     function sizeListener() {
-      var oldGridSize = this.canvas.getGridSize();
       var newGridSize = 13 - parseInt($('#size', this.shadowRoot).value);
-      var dimension = this.canvas.getDimension();
+
+      var oldGridSize = this.canvas.getCellSize();
+      var dimension = this.canvas.getPixelDimension();
 
       var dx = Math.round((dimension.width / newGridSize - dimension.width / oldGridSize) / 2);
       var dy = Math.round((dimension.height / newGridSize - dimension.height / oldGridSize) / 2);
 
       this.shape.offset(dx, dy);
-      this.canvas.setGridSize(newGridSize);
+      this.canvas.setCellSize(newGridSize);
       this.shape.redraw();
     }
 

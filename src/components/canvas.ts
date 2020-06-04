@@ -27,7 +27,7 @@ export class GofCanvas extends HTMLElement {
         }
         #canvas{
           flex: 1 1;
-          margin-left: var(--x-mod, 0);
+          margin-left: var(--width-mod, 0);
         }
       </style>
       
@@ -52,7 +52,7 @@ export class GofCanvas extends HTMLElement {
       this.ctx = this.canvasDomElement.getContext('2d', {alpha: false});
     }
 
-    this.setGridSize(11);
+    this.setCellSize(11);
     this.calculateDimensions();
   }
 
@@ -109,11 +109,11 @@ export class GofCanvas extends HTMLElement {
     let widthMod = width % this.cellSize;
     width = width - widthMod;
     height = height - height % this.cellSize;
-    this.canvasDomElement.style.setProperty('--x-mod', `${widthMod / 2}px`);
+    this.canvasDomElement.style.setProperty('--width-mod', `${widthMod / 2}px`);
     this.pixelWidth = this.canvasDomElement.width = width;
     this.pixelHeight = this.canvasDomElement.height = height;
-    this.width = width / this.cellSize;
-    this.height = height / this.cellSize;
+    this.width = Math.floor(this.pixelWidth / this.cellSize);
+    this.height = Math.floor(this.pixelHeight / this.cellSize);
   }
 
   action(fn: (evt: ClickEvent) => void) {
@@ -129,22 +129,18 @@ export class GofCanvas extends HTMLElement {
     });
   }
 
-  getDimension() {
+  getPixelDimension() {
     return {width: this.pixelWidth, height: this.pixelHeight};
   }
 
-  getGridSize() {
+  getCellSize() {
     return this.cellSize;
   }
 
-  setGridSize(size) {
+  setCellSize(size) {
     this.cellSize = size;
-    this.width = Math.floor(this.pixelWidth / this.cellSize);
-    this.height = Math.floor(this.pixelHeight / this.cellSize);
-  }
-
-  getCanvas() {
-    return this.canvasDomElement;
+    this.width = Math.floor(this.pixelWidth / size);
+    this.height = Math.floor(this.pixelHeight / size);
   }
 }
 
