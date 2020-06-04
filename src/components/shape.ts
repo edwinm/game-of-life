@@ -81,7 +81,10 @@ export class Shape {
     this.set(cells);
   }
 
-  offset(dx: number, dy: number) {
+  offset(dimension, oldGridSize, newGridSize) {
+    const dx = Math.round((dimension.width / newGridSize - dimension.width / oldGridSize) / 2);
+    const dy = Math.round((dimension.height / newGridSize - dimension.height / oldGridSize) / 2);
+
     this.current.forEach(function (cell: Cell) {
       cell[0] += dx;
       cell[1] += dy;

@@ -1,4 +1,5 @@
 import { $ } from 'carbonium';
+import { fromEvent, combine } from "cuprum";
 import { GofCanvas } from "./canvas";
 import { Shape } from "./shape";
 import { GofGameOfLife } from "./gameoflife";
@@ -103,23 +104,22 @@ export class GofControls extends HTMLElement {
       this.next();
     });
 
-    $('#size', this.shadowRoot)
-      .addEventListener('change', sizeListener.bind(this))
-      .addEventListener('input', sizeListener.bind(this));
+    // $('#size', this.shadowRoot)
+    //   .addEventListener('change', sizeListener.bind(this))
+    //   .addEventListener('input', sizeListener.bind(this));
 
-    function sizeListener() {
-      var newGridSize = 13 - parseInt($('#size', this.shadowRoot).value);
+    const sizeChange$ = fromEvent($('#size', this.shadowRoot), 'change');
+    const sizeInput$ = fromEvent($('#size', this.shadowRoot), 'input');
+    const size$ = combine(sizeChange$, sizeInput$)
+      .map(() => 13 - parseInt($('#size', this.shadowRoot).value));
 
+    size$.subscribe((newGridSize) => {
       var oldGridSize = this.canvas.getCellSize();
       var dimension = this.canvas.getPixelDimension();
 
-      var dx = Math.round((dimension.width / newGridSize - dimension.width / oldGridSize) / 2);
-      var dy = Math.round((dimension.height / newGridSize - dimension.height / oldGridSize) / 2);
-
-      this.shape.offset(dx, dy);
       this.canvas.setCellSize(newGridSize);
-      this.shape.redraw();
-    }
+      this.shape.offset(dimension, oldGridSize, newGridSize);
+    });
 
     var speed = $('#speed', this.shadowRoot);
     this.speed = 520 - parseInt(speed.value);
