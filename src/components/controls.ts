@@ -1,11 +1,9 @@
 import { $ } from 'carbonium';
 import { fromEvent, combine, Cuprum } from "cuprum";
-import { Shape } from "./shape";
 import { GofGameOfLife } from "./gameoflife";
 import { GofInfo } from "./info";
 
 export class GofControls extends HTMLElement {
-  shape: Shape;
   gameoflife: GofGameOfLife;
   started: boolean;
   timer: NodeJS.Timeout;
@@ -15,8 +13,9 @@ export class GofControls extends HTMLElement {
   size$: Cuprum<number>;
   newShape$: Cuprum<Cell[]>;
   nextShape$: Cuprum<Cell[]>;
-  toggle$: Cuprum<ClickEvent>;
+  nextGeneration$: Cuprum<void>;
   collection: Collection;
+  redraw$: Cuprum<Cell[]>;
 
   constructor() {
     super();
@@ -75,8 +74,7 @@ export class GofControls extends HTMLElement {
   connectedCallback() {
   }
 
-  construct(shape: Shape, gameoflife: GofGameOfLife, info: GofInfo) {
-    this.shape = shape;
+  construct(gameoflife: GofGameOfLife, info: GofInfo) {
     this.gameoflife = gameoflife;
     this.started = false;
     this.timer = null;
@@ -85,14 +83,16 @@ export class GofControls extends HTMLElement {
     this.collection = this.getCollection();
     this.newShape$ = new Cuprum<Cell[]>();
     this.nextShape$ = new Cuprum<Cell[]>();
+    this.nextGeneration$ = new Cuprum<void>();
 
     $('#info', this.shadowRoot).addEventListener('click', () => info.open());
   }
 
-  init(toggle$:Cuprum<ClickEvent>) {
+  init(redraw$: Cuprum<Cell[]>, toggle$:Cuprum<ClickEvent>) {
+    this.redraw$ = redraw$;
+
     toggle$.subscribe((event) => {
       this.setGeneration(0);
-      this.shape.toggle([event.cellX, event.cellY]);
     });
 
     var shapesSelect = $('#shapes', this.shadowRoot);
@@ -108,7 +108,7 @@ export class GofControls extends HTMLElement {
     this.newShape$.dispatch(this.collection[1].data);
 
     $('#next', this.shadowRoot).addEventListener('click', () => {
-      this.next();
+      this.nextGeneration$.dispatch();
     });
 
     const sizeChange$ = fromEvent($('#size', this.shadowRoot), 'change');
@@ -140,6 +140,14 @@ export class GofControls extends HTMLElement {
         startStop.value = 'Start';
         clearInterval(this.timer);
       }
+    });
+
+    this.nextGeneration$.subscribe(()=>{
+      var shape = this.redraw$.value();
+      shape = this.gameoflife.next(shape);
+      this.nextShape$.dispatch(shape);
+
+      this.setGeneration(this.generation + 1);
     });
   }
 
@@ -176,16 +184,8 @@ export class GofControls extends HTMLElement {
   animate1() {
     clearInterval(this.timer);
     this.timer = setInterval(() => {
-      this.next();
+      this.nextGeneration$.dispatch();
     }, this.speed);
-  }
-
-  next() {
-    var shape = this.shape.get();
-    shape = this.gameoflife.next(shape);
-    this.nextShape$.dispatch(shape);
-
-    this.setGeneration(this.generation + 1);
   }
 }
 

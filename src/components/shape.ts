@@ -8,7 +8,7 @@ export class Shape {
     this.current = [];
   }
 
-  init(size$: Cuprum<number>, newShape$: Cuprum<Cell[]>, nextShape$: Cuprum<Cell[]>, resize$: Cuprum<Event>, dimension$: Cuprum<Dimension>) {
+  init(size$: Cuprum<number>, newShape$: Cuprum<Cell[]>, nextShape$: Cuprum<Cell[]>, resize$: Cuprum<Event>, dimension$: Cuprum<Dimension>, toggle$:Cuprum<ClickEvent>) {
     dimension$.subscribe((newDimension) => {
       this.offset(newDimension);
     });
@@ -26,12 +26,16 @@ export class Shape {
 
     resize$.subscribe(() => {
       this.redraw();
-    })
+    });
+
+    toggle$.subscribe((event) => {
+      this.toggle([event.cellX, event.cellY]);
+    });
   }
 
-  get() {
-    return this.current;
-  }
+  // get() {
+  //   return this.current;
+  // }
 
   set(shape: Cell[]) {
     this.current = shape;

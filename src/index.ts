@@ -13,13 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const gameoflife = new GofGameOfLife();
   const info = <GofInfo>$('gof-info');
 
-  controls.construct(shape, gameoflife, info);
+  controls.construct(gameoflife, info);
 
   const resize$ = fromEvent(window, 'resize');
 
-  controls.init(canvas.click$);
-  canvas.init(controls.shape.redraw$, resize$, controls.size$);
-  shape.init(controls.size$, controls.newShape$, controls.nextShape$, resize$, canvas.dimension$);
+  controls.init(shape.redraw$, canvas.click$);
+  canvas.init(shape.redraw$, resize$, controls.size$);
+  shape.init(controls.size$, controls.newShape$, controls.nextShape$, resize$, canvas.dimension$, canvas.click$);
 
   canvas.action();
 
