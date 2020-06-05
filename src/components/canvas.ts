@@ -56,15 +56,13 @@ export class GofCanvas extends HTMLElement {
     this.calculateDimensions();
   }
 
-  setResize(resize$: Cuprum<Event>) {
-    resize$.subscribe(() => {
-      this.calculateDimensions();
-    });
-  }
-
-  setRedraw(redraw$: Cuprum<Cell[]>) {
+  init(redraw$: Cuprum<Cell[]>, resize$: Cuprum<Event>) {
     redraw$.subscribe((cells) => {
       this.draw(cells);
+    });
+
+    resize$.subscribe(() => {
+      this.calculateDimensions();
     });
   }
 
