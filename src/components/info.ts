@@ -1,4 +1,5 @@
 import { $ } from 'carbonium';
+import { Cuprum } from "cuprum";
 
 export class GofInfo extends HTMLElement {
   constructor() {
@@ -71,10 +72,12 @@ export class GofInfo extends HTMLElement {
       }
     });
   }
-
-  open() {
-    this.removeAttribute('hidden');
-    document.body.classList.add('whitebox');
+  
+  init(info$: Cuprum<Event>) {
+    info$.subscribe(()=>{
+      this.removeAttribute('hidden');
+      document.body.classList.add('whitebox');
+    });
   }
 
   close() {

@@ -11,15 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const shape = new Shape();
   const info = <GofInfo>$('gof-info');
 
-  controls.construct(info);
-
   const resize$ = fromEvent(window, 'resize');
 
   controls.init(shape.redraw$, canvas.click$);
   canvas.init(shape.redraw$, resize$, controls.size$);
   shape.init(controls.size$, controls.newShape$, controls.nextShape$, resize$, canvas.dimension$, canvas.click$);
-
-  canvas.action();
+  info.init(controls.info$);
 
   // if (window.navigator.standalone) {
   //   document.documentElement.classList.add('standalone');

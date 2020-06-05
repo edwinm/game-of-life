@@ -1,7 +1,6 @@
 import { $ } from 'carbonium';
 import { fromEvent, combine, Cuprum } from "cuprum";
 import { GofGameOfLife } from "./gameoflife";
-import { GofInfo } from "./info";
 
 export class GofControls extends HTMLElement {
   gameoflife: GofGameOfLife;
@@ -14,6 +13,7 @@ export class GofControls extends HTMLElement {
   newShape$: Cuprum<Cell[]>;
   nextShape$: Cuprum<Cell[]>;
   nextGeneration$: Cuprum<void>;
+  info$: Cuprum<Event>;
   collection: Collection;
   redraw$: Cuprum<Cell[]>;
 
@@ -72,9 +72,6 @@ export class GofControls extends HTMLElement {
   }
 
   connectedCallback() {
-  }
-
-  construct(info: GofInfo) {
     this.gameoflife = new GofGameOfLife();
     this.started = false;
     this.timer = null;
@@ -84,12 +81,12 @@ export class GofControls extends HTMLElement {
     this.newShape$ = new Cuprum<Cell[]>();
     this.nextShape$ = new Cuprum<Cell[]>();
     this.nextGeneration$ = new Cuprum<void>();
-
-    $('#info', this.shadowRoot).addEventListener('click', () => info.open());
   }
 
   init(redraw$: Cuprum<Cell[]>, toggle$:Cuprum<ClickEvent>) {
     this.redraw$ = redraw$;
+
+    this.info$ = fromEvent($('#info', this.shadowRoot), 'click');
 
     toggle$.subscribe((event) => {
       this.setGeneration(0);
