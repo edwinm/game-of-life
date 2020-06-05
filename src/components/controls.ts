@@ -74,8 +74,8 @@ export class GofControls extends HTMLElement {
   connectedCallback() {
   }
 
-  construct(gameoflife: GofGameOfLife, info: GofInfo) {
-    this.gameoflife = gameoflife;
+  construct(info: GofInfo) {
+    this.gameoflife = new GofGameOfLife();
     this.started = false;
     this.timer = null;
     this.generation = 0;
