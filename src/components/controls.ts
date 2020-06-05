@@ -13,6 +13,7 @@ export class GofControls extends HTMLElement {
   newShape$: Cuprum<Cell[]>;
   nextShape$: Cuprum<Cell[]>;
   nextGeneration$: Cuprum<void>;
+  resize$: Cuprum<Event>;
   info$: Cuprum<Event>;
   collection: Collection;
   redraw$: Cuprum<Cell[]>;
@@ -81,6 +82,7 @@ export class GofControls extends HTMLElement {
     this.newShape$ = new Cuprum<Cell[]>();
     this.nextShape$ = new Cuprum<Cell[]>();
     this.nextGeneration$ = new Cuprum<void>();
+    this.resize$ = fromEvent(window, 'resize');
   }
 
   init(redraw$: Cuprum<Cell[]>, toggle$:Cuprum<ClickEvent>) {
