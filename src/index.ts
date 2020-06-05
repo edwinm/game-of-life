@@ -19,13 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   controls.init();
   canvas.init(controls.shape.redraw$, resize$);
-  shape.init(controls.size$);
-
-  shape.copy(controls.collection[1].data);
-  shape.center();
-  shape.redraw();
-
-  shape.setResize(resize$);
+  shape.init(controls.size$, controls.newShape$, controls.nextShape$, resize$);
 
   // if (window.navigator.standalone) {
   //   document.documentElement.classList.add('standalone');

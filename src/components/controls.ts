@@ -15,6 +15,8 @@ export class GofControls extends HTMLElement {
   generationElement: HTMLElement;
   speed: number;
   size$: Cuprum<number>;
+  newShape$: Cuprum<Cell[]>;
+  nextShape$: Cuprum<Cell[]>;
   collection: Collection;
 
   constructor() {
@@ -72,7 +74,6 @@ export class GofControls extends HTMLElement {
   }
 
   connectedCallback() {
-
   }
 
   construct(canvas: GofCanvas, shape: Shape, gameoflife: GofGameOfLife, info: GofInfo) {
@@ -84,33 +85,28 @@ export class GofControls extends HTMLElement {
     this.generation = 0;
     this.generationElement = $('.generation', this.shadowRoot);
     this.collection = this.getCollection();
+    this.newShape$ = new Cuprum<Cell[]>();
+    this.nextShape$ = new Cuprum<Cell[]>();
 
     $('#info', this.shadowRoot).addEventListener('click', () => info.open());
   }
 
-
   init() {
     var shapesSelect = $('#shapes', this.shadowRoot);
-    const shapes =
-      this.collection.forEach((shape, i) => {
+    this.collection.forEach((shape, i) => {
       var option = document.createElement('option');
       option.text = shape.name;
       shapesSelect.appendChild(option);
     });
     shapesSelect.addEventListener('change', (e) => {
       this.setGeneration(0);
-      this.shape.copy(shapes[shapesSelect.selectedIndex].data);
-      this.shape.center();
-      this.shape.redraw();
+      this.newShape$.dispatch(this.collection[shapesSelect.selectedIndex].data);
     });
+    this.newShape$.dispatch(this.collection[1].data);
 
     $('#next', this.shadowRoot).addEventListener('click', () => {
       this.next();
     });
-
-    // $('#size', this.shadowRoot)
-    //   .addEventListener('change', sizeListener.bind(this))
-    //   .addEventListener('input', sizeListener.bind(this));
 
     const sizeChange$ = fromEvent($('#size', this.shadowRoot), 'change');
     const sizeInput$ = fromEvent($('#size', this.shadowRoot), 'input');
@@ -193,8 +189,8 @@ export class GofControls extends HTMLElement {
   next() {
     var shape = this.shape.get();
     shape = this.gameoflife.next(shape);
-    this.shape.set(shape);
-    this.shape.redraw();
+    this.nextShape$.dispatch(shape);
+
     this.setGeneration(this.generation + 1);
   }
 }
