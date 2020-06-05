@@ -1,9 +1,8 @@
 import { $ } from 'carbonium';
 import { fromEvent, combine, Cuprum } from "cuprum";
-import { GofGameOfLife } from "./gameoflife";
+import { gofNext } from "./gameoflife";
 
 export class GofControls extends HTMLElement {
-  gameoflife: GofGameOfLife;
   started: boolean;
   timer: NodeJS.Timeout;
   generation: number;
@@ -73,7 +72,6 @@ export class GofControls extends HTMLElement {
   }
 
   connectedCallback() {
-    this.gameoflife = new GofGameOfLife();
     this.started = false;
     this.timer = null;
     this.generation = 0;
@@ -143,7 +141,7 @@ export class GofControls extends HTMLElement {
 
     this.nextGeneration$.subscribe(()=>{
       let shape = this.redraw$.value();
-      shape = this.gameoflife.next(shape);
+      shape = gofNext(shape);
       this.nextShape$.dispatch(shape);
 
       this.setGeneration(this.generation + 1);
