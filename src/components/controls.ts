@@ -1,5 +1,5 @@
 import { $ } from 'carbonium';
-import { fromEvent, combine } from "cuprum";
+import { fromEvent, combine, Cuprum } from "cuprum";
 import { GofCanvas } from "./canvas";
 import { Shape } from "./shape";
 import { GofGameOfLife } from "./gameoflife";
@@ -14,6 +14,7 @@ export class GofControls extends HTMLElement {
   generation: number;
   generationElement: HTMLElement;
   speed: number;
+  size$: Cuprum<number>;
 
   constructor() {
     super();
@@ -110,15 +111,13 @@ export class GofControls extends HTMLElement {
 
     const sizeChange$ = fromEvent($('#size', this.shadowRoot), 'change');
     const sizeInput$ = fromEvent($('#size', this.shadowRoot), 'input');
-    const size$ = combine(sizeChange$, sizeInput$)
+    this.size$ = combine(sizeChange$, sizeInput$)
       .map(() => 13 - parseInt($('#size', this.shadowRoot).value));
 
-    size$.subscribe((newGridSize) => {
-      var oldGridSize = this.canvas.getCellSize();
-      var dimension = this.canvas.getPixelDimension();
+    this.size$.dispatch(11);
 
+    this.size$.subscribe((newGridSize) => {
       this.canvas.setCellSize(newGridSize);
-      this.shape.offset(dimension, oldGridSize, newGridSize);
     });
 
     var speed = $('#speed', this.shadowRoot);

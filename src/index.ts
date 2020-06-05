@@ -16,9 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
   controls.construct(canvas, shape, gameoflife, info);
   
   controls.init(shape.collection);
+  shape.init(controls.size$);
+
   controls.shape.copy(shape.collection[1].data);
   controls.shape.center();
   controls.shape.redraw();
+
 
   canvas.setRedraw(controls.shape.redraw$);
 

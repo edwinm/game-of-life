@@ -1,5 +1,6 @@
 import { Cuprum } from "cuprum";
 import { GofCanvas } from "./canvas";
+import { GofControls } from "./controls";
 
 export class Shape {
   canvas: GofCanvas;
@@ -34,8 +35,15 @@ export class Shape {
     ];
   }
 
+  init(size$) {
+    size$.subscribe((newGridSize, oldGridSize) => {
+      var dimension = this.canvas.getPixelDimension();
+      this.offset(dimension, oldGridSize, newGridSize);
+    });
+  }
+
   setResize(resize$: Cuprum<Event>) {
-    resize$.subscribe(() =>{
+    resize$.subscribe(() => {
       this.redraw();
     })
   }
