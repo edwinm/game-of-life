@@ -1,12 +1,10 @@
 import { $ } from 'carbonium';
 import { fromEvent, combine, Cuprum } from "cuprum";
-import { GofCanvas } from "./canvas";
 import { Shape } from "./shape";
 import { GofGameOfLife } from "./gameoflife";
 import { GofInfo } from "./info";
 
 export class GofControls extends HTMLElement {
-  canvas: GofCanvas;
   shape: Shape;
   gameoflife: GofGameOfLife;
   started: boolean;
@@ -17,6 +15,7 @@ export class GofControls extends HTMLElement {
   size$: Cuprum<number>;
   newShape$: Cuprum<Cell[]>;
   nextShape$: Cuprum<Cell[]>;
+  toggle$: Cuprum<ClickEvent>;
   collection: Collection;
 
   constructor() {
@@ -76,8 +75,7 @@ export class GofControls extends HTMLElement {
   connectedCallback() {
   }
 
-  construct(canvas: GofCanvas, shape: Shape, gameoflife: GofGameOfLife, info: GofInfo) {
-    this.canvas = canvas;
+  construct(shape: Shape, gameoflife: GofGameOfLife, info: GofInfo) {
     this.shape = shape;
     this.gameoflife = gameoflife;
     this.started = false;
@@ -91,7 +89,12 @@ export class GofControls extends HTMLElement {
     $('#info', this.shadowRoot).addEventListener('click', () => info.open());
   }
 
-  init() {
+  init(toggle$:Cuprum<ClickEvent>) {
+    toggle$.subscribe((event) => {
+      this.setGeneration(0);
+      this.shape.toggle([event.cellX, event.cellY]);
+    });
+
     var shapesSelect = $('#shapes', this.shadowRoot);
     this.collection.forEach((shape, i) => {
       var option = document.createElement('option');
@@ -137,11 +140,6 @@ export class GofControls extends HTMLElement {
         startStop.value = 'Start';
         clearInterval(this.timer);
       }
-    });
-
-    this.canvas.action((evt) => {
-      this.setGeneration(0);
-      this.shape.toggle([evt.cellX, evt.cellY]);
     });
   }
 

@@ -14,6 +14,7 @@ export class GofCanvas extends HTMLElement {
   cellX: number;
   cellY: number;
   dimension$: Cuprum<Dimension>;
+  click$: Cuprum<ClickEvent>;
 
   constructor() {
     super();
@@ -39,6 +40,7 @@ export class GofCanvas extends HTMLElement {
 
   connectedCallback() {
     this.dimension$ = new Cuprum<Dimension>();
+    this.click$ = new Cuprum<ClickEvent>();
 
     this.canvasDomElement = $('#canvas', this.shadowRoot);
 
@@ -121,7 +123,7 @@ export class GofCanvas extends HTMLElement {
 
   }
 
-  action(fn: (evt: ClickEvent) => void) {
+  action() {
     this.canvasDomElement.addEventListener('click', (evt) => {
       var rect = this.canvasDomElement.getBoundingClientRect();
       var left = Math.floor(rect.left + window.pageXOffset);
@@ -130,7 +132,7 @@ export class GofCanvas extends HTMLElement {
       var clickEvent = <ClickEvent>{};
       clickEvent.cellX = Math.floor((evt.clientX - left + window.pageXOffset - 7) / cellSize);
       clickEvent.cellY = Math.floor((evt.clientY - top + window.pageYOffset - 5) / cellSize); // TODO: Where's offset coming from?
-      fn(clickEvent);
+      this.click$.dispatch(clickEvent);
     });
   }
 

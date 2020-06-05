@@ -13,16 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const gameoflife = new GofGameOfLife();
   const info = <GofInfo>$('gof-info');
 
-  controls.construct(canvas, shape, gameoflife, info);
+  controls.construct(shape, gameoflife, info);
 
   const resize$ = fromEvent(window, 'resize');
 
-  controls.init();
+  controls.init(canvas.click$);
   canvas.init(controls.shape.redraw$, resize$, controls.size$);
   shape.init(controls.size$, controls.newShape$, controls.nextShape$, resize$, canvas.dimension$);
+
+  canvas.action();
 
   // if (window.navigator.standalone) {
   //   document.documentElement.classList.add('standalone');
   // }
-  console.log(GofCanvas && GofInfo && GofControls && "Game of Life");
+  console.log(GofCanvas && GofInfo && GofControls && "Game of Life []");
 });
