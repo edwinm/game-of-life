@@ -13,6 +13,7 @@ export class GofCanvas extends HTMLElement {
   height: number;
   cellX: number;
   cellY: number;
+  dimension$: Cuprum<Dimension>;
 
   constructor() {
     super();
@@ -37,6 +38,8 @@ export class GofCanvas extends HTMLElement {
   }
 
   connectedCallback() {
+    this.dimension$ = new Cuprum<Dimension>();
+
     this.canvasDomElement = $('#canvas', this.shadowRoot);
 
     if (!this.canvasDomElement.getContext) {
@@ -56,13 +59,17 @@ export class GofCanvas extends HTMLElement {
     this.calculateDimensions();
   }
 
-  init(redraw$: Cuprum<Cell[]>, resize$: Cuprum<Event>) {
+  init(redraw$: Cuprum<Cell[]>, resize$: Cuprum<Event>, size$: Cuprum<number>) {
     redraw$.subscribe((cells) => {
       this.draw(cells);
     });
 
     resize$.subscribe(() => {
       this.calculateDimensions();
+    });
+
+    size$.subscribe((newGridSize) => {
+      this.setCellSize(newGridSize);
     });
   }
 
@@ -110,8 +117,8 @@ export class GofCanvas extends HTMLElement {
     this.canvasDomElement.style.setProperty('--width-mod', `${widthMod / 2}px`);
     this.pixelWidth = this.canvasDomElement.width = width;
     this.pixelHeight = this.canvasDomElement.height = height;
-    this.width = Math.floor(this.pixelWidth / this.cellSize);
-    this.height = Math.floor(this.pixelHeight / this.cellSize);
+    this.setDimension(Math.floor(this.pixelWidth / this.cellSize), Math.floor(this.pixelHeight / this.cellSize));
+
   }
 
   action(fn: (evt: ClickEvent) => void) {
@@ -127,24 +134,17 @@ export class GofCanvas extends HTMLElement {
     });
   }
 
-  getPixelDimension() {
-    return {width: this.pixelWidth, height: this.pixelHeight};
-  }
-
-  getCellSize() {
-    return this.cellSize;
-  }
-
   setCellSize(size) {
     this.cellSize = size;
-    this.width = Math.floor(this.pixelWidth / size);
-    this.height = Math.floor(this.pixelHeight / size);
+    this.setDimension(Math.floor(this.pixelWidth / size), Math.floor(this.pixelHeight / size));
+  }
+
+  setDimension(width, height) {
+    this.width = width;
+    this.height = height;
+    this.dimension$.dispatch({width: width, height: height});
   }
 }
 
 customElements.define('gof-canvas', GofCanvas);
 
-interface ClickEvent {
-  cellX: number;
-  cellY: number;
-}

@@ -1,25 +1,21 @@
-import { Cuprum } from "cuprum";
-import { GofCanvas } from "./canvas";
+import { combine, Cuprum } from "cuprum";
 
 export class Shape {
-  canvas: GofCanvas;
   current: Cell[];
   redraw$ = new Cuprum<Cell[]>();
 
-  constructor(canvas: GofCanvas) {
-    this.canvas = canvas;
+  constructor() {
     this.current = [];
   }
 
-  init(size$, newShape$, nextShape$, resize$: Cuprum<Event>) {
-    size$.subscribe((newGridSize, oldGridSize) => {
-      var dimension = this.canvas.getPixelDimension();
-      this.offset(dimension, oldGridSize, newGridSize);
+  init(size$: Cuprum<number>, newShape$: Cuprum<Cell[]>, nextShape$: Cuprum<Cell[]>, resize$: Cuprum<Event>, dimension$: Cuprum<Dimension>) {
+    dimension$.subscribe((newDimension) => {
+      this.offset(newDimension);
     });
 
-    newShape$.subscribe((shape) => {
+    combine(newShape$, dimension$).subscribe(([shape, dimension]) => {
       this.copy(shape);
-      this.center();
+      this.center(dimension);
       this.redraw();
     });
 
@@ -52,7 +48,7 @@ export class Shape {
     this.redraw$.dispatch(this.current);
   }
 
-  center() {
+  center(dimension: Dimension) {
     var cells = this.current;
     var shapeWidth = 0;
     var shapeHeight = 0;
@@ -65,8 +61,8 @@ export class Shape {
       }
     });
 
-    var shapeLeft = Math.floor((this.canvas.width - shapeWidth) / 2);
-    var shapeTop = Math.floor((this.canvas.height - shapeHeight) / 2);
+    var shapeLeft = Math.floor((dimension.width - shapeWidth) / 2);
+    var shapeTop = Math.floor((dimension.height - shapeHeight) / 2);
     cells.forEach(function (cell: Cell) {
       cell[0] += shapeLeft;
       cell[1] += shapeTop;
@@ -74,9 +70,9 @@ export class Shape {
     this.set(cells);
   }
 
-  offset(dimension, oldGridSize, newGridSize) {
-    const dx = Math.round((dimension.width / newGridSize - dimension.width / oldGridSize) / 2);
-    const dy = Math.round((dimension.height / newGridSize - dimension.height / oldGridSize) / 2);
+  offset(dimension) {
+    const dx = Math.round((dimension.width - dimension.width) / 2);
+    const dy = Math.round((dimension.height - dimension.height) / 2);
 
     this.current.forEach(function (cell: Cell) {
       cell[0] += dx;

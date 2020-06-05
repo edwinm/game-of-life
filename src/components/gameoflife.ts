@@ -1,9 +1,4 @@
 export class GofGameOfLife {
-  canvas: HTMLElement;
-
-  constructor(canvas: HTMLElement) {
-    this.canvas = canvas;
-  }
 
   next(shape) {
     var neighbours = {};

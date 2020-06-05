@@ -115,10 +115,6 @@ export class GofControls extends HTMLElement {
 
     this.size$.dispatch(11);
 
-    this.size$.subscribe((newGridSize) => {
-      this.canvas.setCellSize(newGridSize);
-    });
-
     var speed = $('#speed', this.shadowRoot);
     this.speed = 520 - parseInt(speed.value);
     speed.addEventListener('change', speedListener.bind(this));
