@@ -8,7 +8,7 @@ export class Shape {
     this.current = [];
   }
 
-  init(size$: Cuprum<number>, newShape$: Cuprum<Cell[]>, nextShape$: Cuprum<Cell[]>, resize$: Cuprum<Event>, dimension$: Cuprum<Dimension>, toggle$:Cuprum<ClickEvent>) {
+  init(size$: Cuprum<number>, newShape$: Cuprum<Cell[]>, nextShape$: Cuprum<Cell[]>, resize$: Cuprum<Event>, dimension$: Cuprum<Dimension>, toggle$: Cuprum<ClickEvent>) {
     dimension$.subscribe((newDimension) => {
       this.offset(newDimension);
     });
@@ -20,7 +20,7 @@ export class Shape {
     });
 
     nextShape$.subscribe((shape) => {
-      this.set(shape);
+      this.current = shape;
       this.redraw();
     });
 
@@ -33,19 +33,11 @@ export class Shape {
     });
   }
 
-  // get() {
-  //   return this.current;
-  // }
-
-  set(shape: Cell[]) {
-    this.current = shape;
-  }
-
   copy(shape: Cell[]) {
-    var shapeCopy = shape.map(function (el) {
+    const shapeCopy = shape.map(function (el) {
       return [el[0], el[1]];
     });
-    this.set(shapeCopy);
+    this.current = shapeCopy;
   }
 
   redraw() {
@@ -53,10 +45,9 @@ export class Shape {
   }
 
   center(dimension: Dimension) {
-    var cells = this.current;
-    var shapeWidth = 0;
-    var shapeHeight = 0;
-    cells.forEach(function (cell, i) {
+    let shapeWidth = 0;
+    let shapeHeight = 0;
+    this.current.forEach((cell, i) => {
       if (cell[0] > shapeWidth) {
         shapeWidth = cell[0];
       }
@@ -65,47 +56,35 @@ export class Shape {
       }
     });
 
-    var shapeLeft = Math.floor((dimension.width - shapeWidth) / 2);
-    var shapeTop = Math.floor((dimension.height - shapeHeight) / 2);
-    cells.forEach(function (cell: Cell) {
+    const shapeLeft = Math.floor((dimension.width - shapeWidth) / 2);
+    const shapeTop = Math.floor((dimension.height - shapeHeight) / 2);
+    this.current.forEach((cell: Cell) => {
       cell[0] += shapeLeft;
       cell[1] += shapeTop;
     });
-    this.set(cells);
   }
 
-  offset(dimension) {
+  offset(dimension: Dimension) {
     const dx = Math.round((dimension.width - dimension.width) / 2);
     const dy = Math.round((dimension.height - dimension.height) / 2);
 
-    this.current.forEach(function (cell: Cell) {
+    this.current.forEach((cell: Cell) => {
       cell[0] += dx;
       cell[1] += dy;
     });
     this.redraw();
   }
 
-  toggle(cell: Cell) {
-    var n;
-    var shape = this;
-    if ((n = cellIndex(cell)) == -1) {
-      this.current.push(cell);
+  toggle(toggleCell: Cell) {
+    const index = this.current.findIndex(
+      (cell, index) => cell[0] == toggleCell[0] && cell[1] == toggleCell[1]
+    );
+    if (index == -1) {
+      this.current.push(toggleCell);
     } else {
-      this.current.splice(n, 1);
+      this.current.splice(index, 1);
     }
-    this.set(shape.current);
     this.redraw();
-
-    function cellIndex(cell) {
-      let index = -1;
-      shape.current.forEach(function (c, i) {
-        if (c[0] == cell[0] && c[1] == cell[1]) {
-          index = i;
-          return false;
-        }
-      });
-      return index;
-    }
   }
 }
 

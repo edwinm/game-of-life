@@ -94,9 +94,9 @@ export class GofControls extends HTMLElement {
       this.setGeneration(0);
     });
 
-    var shapesSelect = $('#shapes', this.shadowRoot);
+    const shapesSelect = $('#shapes', this.shadowRoot);
     this.collection.forEach((shape, i) => {
-      var option = document.createElement('option');
+      const option = document.createElement('option');
       option.text = shape.name;
       shapesSelect.appendChild(option);
     });
@@ -117,7 +117,7 @@ export class GofControls extends HTMLElement {
 
     this.size$.dispatch(11);
 
-    var speed = $('#speed', this.shadowRoot);
+    const speed = $('#speed', this.shadowRoot);
     this.speed = 520 - parseInt(speed.value);
     speed.addEventListener('change', speedListener.bind(this));
     speed.addEventListener('input', speedListener.bind(this));
@@ -129,7 +129,7 @@ export class GofControls extends HTMLElement {
       }
     }
 
-    var startStop = $('#start', this.shadowRoot);
+    const startStop = $('#start', this.shadowRoot);
     startStop.addEventListener('click', () => {
       this.started = !this.started;
       if (this.started) {
@@ -142,7 +142,7 @@ export class GofControls extends HTMLElement {
     });
 
     this.nextGeneration$.subscribe(()=>{
-      var shape = this.redraw$.value();
+      let shape = this.redraw$.value();
       shape = this.gameoflife.next(shape);
       this.nextShape$.dispatch(shape);
 

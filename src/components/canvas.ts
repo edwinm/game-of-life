@@ -74,25 +74,27 @@ export class GofCanvas extends HTMLElement {
       this.setCellSize(newGridSize);
     });
 
-    this.action();
+    this.canvasDomElement.addEventListener('click', (event) => {
+      this.action(event);
+    });
   }
 
-  draw(cells) {
-    var ctx = this.ctx;
-    var size = this.cellSize;
+  draw(cells: Cell[]) {
+    const ctx = this.ctx;
+    const size = this.cellSize;
 
     ctx.fillStyle = "#7e7e7e";
     ctx.lineWidth = 1;
     ctx.fillRect(0, 0, this.pixelWidth, this.pixelHeight);
     ctx.strokeStyle = "#999";
 
-    for (var n = this.cellSize; n < this.pixelWidth; n += this.cellSize) {
+    for (let n = this.cellSize; n < this.pixelWidth; n += this.cellSize) {
       ctx.beginPath();
       ctx.moveTo(n + .5, 0);
       ctx.lineTo(n + .5, this.pixelHeight);
       ctx.stroke();
     }
-    for (n = this.cellSize; n < this.pixelHeight; n += this.cellSize) {
+    for (let n = this.cellSize; n < this.pixelHeight; n += this.cellSize) {
       ctx.beginPath();
       ctx.moveTo(0, n + .5);
       ctx.lineTo(this.pixelWidth, n + .5);
@@ -101,12 +103,12 @@ export class GofCanvas extends HTMLElement {
 
     ctx.fillStyle = "yellow";
     ctx.lineWidth = 1;
-    cells.forEach(function (cell, i) {
+    cells.forEach(function (cell) {
       ctx.fillRect(cell[0] * size + 1, cell[1] * size + 1, size - 1, size - 1);
     });
 
     if (this.ctxOffscreen) {
-      var bitmap = this.offscreen.transferToImageBitmap();
+      const bitmap = this.offscreen.transferToImageBitmap();
       this.ctxOffscreen.transferFromImageBitmap(bitmap);
     }
   }
@@ -122,28 +124,25 @@ export class GofCanvas extends HTMLElement {
     this.pixelWidth = this.canvasDomElement.width = width;
     this.pixelHeight = this.canvasDomElement.height = height;
     this.setDimension(Math.floor(this.pixelWidth / this.cellSize), Math.floor(this.pixelHeight / this.cellSize));
-
   }
 
-  action() {
-    this.canvasDomElement.addEventListener('click', (evt) => {
-      var rect = this.canvasDomElement.getBoundingClientRect();
-      var left = Math.floor(rect.left + window.pageXOffset);
-      var top = Math.floor(rect.top + window.pageYOffset);
-      var cellSize = this.cellSize;
-      var clickEvent = <ClickEvent>{};
-      clickEvent.cellX = Math.floor((evt.clientX - left + window.pageXOffset - 7) / cellSize);
-      clickEvent.cellY = Math.floor((evt.clientY - top + window.pageYOffset - 5) / cellSize); // TODO: Where's offset coming from?
-      this.click$.dispatch(clickEvent);
-    });
+  action(event: MouseEvent) {
+    const rect = this.canvasDomElement.getBoundingClientRect();
+    const left = Math.floor(rect.left + window.pageXOffset);
+    const top = Math.floor(rect.top + window.pageYOffset);
+    const clickEvent = <ClickEvent>{
+      cellX: Math.floor((event.clientX - left + window.pageXOffset - 7) / this.cellSize),
+      cellY: Math.floor((event.clientY - top + window.pageYOffset - 5) / this.cellSize) // TODO: Where's offset coming from?
+    };
+    this.click$.dispatch(clickEvent);
   }
 
-  setCellSize(size) {
+  setCellSize(size: number) {
     this.cellSize = size;
     this.setDimension(Math.floor(this.pixelWidth / size), Math.floor(this.pixelHeight / size));
   }
 
-  setDimension(width, height) {
+  setDimension(width: number, height: number) {
     this.width = width;
     this.height = height;
     this.dimension$.dispatch({width: width, height: height});

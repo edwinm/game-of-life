@@ -1,10 +1,9 @@
 export class GofGameOfLife {
-
-  next(shape) {
-    var neighbours = {};
-    var newShape = [];
-    shape.forEach(function (cell, i) {
-      var index;
+  next(shape: Cell[]) {
+    let neighbours = {};
+    let newShape = [];
+    shape.forEach((cell) => {
+      let index;
 
       index = 'c' + (cell[0] - 1) + ',' + (cell[1] - 1);
       if (neighbours[index]) {
