@@ -2,17 +2,15 @@ import { $ } from 'carbonium';
 import { Cuprum } from "cuprum";
 
 export class GofCanvas extends HTMLElement implements CustomElement {
-  canvasDomElement: HTMLCanvasElement;
-  offscreen: OffscreenCanvas;
-  ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
-  ctxOffscreen: ImageBitmapRenderingContext;
-  cellSize: number;
-  pixelWidth: number;
-  pixelHeight: number;
-  width: number;
-  height: number;
-  cellX: number;
-  cellY: number;
+  private canvasDomElement: HTMLCanvasElement;
+  private offscreen: OffscreenCanvas;
+  private ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
+  private ctxOffscreen: ImageBitmapRenderingContext;
+  private cellSize: number;
+  private pixelWidth: number;
+  private pixelHeight: number;
+  private width: number;
+  private height: number;
   dimension$: Cuprum<Dimension>;
   click$: Cuprum<ClickEvent>;
 

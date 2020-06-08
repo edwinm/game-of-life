@@ -3,19 +3,20 @@ import { fromEvent, combine, Cuprum } from "cuprum";
 import { gofNext } from "./gameoflife";
 
 export class GofControls extends HTMLElement implements CustomElement {
-  started: boolean;
-  timer: NodeJS.Timeout;
-  generation: number;
-  generationElement: HTMLElement;
-  speed: number;
+  private started: boolean;
+  private timer: NodeJS.Timeout;
+  private generation: number;
+  private generationElement: HTMLElement;
+  private speed: number;
+  private collection: Collection;
+  private redraw$: Cuprum<Cell[]>;
+
   size$: Cuprum<number>;
   newShape$: Cuprum<Cell[]>;
   nextShape$: Cuprum<Cell[]>;
   nextGeneration$: Cuprum<void>;
   resize$: Cuprum<Event>;
   info$: Cuprum<Event>;
-  collection: Collection;
-  redraw$: Cuprum<Cell[]>;
 
   constructor() {
     super();
@@ -83,7 +84,7 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.resize$ = fromEvent(window, 'resize');
   }
 
-  init(redraw$: Cuprum<Cell[]>, toggle$:Cuprum<ClickEvent>) {
+  init(redraw$: Cuprum<Cell[]>, toggle$: Cuprum<ClickEvent>) {
     this.redraw$ = redraw$;
 
     this.info$ = fromEvent($('#info', this.shadowRoot), 'click');
@@ -141,7 +142,7 @@ export class GofControls extends HTMLElement implements CustomElement {
       }
     });
 
-    this.nextGeneration$.subscribe(()=>{
+    this.nextGeneration$.subscribe(() => {
       let shape = this.redraw$.value();
       shape = gofNext(shape);
       this.nextShape$.dispatch(shape);

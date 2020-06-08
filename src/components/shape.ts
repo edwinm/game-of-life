@@ -1,7 +1,7 @@
 import { Cuprum } from "cuprum";
 
 export class Shape {
-  current: Cell[];
+  private current: Cell[];
   redraw$ = new Cuprum<Cell[]>();
 
   constructor() {
