@@ -54,7 +54,7 @@ export class GofControls extends HTMLElement implements CustomElement {
       </style>
       
       <form>
-        <select id="shapes">
+        <select id="shapes" aria-label="Select predefined shape">
         </select>
         <input id="next" type="button" value="Next">
         <input id="start" type="button" value="Start">

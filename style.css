@@ -35,6 +35,11 @@ header {
   height: 100px;
 }
 
+.invisible {
+  margin: 0;
+  text-indent: -999em;
+}
+
 gof-canvas {
   height: calc(100vh - 200px);
   width: 100%;
