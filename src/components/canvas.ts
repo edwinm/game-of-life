@@ -25,7 +25,7 @@ export class GofCanvas extends HTMLElement {
       <style>
         :host {
           display: flex;
-          background: green;
+          background: #7e7e7e;
         }
         #canvas{
           flex: 1 1;
@@ -127,12 +127,10 @@ export class GofCanvas extends HTMLElement {
   }
 
   action(event: MouseEvent) {
-    const rect = this.canvasDomElement.getBoundingClientRect();
-    const left = Math.floor(rect.left + window.pageXOffset);
-    const top = Math.floor(rect.top + window.pageYOffset);
+    const canvasRect = this.canvasDomElement.getBoundingClientRect();
     const clickEvent = <ClickEvent>{
-      cellX: Math.floor((event.clientX - left + window.pageXOffset - 7) / this.cellSize),
-      cellY: Math.floor((event.clientY - top + window.pageYOffset - 5) / this.cellSize) // TODO: Where's offset coming from?
+      cellX: Math.floor((event.clientX - canvasRect.left - 4) / this.cellSize),
+      cellY: Math.floor((event.clientY - canvasRect.top - 5) / this.cellSize)
     };
     this.click$.dispatch(clickEvent);
   }
