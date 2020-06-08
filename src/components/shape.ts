@@ -49,8 +49,8 @@ export class Shape {
       }
     });
 
-    const shapeLeft = Math.floor((dimension.width - shapeWidth) / 2);
-    const shapeTop = Math.floor((dimension.height - shapeHeight) / 2);
+    const shapeLeft = Math.round((dimension.width - shapeWidth) / 2);
+    const shapeTop = Math.round((dimension.height - shapeHeight) / 2);
     this.current.forEach((cell: Cell) => {
       cell[0] += shapeLeft;
       cell[1] += shapeTop;
@@ -59,8 +59,8 @@ export class Shape {
 
   offset(dimension: Dimension, oldDimension: Dimension) {
     if (oldDimension && dimension.width != oldDimension.width && dimension.height != oldDimension.height) {
-      const dx = Math.round((dimension.width - oldDimension.width) / 2);
-      const dy = Math.round((dimension.height - oldDimension.height) / 2);
+      const dx = Math.round((dimension.width - oldDimension.width) / 2.001);
+      const dy = Math.round((dimension.height - oldDimension.height) / 2.001);
 
       this.current.forEach((cell: Cell) => {
         cell[0] += dx;

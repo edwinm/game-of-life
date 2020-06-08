@@ -61,11 +61,11 @@ export class GofControls extends HTMLElement implements CustomElement {
         <label class="generation" title="Generations" aria-label="Generations">0</label>
         <nowrap>
           <img src="pix/speeddial.svg" alt="" width="20" height="20">
-          <input id="speed" type="range" min="10" max="500" step="49" value="10" title="Speed dial" aria-label="Speed dial">
+          <input id="speed" type="range" min="0" max="100" value="50" title="Speed dial" aria-label="Speed dial">
         </nowrap>
         <nowrap>
           <img src="pix/grid.svg" alt="" width="20" height="20">
-          <input id="size" type="range" min="2" max="11" value="2" title="Grid size" aria-label="Grid size">
+          <input id="size" type="range" min="0" max="100" value="23" title="Grid size" aria-label="Grid size">
         </nowrap>
         <input id="info" type="button" value="Info">
       </form>
@@ -89,12 +89,12 @@ export class GofControls extends HTMLElement implements CustomElement {
 
     this.info$ = fromEvent($('#info', this.shadowRoot), 'click');
 
-    toggle$.subscribe((event) => {
+    toggle$.subscribe(() => {
       this.setGeneration(0);
     });
 
     const shapesSelect = $('#shapes', this.shadowRoot);
-    this.collection.forEach((shape, i) => {
+    this.collection.forEach((shape) => {
       const option = document.createElement('option');
       option.text = shape.name;
       shapesSelect.appendChild(option);
@@ -111,23 +111,23 @@ export class GofControls extends HTMLElement implements CustomElement {
       this.nextGeneration$.dispatch();
     });
 
-    const sizeChange$ = fromEvent($('#size', this.shadowRoot), 'change');
-    const sizeInput$ = fromEvent($('#size', this.shadowRoot), 'input');
-    this.size$ = combine(sizeChange$, sizeInput$)
-      .map(() => 13 - parseInt($('#size', this.shadowRoot).value));
-
+    this.size$ = fromEvent($('#size', this.shadowRoot), 'input')
+      .map((event) => Math.round(2 + 38 / 100 * Number((<HTMLInputElement>event.target).value)));
     this.size$.dispatch(11);
 
     const speed = $('#speed', this.shadowRoot);
-    this.speed = 520 - parseInt(speed.value);
-    speed.addEventListener('change', speedListener.bind(this));
+    this.speed = getSpeed(speed);
     speed.addEventListener('input', speedListener.bind(this));
 
     function speedListener() {
-      this.speed = 520 - parseInt(speed.value);
+      this.speed = getSpeed(speed);
       if (this.started) {
         this.animate1();
       }
+    }
+
+    function getSpeed(speed: HTMLInputElement) {
+      return 1000 - Math.sqrt(Number(speed.value)) * 99
     }
 
     const startStop = $('#start', this.shadowRoot);
