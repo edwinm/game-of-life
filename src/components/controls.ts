@@ -2,7 +2,7 @@ import { $ } from 'carbonium';
 import { fromEvent, combine, Cuprum } from "cuprum";
 import { gofNext } from "./gameoflife";
 
-export class GofControls extends HTMLElement {
+export class GofControls extends HTMLElement implements CustomElement {
   started: boolean;
   timer: NodeJS.Timeout;
   generation: number;

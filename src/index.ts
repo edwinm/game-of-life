@@ -21,5 +21,5 @@ document.addEventListener('DOMContentLoaded', () => {
   // }
 
   // TODO
-  console.log(GofCanvas && GofInfo && GofControls && "Game of Life []");
+  console.log(GofCanvas && GofInfo && GofControls && "Game of Life");
 });

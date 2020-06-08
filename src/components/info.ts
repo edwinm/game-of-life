@@ -1,7 +1,7 @@
 import { $ } from 'carbonium';
 import { Cuprum } from "cuprum";
 
-export class GofInfo extends HTMLElement {
+export class GofInfo extends HTMLElement implements CustomElement {
   constructor() {
     super();
 

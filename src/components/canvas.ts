@@ -1,7 +1,7 @@
 import { $ } from 'carbonium';
 import { Cuprum } from "cuprum";
 
-export class GofCanvas extends HTMLElement {
+export class GofCanvas extends HTMLElement implements CustomElement {
   canvasDomElement: HTMLCanvasElement;
   offscreen: OffscreenCanvas;
   ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
