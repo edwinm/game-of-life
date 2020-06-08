@@ -98,10 +98,12 @@ export class GofControls extends HTMLElement {
       option.text = shape.name;
       shapesSelect.appendChild(option);
     });
-    shapesSelect.addEventListener('change', (e) => {
+    shapesSelect.addEventListener('change', (event) => {
       this.setGeneration(0);
-      this.newShape$.dispatch(this.collection[shapesSelect.selectedIndex].data);
+      this.newShape$.dispatch(this.collection[event.target.selectedIndex].data);
     });
+
+    $('#shapes', this.shadowRoot).selectedIndex = 1;
     this.newShape$.dispatch(this.collection[1].data);
 
     $('#next', this.shadowRoot).addEventListener('click', () => {
