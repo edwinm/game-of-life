@@ -1,4 +1,4 @@
-import { combine, Cuprum } from "cuprum";
+import { Cuprum } from "cuprum";
 
 export class Shape {
   current: Cell[];
@@ -9,13 +9,13 @@ export class Shape {
   }
 
   init(size$: Cuprum<number>, newShape$: Cuprum<Cell[]>, nextShape$: Cuprum<Cell[]>, resize$: Cuprum<Event>, dimension$: Cuprum<Dimension>, toggle$: Cuprum<ClickEvent>) {
-    dimension$.subscribe((newDimension) => {
-      this.offset(newDimension);
+    dimension$.subscribe((newDimension, oldDimension) => {
+      this.offset(newDimension, oldDimension);
     });
 
-    combine(newShape$, dimension$).subscribe(([shape, dimension]) => {
-      this.copy(shape);
-      this.center(dimension);
+    newShape$.subscribe((shape) => {
+      this.current = shape.map(cell => [cell[0], cell[1]]);
+      this.center(dimension$.value());
       this.redraw();
     });
 
@@ -33,13 +33,6 @@ export class Shape {
     });
   }
 
-  copy(shape: Cell[]) {
-    const shapeCopy = shape.map(function (el) {
-      return [el[0], el[1]];
-    });
-    this.current = shapeCopy;
-  }
-
   redraw() {
     this.redraw$.dispatch(this.current);
   }
@@ -47,7 +40,7 @@ export class Shape {
   center(dimension: Dimension) {
     let shapeWidth = 0;
     let shapeHeight = 0;
-    this.current.forEach((cell, i) => {
+    this.current.forEach((cell) => {
       if (cell[0] > shapeWidth) {
         shapeWidth = cell[0];
       }
@@ -64,15 +57,17 @@ export class Shape {
     });
   }
 
-  offset(dimension: Dimension) {
-    const dx = Math.round((dimension.width - dimension.width) / 2);
-    const dy = Math.round((dimension.height - dimension.height) / 2);
+  offset(dimension: Dimension, oldDimension: Dimension) {
+    if (oldDimension && dimension.width != oldDimension.width && dimension.height != oldDimension.height) {
+      const dx = Math.round((dimension.width - oldDimension.width) / 2);
+      const dy = Math.round((dimension.height - oldDimension.height) / 2);
 
-    this.current.forEach((cell: Cell) => {
-      cell[0] += dx;
-      cell[1] += dy;
-    });
-    this.redraw();
+      this.current.forEach((cell: Cell) => {
+        cell[0] += dx;
+        cell[1] += dy;
+      });
+      this.redraw();
+    }
   }
 
   toggle(toggleCell: Cell) {
