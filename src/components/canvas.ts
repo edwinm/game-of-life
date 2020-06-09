@@ -83,10 +83,10 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
     ctx.fillStyle = "#7e7e7e";
     ctx.lineWidth = 1;
-    ctx.fillRect(0, 0, this.pixelWidth, this.pixelHeight);
+    ctx.fillRect(0, 0, this.pixelWidth + this.cellSize, this.pixelHeight);
     ctx.strokeStyle = "#999";
 
-    for (let n = this.cellSize; n < this.pixelWidth; n += this.cellSize) {
+    for (let n = 0; n <= this.pixelWidth; n += this.cellSize) {
       ctx.beginPath();
       ctx.moveTo(n + .5, 0);
       ctx.lineTo(n + .5, this.pixelHeight);
@@ -113,21 +113,25 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
   calculateDimensions() {
     const rect = this.canvasDomElement.getBoundingClientRect();
-    let width = document.documentElement.clientWidth;
-    let height = rect.height;
-    let widthMod = width % this.cellSize;
-    width = width - widthMod;
-    height = height - height % this.cellSize;
+    const pixelWidth = document.documentElement.clientWidth;
+    const pixelHeight = rect.height;
+    const widthMod = pixelWidth % this.cellSize;
     this.canvasDomElement.style.setProperty('--width-mod', `${widthMod / 2}px`);
-    this.pixelWidth = this.canvasDomElement.width = width;
-    this.pixelHeight = this.canvasDomElement.height = height;
+    this.pixelWidth = this.canvasDomElement.width = pixelWidth - widthMod / 2;
+    this.pixelHeight = this.canvasDomElement.height = pixelHeight - pixelHeight % this.cellSize;
+
+    if (this.ctxOffscreen) {
+      this.offscreen = new OffscreenCanvas(this.pixelWidth, this.pixelHeight);
+      this.ctx = this.offscreen.getContext('2d', {alpha: false});
+    }
+
     this.setDimension(Math.floor(this.pixelWidth / this.cellSize), Math.floor(this.pixelHeight / this.cellSize));
   }
 
   action(event: MouseEvent) {
     const canvasRect = this.canvasDomElement.getBoundingClientRect();
     const clickEvent = <ClickEvent>{
-      cellX: Math.floor((event.clientX - canvasRect.left - 4) / this.cellSize),
+      cellX: Math.floor((event.clientX - canvasRect.left - 2) / this.cellSize),
       cellY: Math.floor((event.clientY - canvasRect.top - 5) / this.cellSize)
     };
     this.click$.dispatch(clickEvent);
@@ -139,9 +143,11 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   }
 
   setDimension(width: number, height: number) {
-    this.width = width;
-    this.height = height;
-    this.dimension$.dispatch({width: width, height: height});
+    if (width && height) {
+      this.width = width;
+      this.height = height;
+      this.dimension$.dispatch({width: width, height: height});
+    }
   }
 }
 
