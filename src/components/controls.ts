@@ -1,5 +1,5 @@
 import { $ } from 'carbonium';
-import { fromEvent, combine, Cuprum } from "cuprum";
+import { fromEvent, Cuprum } from "cuprum";
 import { gofNext } from "./gameoflife";
 
 export class GofControls extends HTMLElement implements CustomElement {
@@ -78,7 +78,7 @@ export class GofControls extends HTMLElement implements CustomElement {
           <img src="pix/grid.svg" alt="" width="20" height="20">
           <input id="size" type="range" min="0" max="100" value="23" title="Grid size" aria-label="Grid size">
         </nowrap>
-        <input id="info" type="button" value="Info">
+        <input id="info" type="button" value="Explanation">
       </form>
     `;
   }
