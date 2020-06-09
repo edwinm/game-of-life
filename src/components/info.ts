@@ -71,12 +71,20 @@ export class GofInfo extends HTMLElement implements CustomElement {
         this.close();
       }
     });
+
+    document.documentElement.addEventListener('focusout', (e) => {
+      if ((<HTMLElement>event.target).closest("gof-info") != null) {
+        $('[data-close]', this.shadowRoot).focus();
+        return false;
+      }
+    });
   }
   
   init(info$: Cuprum<Event>) {
     info$.subscribe(()=>{
       this.removeAttribute('hidden');
       document.body.classList.add('whitebox');
+      $('[data-close]', this.shadowRoot).focus();
     });
   }
 
