@@ -38,18 +38,29 @@ export class GofControls extends HTMLElement implements CustomElement {
         }
         
         :host > * {
-          margin: 0 0.5vw;
+          margin: 0 5vw;
+        }
+        
+        form > * {
+          margin: 10px 0;
         }
         
         input[type="range"] {
           width: 80px;
-          vertical-align: bottom;
         }
         
         .generation {
           font-family: helvetica, arial, sans-serif;
           font-size: smaller;
           margin-left: 2em;
+        }
+        
+        nowrap {
+          white-space: nowrap;
+        }
+        
+        nowrap > * {
+          vertical-align: middle;
         }
       </style>
       
