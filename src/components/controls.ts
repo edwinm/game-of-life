@@ -76,7 +76,7 @@ export class GofControls extends HTMLElement implements CustomElement {
         </nowrap>
         <nowrap>
           <img src="pix/grid.svg" alt="" width="20" height="20">
-          <input id="size" type="range" min="0" max="100" value="23" title="Grid size" aria-label="Grid size">
+          <input id="size" type="range" min="0" max="100" value="58" title="Grid size" aria-label="Grid size">
         </nowrap>
         <input id="info" type="button" value="Explanation">
       </form>
@@ -124,7 +124,7 @@ export class GofControls extends HTMLElement implements CustomElement {
 
     this.size$ = fromEvent($('#size', this.shadowRoot), 'input')
       .map((event) => Math.round(2 + 38 / 100 * Number((<HTMLInputElement>event.target).value)));
-    this.size$.dispatch(11);
+    this.size$.dispatch(24);
 
     const speed = $('#speed', this.shadowRoot);
     this.speed = getSpeed(speed);
