@@ -115,9 +115,9 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     const rect = this.canvasDomElement.getBoundingClientRect();
     const pixelWidth = document.documentElement.clientWidth;
     const pixelHeight = rect.height;
-    const widthMod = pixelWidth % this.cellSize;
-    this.canvasDomElement.style.setProperty('--width-mod', `${widthMod / 2}px`);
-    this.pixelWidth = this.canvasDomElement.width = pixelWidth - widthMod / 2;
+    const widthMod = (pixelWidth % this.cellSize) / 2;
+    this.canvasDomElement.style.setProperty('--width-mod', `${widthMod}px`);
+    this.pixelWidth = this.canvasDomElement.width = pixelWidth;
     this.pixelHeight = this.canvasDomElement.height = pixelHeight - pixelHeight % this.cellSize;
 
     if (this.ctxOffscreen) {
