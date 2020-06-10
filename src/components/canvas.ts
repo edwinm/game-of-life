@@ -1,5 +1,5 @@
 import { $ } from 'carbonium';
-import { Cuprum } from "cuprum";
+import { Cuprum, fromEvent } from "cuprum";
 
 export class GofCanvas extends HTMLElement implements CustomElement {
   private canvasDomElement: HTMLCanvasElement;
@@ -7,10 +7,6 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   private ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
   private ctxOffscreen: ImageBitmapRenderingContext;
   private cellSize: number;
-  private pixelWidth: number;
-  private pixelHeight: number;
-  private width: number;
-  private height: number;
   dimension$: Cuprum<Dimension>;
   click$: Cuprum<ClickEvent>;
 
@@ -71,9 +67,14 @@ export class GofCanvas extends HTMLElement implements CustomElement {
       this.setCellSize(newGridSize);
     });
 
-    this.canvasDomElement.addEventListener('click', (event) => {
-      this.action(event);
-    });
+    this.click$ = fromEvent(this.canvasDomElement, 'click')
+      .map((event: MouseEvent) => {
+        const canvasRect = this.canvasDomElement.getBoundingClientRect();
+        return <ClickEvent>{
+          cellX: Math.floor((event.clientX - canvasRect.left - 2) / this.cellSize),
+          cellY: Math.floor((event.clientY - canvasRect.top - 3) / this.cellSize)
+        };
+      });
   }
 
   draw(cells: Cell[]) {
@@ -82,19 +83,19 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
     ctx.fillStyle = "#7e7e7e";
     ctx.lineWidth = 1;
-    ctx.fillRect(0, 0, this.pixelWidth + this.cellSize, this.pixelHeight);
+    ctx.fillRect(0, 0, this.canvasDomElement.width + this.cellSize, this.canvasDomElement.height);
     ctx.strokeStyle = "#999";
 
-    for (let n = 0; n <= this.pixelWidth; n += this.cellSize) {
+    for (let n = 0; n <= this.canvasDomElement.width; n += this.cellSize) {
       ctx.beginPath();
       ctx.moveTo(n + .5, 0);
-      ctx.lineTo(n + .5, this.pixelHeight);
+      ctx.lineTo(n + .5, this.canvasDomElement.height);
       ctx.stroke();
     }
-    for (let n = this.cellSize; n < this.pixelHeight; n += this.cellSize) {
+    for (let n = this.cellSize; n < this.canvasDomElement.height; n += this.cellSize) {
       ctx.beginPath();
       ctx.moveTo(0, n + .5);
-      ctx.lineTo(this.pixelWidth, n + .5);
+      ctx.lineTo(this.canvasDomElement.width, n + .5);
       ctx.stroke();
     }
 
@@ -115,39 +116,26 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     const pixelWidth = document.documentElement.clientWidth;
     const widthMod = (pixelWidth % this.cellSize) / 2;
     this.canvasDomElement.style.setProperty('--width-mod', `${widthMod}px`);
-    this.pixelWidth = pixelWidth - pixelWidth % this.cellSize;
-    this.pixelHeight = rect.height;
-    this.canvasDomElement.width = this.pixelWidth;
-    this.canvasDomElement.height = this.pixelHeight;
+    this.canvasDomElement.width = pixelWidth - pixelWidth % this.cellSize;
+    this.canvasDomElement.height = rect.height;
 
     if (this.ctxOffscreen) {
-      this.offscreen = new OffscreenCanvas(this.pixelWidth, this.pixelHeight);
+      this.offscreen = new OffscreenCanvas(this.canvasDomElement.width, this.canvasDomElement.height);
       this.ctx = this.offscreen.getContext('2d', {alpha: false});
     }
 
-    this.setDimension(Math.floor(this.pixelWidth / this.cellSize), Math.floor(this.pixelHeight / this.cellSize));
-  }
-
-  action(event: MouseEvent) {
-    const canvasRect = this.canvasDomElement.getBoundingClientRect();
-    const clickEvent = <ClickEvent>{
-      cellX: Math.floor((event.clientX - canvasRect.left - 2) / this.cellSize),
-      cellY: Math.floor((event.clientY - canvasRect.top - 3) / this.cellSize)
-    };
-    this.click$.dispatch(clickEvent);
+    this.dimension$.dispatch({
+      width: Math.floor(this.canvasDomElement.width / this.cellSize),
+      height: Math.floor(this.canvasDomElement.height / this.cellSize)
+    });
   }
 
   setCellSize(size: number) {
     this.cellSize = size;
-    this.setDimension(Math.floor(this.pixelWidth / size), Math.floor(this.pixelHeight / size));
-  }
-
-  setDimension(width: number, height: number) {
-    if (width && height) {
-      this.width = width;
-      this.height = height;
-      this.dimension$.dispatch({width: width, height: height});
-    }
+    this.dimension$.dispatch({
+      width: Math.floor(this.canvasDomElement.width / size),
+      height: Math.floor(this.canvasDomElement.height / size)
+    });
   }
 }
 
