@@ -5,7 +5,7 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 export default {
   input: 'src/index.ts',
   output: {
-    file: 'built/bundle.min.js',
+    file: 'dist/bundle.min.js',
     format: 'iife',
     name: 'bundle',
   },
