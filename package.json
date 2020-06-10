@@ -8,6 +8,7 @@
         "build": "rollup --config --sourcemap",
         "livereload": "rollup --config rollup-livereload.config.js --sourcemap --watch",
         "watch": "npm-run-all --parallel start livereload",
+        "deploy": "npm run build && ./deploy.sh",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
