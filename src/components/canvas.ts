@@ -67,14 +67,17 @@ export class GofCanvas extends HTMLElement implements CustomElement {
       this.setCellSize(newGridSize);
     });
 
-    this.click$ = fromEvent(this.canvasDomElement, 'click')
+    // TODO: this.click$ = …
+    fromEvent(this.canvasDomElement, 'click')
       .map((event: MouseEvent) => {
         const canvasRect = this.canvasDomElement.getBoundingClientRect();
         return <ClickEvent>{
           cellX: Math.floor((event.clientX - canvasRect.left - 2) / this.cellSize),
           cellY: Math.floor((event.clientY - canvasRect.top - 3) / this.cellSize)
         };
-      });
+      }).subscribe((event)=>{
+      this.click$.dispatch(event);
+    });
   }
 
   draw(cells: Cell[]) {

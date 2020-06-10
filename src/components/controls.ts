@@ -6,7 +6,6 @@ export class GofControls extends HTMLElement implements CustomElement {
   private started: boolean;
   private timer: NodeJS.Timeout;
   private generation: number;
-  private generationElement: HTMLElement;
   private speed: number;
   private collection: Collection;
   private redraw$: Cuprum<Cell[]>;
@@ -14,7 +13,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   size$: Cuprum<number>;
   newShape$: Cuprum<Cell[]>;
   nextShape$: Cuprum<Cell[]>;
-  nextGeneration$: Cuprum<void>;
+  nextGeneration$: Cuprum<Event>;
   resize$: Cuprum<Event>;
   info$: Cuprum<Event>;
 
@@ -87,11 +86,10 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.started = false;
     this.timer = null;
     this.generation = 0;
-    this.generationElement = $('.generation', this.shadowRoot);
     this.collection = this.getCollection();
     this.newShape$ = new Cuprum<Cell[]>();
     this.nextShape$ = new Cuprum<Cell[]>();
-    this.nextGeneration$ = new Cuprum<void>();
+    this.nextGeneration$ = new Cuprum<Event>();
     this.resize$ = fromEvent(window, 'resize');
   }
 
@@ -110,48 +108,39 @@ export class GofControls extends HTMLElement implements CustomElement {
       option.text = shape.name;
       shapesSelect.appendChild(option);
     });
-    shapesSelect.addEventListener('change', (event) => {
+
+    fromEvent(shapesSelect, 'change').subscribe((event) => {
       this.setGeneration(0);
-      this.newShape$.dispatch(this.collection[event.target.selectedIndex].data);
+      this.newShape$.dispatch(this.collection[(<HTMLSelectElement>event.target).selectedIndex].data);
     });
 
     $('#shapes', this.shadowRoot).selectedIndex = 1;
     this.newShape$.dispatch(this.collection[1].data);
 
-    $('#next', this.shadowRoot).addEventListener('click', () => {
-      this.nextGeneration$.dispatch();
-    });
+    this.nextGeneration$ = fromEvent($('#next', this.shadowRoot), 'click');
 
     this.size$ = fromEvent($('#size', this.shadowRoot), 'input')
       .map((event) => Math.round(2 + 38 / 100 * Number((<HTMLInputElement>event.target).value)));
     this.size$.dispatch(24);
 
-    const speed = $('#speed', this.shadowRoot);
-    this.speed = getSpeed(speed);
-    speed.addEventListener('input', speedListener.bind(this));
-
-    function speedListener() {
-      this.speed = getSpeed(speed);
+    fromEvent($('#speed', this.shadowRoot), 'input').subscribe((event) => {
+      this.speed = 1000 - Math.sqrt(Number((<HTMLInputElement>event.target).value)) * 99;
       if (this.started) {
-        this.animate1();
-      }
-    }
-
-    function getSpeed(speed: HTMLInputElement) {
-      return 1000 - Math.sqrt(Number(speed.value)) * 99
-    }
-
-    const startStop = $('#start', this.shadowRoot);
-    startStop.addEventListener('click', () => {
-      this.started = !this.started;
-      if (this.started) {
-        startStop.value = 'Stop';
-        this.animate1();
-      } else {
-        startStop.value = 'Start';
-        clearInterval(this.timer);
+        this.play();
       }
     });
+    this.speed = 300;
+
+    fromEvent($('#start', this.shadowRoot), 'click').subscribe((event)=>{
+      this.started = !this.started;
+      if (this.started) {
+        (<HTMLInputElement>event.target).value = 'Stop';
+        this.play();
+      } else {
+        (<HTMLInputElement>event.target).value = 'Start';
+        clearInterval(this.timer);
+      }
+    })
 
     this.nextGeneration$.subscribe(() => {
       let shape = this.redraw$.value();
@@ -160,6 +149,18 @@ export class GofControls extends HTMLElement implements CustomElement {
 
       this.setGeneration(this.generation + 1);
     });
+  }
+
+  setGeneration(gen: number) {
+    this.generation = gen;
+    $('.generation', this.shadowRoot).textContent = gen.toString(10);
+  }
+
+  play() {
+    clearInterval(this.timer);
+    this.timer = setInterval((event) => {
+      this.nextGeneration$.dispatch(event);
+    }, this.speed);
   }
 
   getCollection() {
@@ -185,18 +186,6 @@ export class GofControls extends HTMLElement implements CustomElement {
         data: [[0, 2], [0, 3], [1, 2], [1, 3], [8, 3], [8, 4], [9, 2], [9, 4], [10, 2], [10, 3], [16, 4], [16, 5], [16, 6], [17, 4], [18, 5], [22, 1], [22, 2], [23, 0], [23, 2], [24, 0], [24, 1], [24, 12], [24, 13], [25, 12], [25, 14], [26, 12], [34, 0], [34, 1], [35, 0], [35, 1], [35, 7], [35, 8], [35, 9], [36, 7], [37, 8]],
       }
     ];
-  }
-
-  setGeneration(gen: number) {
-    this.generation = gen;
-    this.generationElement.innerHTML = gen.toString(10);
-  }
-
-  animate1() {
-    clearInterval(this.timer);
-    this.timer = setInterval(() => {
-      this.nextGeneration$.dispatch();
-    }, this.speed);
   }
 }
 
