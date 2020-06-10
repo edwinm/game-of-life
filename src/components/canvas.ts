@@ -26,7 +26,6 @@ export class GofCanvas extends HTMLElement implements CustomElement {
           background: #7e7e7e;
         }
         #canvas{
-          flex: 1 1;
           margin-left: var(--width-mod, 0);
         }
       </style>
@@ -114,11 +113,12 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   calculateDimensions() {
     const rect = this.canvasDomElement.getBoundingClientRect();
     const pixelWidth = document.documentElement.clientWidth;
-    const pixelHeight = rect.height;
     const widthMod = (pixelWidth % this.cellSize) / 2;
     this.canvasDomElement.style.setProperty('--width-mod', `${widthMod}px`);
-    this.pixelWidth = this.canvasDomElement.width = pixelWidth;
-    this.pixelHeight = this.canvasDomElement.height = pixelHeight - pixelHeight % this.cellSize;
+    this.pixelWidth = pixelWidth - pixelWidth % this.cellSize;
+    this.pixelHeight = rect.height;
+    this.canvasDomElement.width = this.pixelWidth;
+    this.canvasDomElement.height = this.pixelHeight;
 
     if (this.ctxOffscreen) {
       this.offscreen = new OffscreenCanvas(this.pixelWidth, this.pixelHeight);
@@ -132,7 +132,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     const canvasRect = this.canvasDomElement.getBoundingClientRect();
     const clickEvent = <ClickEvent>{
       cellX: Math.floor((event.clientX - canvasRect.left - 2) / this.cellSize),
-      cellY: Math.floor((event.clientY - canvasRect.top - 5) / this.cellSize)
+      cellY: Math.floor((event.clientY - canvasRect.top - 3) / this.cellSize)
     };
     this.click$.dispatch(clickEvent);
   }
