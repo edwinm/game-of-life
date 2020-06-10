@@ -1,5 +1,5 @@
 import { $ } from 'carbonium';
-import { Cuprum } from "cuprum";
+import { Cuprum, combine, fromEvent } from "cuprum";
 
 export class GofInfo extends HTMLElement implements CustomElement {
   constructor() {
@@ -56,41 +56,32 @@ export class GofInfo extends HTMLElement implements CustomElement {
   }
 
   connectedCallback() {
-    $('[data-close]', this.shadowRoot).addEventListener('click', () => {
-      this.close();
-    });
+    combine(
+      fromEvent($('[data-close]', this.shadowRoot), 'click'),
+      fromEvent(document.documentElement, 'keyup')
+        .filter((event: KeyboardEvent) => event.key == 'Escape'),
+      fromEvent(document.documentElement, 'click')
+        .filter(event => (<HTMLElement>event.target).classList.contains('whitebox'))
+    ).subscribe(() => {
+      this.setAttribute('hidden', '');
+      document.body.classList.remove('whitebox');
+    })
 
-    document.documentElement.addEventListener('keyup', (e) => {
-      if (e.key == 'Escape') {
-        this.close();
-      }
-    });
-
-    document.documentElement.addEventListener('click', (e) => {
-      if ((<HTMLElement>e.target).classList.contains('whitebox')) {
-        this.close();
-      }
-    });
-
-    document.documentElement.addEventListener('focusout', (e) => {
-      if ((<HTMLElement>event.target).closest("gof-info") != null) {
-        $('[data-close]', this.shadowRoot).focus();
-        return false;
-      }
-    });
+    fromEvent(document.documentElement, 'focusout')
+      .filter((event) => (<HTMLElement>event.target).closest("gof-info") != null)
+      .subscribe(() => {
+          $('.close-button', this.shadowRoot).focus();
+          return false;
+        }
+      );
   }
-  
+
   init(info$: Cuprum<Event>) {
-    info$.subscribe(()=>{
+    info$.subscribe(() => {
       this.removeAttribute('hidden');
       document.body.classList.add('whitebox');
-      $('[data-close]', this.shadowRoot).focus();
+      $('.close-button', this.shadowRoot).focus();
     });
-  }
-
-  close() {
-    this.setAttribute('hidden', '');
-    document.body.classList.remove('whitebox');
   }
 }
 
