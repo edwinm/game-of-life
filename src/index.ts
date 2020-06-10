@@ -15,11 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
   shape.init(controls.size$, controls.newShape$, controls.nextShape$, controls.resize$, canvas.dimension$, canvas.click$);
   info.init(controls.info$);
 
-  // TODO
-  // if (window.navigator.standalone) {
-  //   document.documentElement.classList.add('standalone');
-  // }
+  if (window.navigator.standalone) {
+    document.documentElement.classList.add('standalone');
+  }
 
   // TODO
   console.log(GofCanvas && GofInfo && GofControls && "Game of Life");
 });
+
+declare global {
+  interface Navigator {
+    standalone: boolean;
+  }
+}
