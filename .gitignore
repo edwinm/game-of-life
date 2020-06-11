@@ -2,3 +2,5 @@ node_modules
 built
 .idea
 deploy.sh
+dist/bundle.min.js
+dist/bundle.min.js.map
