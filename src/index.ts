@@ -19,8 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.classList.add('standalone');
   }
 
-  // TODO
-  console.log(GofCanvas && GofInfo && GofControls && "Game of Life");
+  // Prevent tree shaking of web components
+  if (GofCanvas && GofInfo && GofControls) {
+  }
 });
 
 declare global {
