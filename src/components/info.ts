@@ -56,13 +56,15 @@ export class GofInfo extends HTMLElement implements CustomElement {
   }
 
   connectedCallback() {
-    combine(
-      fromEvent($('[data-close]', this.shadowRoot), 'click'),
-      fromEvent(document.documentElement, 'keyup')
-        .filter((event: KeyboardEvent) => event.key == 'Escape'),
-      fromEvent(document.documentElement, 'click')
-        .filter(event => (<HTMLElement>event.target).classList.contains('whitebox'))
-    ).subscribe(() => {
+    const closeButtonClick = fromEvent($('[data-close]', this.shadowRoot), 'click');
+
+    const escKey = fromEvent(document.documentElement, 'keyup')
+      .filter((event: KeyboardEvent) => event.key == 'Escape');
+
+    const outsideClick = fromEvent(document.documentElement, 'click')
+      .filter(event => (<HTMLElement>event.target).classList.contains('whitebox'));
+
+    combine(closeButtonClick, escKey, outsideClick).subscribe(() => {
       this.setAttribute('hidden', '');
       document.body.classList.remove('whitebox');
     })
