@@ -1,14 +1,18 @@
-import { Cuprum } from "cuprum";
+import { Cuprum, Observable } from "cuprum";
 
 export class Shape {
   private current: Cell[];
-  redraw$ = new Cuprum<Cell[]>();
+  private redraw$ = new Cuprum<Cell[]>();
 
   constructor() {
     this.current = [];
   }
 
-  init(size$: Cuprum<number>, newShape$: Cuprum<Cell[]>, nextShape$: Cuprum<Cell[]>, resize$: Cuprum<Event>, dimension$: Cuprum<Dimension>, toggle$: Cuprum<Cell>) {
+  getObservers() {
+    return {redraw$:this.redraw$.observable()};
+  }
+
+  setObservers(size$: Observable<number>, newShape$: Observable<Cell[]>, nextShape$: Observable<Cell[]>, resize$: Observable<Event>, dimension$: Observable<Dimension>, toggle$: Observable<Cell>) {
     dimension$.subscribe((newDimension, oldDimension) => {
       this.offset(newDimension, oldDimension);
     });

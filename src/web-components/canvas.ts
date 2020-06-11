@@ -1,5 +1,5 @@
 import { $ } from 'carbonium';
-import { Cuprum, fromEvent } from "cuprum";
+import { Cuprum, fromEvent, Observable } from "cuprum";
 
 export class GofCanvas extends HTMLElement implements CustomElement {
   private canvasDomElement: HTMLCanvasElement;
@@ -7,8 +7,8 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   private ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
   private ctxOffscreen: ImageBitmapRenderingContext;
   private cellSize: number;
-  dimension$: Cuprum<Dimension>;
-  click$: Cuprum<Cell>;
+  private dimension$: Cuprum<Dimension>;
+  private click$: Cuprum<Cell>;
 
   constructor() {
     super();
@@ -54,7 +54,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     this.calculateDimensions();
   }
 
-  init(redraw$: Cuprum<Cell[]>, resize$: Cuprum<Event>, size$: Cuprum<number>) {
+  setObservers(redraw$: Observable<Cell[]>, resize$: Observable<Event>, size$: Observable<number>) {
     redraw$.subscribe((cells) => {
       this.draw(cells);
     });
@@ -67,17 +67,19 @@ export class GofCanvas extends HTMLElement implements CustomElement {
       this.setCellSize(newGridSize);
     });
 
-    // TODO: this.click$ = …
-    fromEvent(this.canvasDomElement, 'click')
+  }
+
+  getObservers() {
+    const click$ = fromEvent(this.canvasDomElement, 'click')
       .map((event: MouseEvent) => {
         const canvasRect = this.canvasDomElement.getBoundingClientRect();
         return <Cell>{
           x: Math.floor((event.clientX - canvasRect.left - 2) / this.cellSize),
           y: Math.floor((event.clientY - canvasRect.top - 3) / this.cellSize)
         };
-      }).subscribe((event)=>{
-      this.click$.dispatch(event);
-    });
+      });
+
+    return {click$: click$.observable(), dimension$: this.dimension$.observable()};
   }
 
   draw(cells: Cell[]) {

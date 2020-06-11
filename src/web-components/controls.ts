@@ -1,5 +1,5 @@
 import { $ } from 'carbonium';
-import { fromEvent, Cuprum } from "cuprum";
+import { fromEvent, Cuprum, merge, Observable } from "cuprum";
 import { gofNext } from "../components/gameoflife";
 
 export class GofControls extends HTMLElement implements CustomElement {
@@ -8,14 +8,14 @@ export class GofControls extends HTMLElement implements CustomElement {
   private generation: number;
   private speed: number;
   private collection: Collection;
-  private redraw$: Cuprum<Cell[]>;
+  private redraw$: Observable<Cell[]>;
 
-  size$: Cuprum<number>;
-  newShape$: Cuprum<Cell[]>;
-  nextShape$: Cuprum<Cell[]>;
-  nextGeneration$: Cuprum<Event>;
-  resize$: Cuprum<Event>;
-  info$: Cuprum<Event>;
+  private size$: Cuprum<number>;
+  private newShape$: Cuprum<Cell[]>;
+  private nextShape$: Cuprum<Cell[]>;
+  private nextGeneration$: Cuprum<Event>;
+  private resize$: Cuprum<Event>;
+  private info$: Cuprum<Event>;
 
   constructor() {
     super();
@@ -91,16 +91,7 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.nextShape$ = new Cuprum<Cell[]>();
     this.nextGeneration$ = new Cuprum<Event>();
     this.resize$ = fromEvent(window, 'resize');
-  }
-
-  init(redraw$: Cuprum<Cell[]>, toggle$: Cuprum<Cell>) {
-    this.redraw$ = redraw$;
-
     this.info$ = fromEvent($('#info', this.shadowRoot), 'click');
-
-    toggle$.subscribe(() => {
-      this.setGeneration(0);
-    });
 
     const shapesSelect = $('#shapes', this.shadowRoot);
     this.collection.forEach((shape) => {
@@ -119,17 +110,22 @@ export class GofControls extends HTMLElement implements CustomElement {
 
     this.nextGeneration$ = fromEvent($('#next', this.shadowRoot), 'click');
 
-    this.size$ = fromEvent($('#size', this.shadowRoot), 'input')
-      .map((event) => Math.round(2 + 38 / 100 * Number((<HTMLInputElement>event.target).value)));
-    this.size$.dispatch(24);
-
-    fromEvent($('#speed', this.shadowRoot), 'input').subscribe((event) => {
-      this.speed = 1000 - Math.sqrt(Number((<HTMLInputElement>event.target).value)) * 99;
+    const speed = $('#speed', this.shadowRoot);
+    merge(
+      fromEvent(speed, 'input').map((event) => Number((<HTMLInputElement>event.target).value)),
+      new Cuprum<number>().dispatch(speed.value)
+    ).subscribe((value) => {
+      this.speed = 1000 - Math.sqrt(value) * 99;
       if (this.started) {
         this.play();
       }
     });
-    this.speed = 300;
+
+    const size = $('#size', this.shadowRoot);
+    this.size$ = merge(
+      fromEvent(size, 'input').map(event => Number((<HTMLInputElement>event.target).value)),
+      new Cuprum<number>().dispatch(size.value)
+    ).map((value) => Math.round(2 + 38 / 100 * value));
 
     fromEvent($('#start', this.shadowRoot), 'click').subscribe((event) => {
       this.started = !this.started;
@@ -148,6 +144,24 @@ export class GofControls extends HTMLElement implements CustomElement {
       this.nextShape$.dispatch(shape);
 
       this.setGeneration(this.generation + 1);
+    });
+  }
+
+  getObservers() {
+    return {
+      newShape$: this.newShape$.observable(),
+      nextShape$: this.nextShape$.observable(),
+      resize$: this.resize$.observable(),
+      size$: this.size$.observable(),
+      info$: this.info$.observable()
+    };
+  }
+
+  setObservers(redraw$: Observable<Cell[]>, toggle$: Observable<Cell>) {
+    this.redraw$ = redraw$;
+
+    toggle$.subscribe(() => {
+      this.setGeneration(0);
     });
   }
 

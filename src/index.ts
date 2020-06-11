@@ -3,6 +3,7 @@ import { GofInfo } from "./web-components/info";
 import { GofControls } from "./web-components/controls";
 import { Shape } from "./components/shape";
 import { $ } from 'carbonium';
+import { Cuprum } from "cuprum";
 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = <GofCanvas>$('gof-canvas');
@@ -10,10 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const info = <GofInfo>$('gof-info');
   const shape = new Shape();
 
-  controls.init(shape.redraw$, canvas.click$);
-  canvas.init(shape.redraw$, controls.resize$, controls.size$);
-  shape.init(controls.size$, controls.newShape$, controls.nextShape$, controls.resize$, canvas.dimension$, canvas.click$);
-  info.init(controls.info$);
+  const {click$, dimension$} = canvas.getObservers();
+  const {redraw$} = shape.getObservers();
+  const {newShape$, nextShape$, resize$, size$, info$} = controls.getObservers();
+
+  canvas.setObservers(redraw$, resize$, size$);
+  shape.setObservers(size$, newShape$, nextShape$, resize$, dimension$, click$);
+  info.setObservers(info$);
+  controls.setObservers(redraw$, click$);
 
   if (window.navigator.standalone) {
     document.documentElement.classList.add('standalone');
@@ -29,3 +34,6 @@ declare global {
     standalone: boolean;
   }
 }
+
+// TODO: delete later
+type Observable<T> = Omit<Cuprum<T>, "dispatch">;

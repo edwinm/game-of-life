@@ -1,5 +1,5 @@
 import { $ } from 'carbonium';
-import { Cuprum, combine, fromEvent } from "cuprum";
+import { combine, fromEvent, Observable } from "cuprum";
 
 export class GofInfo extends HTMLElement implements CustomElement {
   constructor() {
@@ -78,7 +78,7 @@ export class GofInfo extends HTMLElement implements CustomElement {
       );
   }
 
-  init(info$: Cuprum<Event>) {
+  setObservers(info$: Observable<Event>) {
     info$.subscribe(() => {
       this.removeAttribute('hidden');
       document.body.classList.add('whitebox');
