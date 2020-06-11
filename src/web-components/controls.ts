@@ -1,6 +1,6 @@
 import { $ } from 'carbonium';
 import { fromEvent, Cuprum } from "cuprum";
-import { gofNext } from "./gameoflife";
+import { gofNext } from "../components/gameoflife";
 
 export class GofControls extends HTMLElement implements CustomElement {
   private started: boolean;

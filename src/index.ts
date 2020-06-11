@@ -1,6 +1,6 @@
-import { GofCanvas } from "./components/canvas";
-import { GofInfo } from "./components/info";
-import { GofControls } from "./components/controls";
+import { GofCanvas } from "./web-components/canvas";
+import { GofInfo } from "./web-components/info";
+import { GofControls } from "./web-components/controls";
 import { Shape } from "./components/shape";
 import { $ } from 'carbonium';
 
