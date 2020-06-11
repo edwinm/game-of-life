@@ -87,64 +87,15 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.timer = null;
     this.generation = 0;
     this.collection = this.getCollection();
-    this.newShape$ = new Cuprum<Cell[]>();
-    this.nextShape$ = new Cuprum<Cell[]>();
     this.nextGeneration$ = new Cuprum<Event>();
     this.resize$ = fromEvent(window, 'resize');
     this.info$ = fromEvent($('#info', this.shadowRoot), 'click');
 
-    const shapesSelect = $('#shapes', this.shadowRoot);
-    this.collection.forEach((shape) => {
-      const option = document.createElement('option');
-      option.text = shape.name;
-      shapesSelect.appendChild(option);
-    });
-
-    fromEvent(shapesSelect, 'change').subscribe((event) => {
-      this.setGeneration(0);
-      this.newShape$.dispatch(this.collection[(<HTMLSelectElement>event.target).selectedIndex].data);
-    });
-
-    $('#shapes', this.shadowRoot).selectedIndex = 1;
-    this.newShape$.dispatch(this.collection[1].data);
-
-    this.nextGeneration$ = fromEvent($('#next', this.shadowRoot), 'click');
-
-    const speed = $('#speed', this.shadowRoot);
-    merge(
-      fromEvent(speed, 'input').map((event) => Number((<HTMLInputElement>event.target).value)),
-      new Cuprum<number>().dispatch(speed.value)
-    ).subscribe((value) => {
-      this.speed = 1000 - Math.sqrt(value) * 99;
-      if (this.started) {
-        this.play();
-      }
-    });
-
-    const size = $('#size', this.shadowRoot);
-    this.size$ = merge(
-      fromEvent(size, 'input').map(event => Number((<HTMLInputElement>event.target).value)),
-      new Cuprum<number>().dispatch(size.value)
-    ).map((value) => Math.round(2 + 38 / 100 * value));
-
-    fromEvent($('#start', this.shadowRoot), 'click').subscribe((event) => {
-      this.started = !this.started;
-      if (this.started) {
-        (<HTMLInputElement>event.target).value = 'Stop';
-        this.play();
-      } else {
-        (<HTMLInputElement>event.target).value = 'Start';
-        clearInterval(this.timer);
-      }
-    })
-
-    this.nextGeneration$.subscribe(() => {
-      let shape = this.redraw$.value();
-      shape = gofNext(shape);
-      this.nextShape$.dispatch(shape);
-
-      this.setGeneration(this.generation + 1);
-    });
+    this.setupShapeSelect();
+    this.setupSpeed();
+    this.setupSize();
+    this.setupStart();
+    this.setupGeneration();
   }
 
   getObservers() {
@@ -233,6 +184,74 @@ export class GofControls extends HTMLElement implements CustomElement {
         }, {x: 35, y: 1}, {x: 35, y: 7}, {x: 35, y: 8}, {x: 35, y: 9}, {x: 36, y: 7}, {x: 37, y: 8}],
       }
     ];
+  }
+
+  private setupStart() {
+    fromEvent($('#start', this.shadowRoot), 'click').subscribe((event) => {
+      this.started = !this.started;
+      if (this.started) {
+        (<HTMLInputElement>event.target).value = 'Stop';
+        this.play();
+      } else {
+        (<HTMLInputElement>event.target).value = 'Start';
+        clearInterval(this.timer);
+      }
+    });
+  }
+
+  private setupSize() {
+    const size = $('#size', this.shadowRoot);
+    this.size$ = merge(
+      fromEvent(size, 'input').map(event => Number((<HTMLInputElement>event.target).value)),
+      new Cuprum<number>().dispatch(size.value)
+    ).map((value) => Math.round(2 + 38 / 100 * value));
+  }
+
+  private setupSpeed() {
+    const speed = $('#speed', this.shadowRoot);
+    merge(
+      fromEvent(speed, 'input').map((event) => Number((<HTMLInputElement>event.target).value)),
+      new Cuprum<number>().dispatch(speed.value)
+    ).subscribe((value) => {
+      this.speed = 1000 - Math.sqrt(value) * 99;
+      if (this.started) {
+        this.play();
+      }
+    });
+  }
+
+  private setupShapeSelect() {
+    const shapesSelect = $('#shapes', this.shadowRoot);
+
+    this.collection.forEach((shape) => {
+      const option = document.createElement('option');
+      option.text = shape.name;
+      shapesSelect.appendChild(option);
+    });
+    shapesSelect.selectedIndex = 1;
+
+    const shape$ = merge(
+      fromEvent(shapesSelect, 'change'),
+      new Cuprum<Event>().dispatch(null)
+    );
+
+    shape$.subscribe(() => {
+      this.setGeneration(0);
+    });
+
+    this.newShape$ = shape$.map(()=>this.collection[shapesSelect.selectedIndex].data);
+  }
+
+  private setupGeneration() {
+    this.nextGeneration$ = fromEvent($('#next', this.shadowRoot), 'click');
+
+    this.nextGeneration$.subscribe(() => {
+      this.setGeneration(this.generation + 1);
+    });
+
+    this.nextShape$ = this.nextGeneration$.map(() =>
+      gofNext(this.redraw$.value())
+    );
   }
 }
 
