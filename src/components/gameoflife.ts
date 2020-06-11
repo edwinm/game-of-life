@@ -1,60 +1,65 @@
+interface Neighbours {
+  n: number;
+  cell: Cell;
+}
+
 export function gofNext(shape: Cell[]) {
-  let neighbours = {};
-  let newShape = [];
+  let neighbours = <Neighbours>{};
+  let newShape = <Cell[]>[];
   shape.forEach((cell) => {
     let index;
 
-    index = 'c' + (cell[0] - 1) + ',' + (cell[1] - 1);
+    index = 'c' + (cell.x - 1) + ',' + (cell.y - 1);
     if (neighbours[index]) {
       neighbours[index].n++;
     } else {
-      neighbours[index] = {n: 1, cell: [cell[0] - 1, cell[1] - 1]};
+      neighbours[index] = {n: 1, cell: {x:cell.x - 1, y:cell.y - 1}};
     }
-    index = 'c' + (cell[0]) + ',' + (cell[1] - 1);
+    index = 'c' + (cell.x) + ',' + (cell.y - 1);
     if (neighbours[index]) {
       neighbours[index].n++;
     } else {
-      neighbours[index] = {n: 1, cell: [cell[0], cell[1] - 1]};
+      neighbours[index] = {n: 1, cell: {x:cell.x, y:cell.y - 1}};
     }
-    index = 'c' + (cell[0] + 1) + ',' + (cell[1] - 1);
+    index = 'c' + (cell.x + 1) + ',' + (cell.y - 1);
     if (neighbours[index]) {
       neighbours[index].n++;
     } else {
-      neighbours[index] = {n: 1, cell: [cell[0] + 1, cell[1] - 1]};
+      neighbours[index] = {n: 1, cell: {x:cell.x + 1, y:cell.y - 1}};
     }
-    index = 'c' + (cell[0] - 1) + ',' + (cell[1]);
+    index = 'c' + (cell.x - 1) + ',' + (cell.y);
     if (neighbours[index]) {
       neighbours[index].n++;
     } else {
-      neighbours[index] = {n: 1, cell: [cell[0] - 1, cell[1]]};
+      neighbours[index] = {n: 1, cell: {x:cell.x - 1, y:cell.y}};
     }
-    index = 'c' + (cell[0] + 1) + ',' + (cell[1]);
+    index = 'c' + (cell.x + 1) + ',' + (cell.y);
     if (neighbours[index]) {
       neighbours[index].n++;
     } else {
-      neighbours[index] = {n: 1, cell: [cell[0] + 1, cell[1]]};
+      neighbours[index] = {n: 1, cell: {x:cell.x + 1, y:cell.y}};
     }
-    index = 'c' + (cell[0] - 1) + ',' + (cell[1] + 1);
+    index = 'c' + (cell.x - 1) + ',' + (cell.y + 1);
     if (neighbours[index]) {
       neighbours[index].n++;
     } else {
-      neighbours[index] = {n: 1, cell: [cell[0] - 1, cell[1] + 1]};
+      neighbours[index] = {n: 1, cell: {x:cell.x - 1, y:cell.y + 1}};
     }
-    index = 'c' + (cell[0]) + ',' + (cell[1] + 1);
+    index = 'c' + (cell.x) + ',' + (cell.y + 1);
     if (neighbours[index]) {
       neighbours[index].n++;
     } else {
-      neighbours[index] = {n: 1, cell: [cell[0], cell[1] + 1]};
+      neighbours[index] = {n: 1, cell: {x:cell.x, y:cell.y + 1}};
     }
-    index = 'c' + (cell[0] + 1) + ',' + (cell[1] + 1);
+    index = 'c' + (cell.x + 1) + ',' + (cell.y + 1);
     if (neighbours[index]) {
       neighbours[index].n++;
     } else {
-      neighbours[index] = {n: 1, cell: [cell[0] + 1, cell[1] + 1]};
+      neighbours[index] = {n: 1, cell: {x:cell.x + 1, y:cell.y + 1}};
     }
   });
   shape.forEach(function (cell, i) {
-    const index = 'c' + cell[0] + ',' + cell[1];
+    const index = 'c' + cell.x + ',' + cell.y;
     if (neighbours[index]) {
       neighbours[index].populated = true;
     }

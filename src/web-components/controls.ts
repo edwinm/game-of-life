@@ -93,7 +93,7 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.resize$ = fromEvent(window, 'resize');
   }
 
-  init(redraw$: Cuprum<Cell[]>, toggle$: Cuprum<ClickEvent>) {
+  init(redraw$: Cuprum<Cell[]>, toggle$: Cuprum<Cell>) {
     this.redraw$ = redraw$;
 
     this.info$ = fromEvent($('#info', this.shadowRoot), 'click');
@@ -131,7 +131,7 @@ export class GofControls extends HTMLElement implements CustomElement {
     });
     this.speed = 300;
 
-    fromEvent($('#start', this.shadowRoot), 'click').subscribe((event)=>{
+    fromEvent($('#start', this.shadowRoot), 'click').subscribe((event) => {
       this.started = !this.started;
       if (this.started) {
         (<HTMLInputElement>event.target).value = 'Stop';
@@ -164,26 +164,59 @@ export class GofControls extends HTMLElement implements CustomElement {
   }
 
   getCollection() {
-    return [
+    return <Collection>[
       {name: "Clear", data: []},
-      {name: "Glider", data: [[1, 0], [2, 1], [2, 2], [1, 2], [0, 2]]},
-      {name: "Small Exploder", data: [[0, 1], [0, 2], [1, 0], [1, 1], [1, 3], [2, 1], [2, 2]]},
+      {name: "Glider", data: [{x: 1, y: 0}, {x: 2, y: 1}, {x: 2, y: 2}, {x: 1, y: 2}, {x: 0, y: 2}]},
+      {
+        name: "Small Exploder",
+        data: [{x: 0, y: 1}, {x: 0, y: 2}, {x: 1, y: 0}, {x: 1, y: 1}, {x: 1, y: 3}, {x: 2, y: 1}, {x: 2, y: 2}]
+      },
       {
         name: "Exploder",
-        data: [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [2, 0], [2, 4], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4]],
+        data: [{x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}, {x: 0, y: 3}, {x: 0, y: 4}, {x: 2, y: 0}, {x: 2, y: 4}, {
+          x: 4,
+          y: 0
+        }, {x: 4, y: 1}, {x: 4, y: 2}, {x: 4, y: 3}, {x: 4, y: 4}],
       },
-      {name: "10 Cell Row", data: [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0], [9, 0]]},
+      {
+        name: "10 Cell Row",
+        data: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 3, y: 0}, {x: 4, y: 0}, {x: 5, y: 0}, {x: 6, y: 0}, {
+          x: 7,
+          y: 0
+        }, {x: 8, y: 0}, {x: 9, y: 0}]
+      },
       {
         name: "Lightweight spaceship",
-        data: [[0, 1], [0, 3], [1, 0], [2, 0], [3, 0], [3, 3], [4, 0], [4, 1], [4, 2]],
+        data: [{x: 0, y: 1}, {x: 0, y: 3}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 3, y: 0}, {x: 3, y: 3}, {x: 4, y: 0}, {
+          x: 4,
+          y: 1
+        }, {x: 4, y: 2}],
       },
       {
         name: "Tumbler",
-        data: [[0, 3], [0, 4], [0, 5], [1, 0], [1, 1], [1, 5], [2, 0], [2, 1], [2, 2], [2, 3], [2, 4], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4], [5, 0], [5, 1], [5, 5], [6, 3], [6, 4], [6, 5]],
+        data: [{x: 0, y: 3}, {x: 0, y: 4}, {x: 0, y: 5}, {x: 1, y: 0}, {x: 1, y: 1}, {x: 1, y: 5}, {x: 2, y: 0}, {
+          x: 2,
+          y: 1
+        }, {x: 2, y: 2}, {x: 2, y: 3}, {x: 2, y: 4}, {x: 4, y: 0}, {x: 4, y: 1}, {x: 4, y: 2}, {x: 4, y: 3}, {
+          x: 4,
+          y: 4
+        }, {x: 5, y: 0}, {x: 5, y: 1}, {x: 5, y: 5}, {x: 6, y: 3}, {x: 6, y: 4}, {x: 6, y: 5}],
       },
       {
         name: "Gosper Glider Gun",
-        data: [[0, 2], [0, 3], [1, 2], [1, 3], [8, 3], [8, 4], [9, 2], [9, 4], [10, 2], [10, 3], [16, 4], [16, 5], [16, 6], [17, 4], [18, 5], [22, 1], [22, 2], [23, 0], [23, 2], [24, 0], [24, 1], [24, 12], [24, 13], [25, 12], [25, 14], [26, 12], [34, 0], [34, 1], [35, 0], [35, 1], [35, 7], [35, 8], [35, 9], [36, 7], [37, 8]],
+        data: [{x: 0, y: 2}, {x: 0, y: 3}, {x: 1, y: 2}, {x: 1, y: 3}, {x: 8, y: 3}, {x: 8, y: 4}, {x: 9, y: 2}, {
+          x: 9,
+          y: 4
+        }, {x: 10, y: 2}, {x: 10, y: 3}, {x: 16, y: 4}, {x: 16, y: 5}, {x: 16, y: 6}, {x: 17, y: 4}, {
+          x: 18,
+          y: 5
+        }, {x: 22, y: 1}, {x: 22, y: 2}, {x: 23, y: 0}, {x: 23, y: 2}, {x: 24, y: 0}, {x: 24, y: 1}, {
+          x: 24,
+          y: 12
+        }, {x: 24, y: 13}, {x: 25, y: 12}, {x: 25, y: 14}, {x: 26, y: 12}, {x: 34, y: 0}, {x: 34, y: 1}, {
+          x: 35,
+          y: 0
+        }, {x: 35, y: 1}, {x: 35, y: 7}, {x: 35, y: 8}, {x: 35, y: 9}, {x: 36, y: 7}, {x: 37, y: 8}],
       }
     ];
   }

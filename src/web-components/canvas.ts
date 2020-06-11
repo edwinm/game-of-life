@@ -8,7 +8,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   private ctxOffscreen: ImageBitmapRenderingContext;
   private cellSize: number;
   dimension$: Cuprum<Dimension>;
-  click$: Cuprum<ClickEvent>;
+  click$: Cuprum<Cell>;
 
   constructor() {
     super();
@@ -33,7 +33,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
   connectedCallback() {
     this.dimension$ = new Cuprum<Dimension>();
-    this.click$ = new Cuprum<ClickEvent>();
+    this.click$ = new Cuprum<Cell>();
 
     this.canvasDomElement = $('#canvas', this.shadowRoot);
 
@@ -71,9 +71,9 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     fromEvent(this.canvasDomElement, 'click')
       .map((event: MouseEvent) => {
         const canvasRect = this.canvasDomElement.getBoundingClientRect();
-        return <ClickEvent>{
-          cellX: Math.floor((event.clientX - canvasRect.left - 2) / this.cellSize),
-          cellY: Math.floor((event.clientY - canvasRect.top - 3) / this.cellSize)
+        return <Cell>{
+          x: Math.floor((event.clientX - canvasRect.left - 2) / this.cellSize),
+          y: Math.floor((event.clientY - canvasRect.top - 3) / this.cellSize)
         };
       }).subscribe((event)=>{
       this.click$.dispatch(event);
@@ -105,7 +105,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     ctx.fillStyle = "yellow";
     ctx.lineWidth = 1;
     cells.forEach(function (cell) {
-      ctx.fillRect(cell[0] * size + 1, cell[1] * size + 1, size - 1, size - 1);
+      ctx.fillRect(cell.x * size + 1, cell.y * size + 1, size - 1, size - 1);
     });
 
     if (this.ctxOffscreen) {

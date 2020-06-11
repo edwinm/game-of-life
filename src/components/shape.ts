@@ -8,13 +8,13 @@ export class Shape {
     this.current = [];
   }
 
-  init(size$: Cuprum<number>, newShape$: Cuprum<Cell[]>, nextShape$: Cuprum<Cell[]>, resize$: Cuprum<Event>, dimension$: Cuprum<Dimension>, toggle$: Cuprum<ClickEvent>) {
+  init(size$: Cuprum<number>, newShape$: Cuprum<Cell[]>, nextShape$: Cuprum<Cell[]>, resize$: Cuprum<Event>, dimension$: Cuprum<Dimension>, toggle$: Cuprum<Cell>) {
     dimension$.subscribe((newDimension, oldDimension) => {
       this.offset(newDimension, oldDimension);
     });
 
     newShape$.subscribe((shape) => {
-      this.current = shape.map(cell => [cell[0], cell[1]]);
+      this.current = shape.map(cell => ({x:cell.x, y:cell.y}));
       this.center(dimension$.value());
       this.redraw();
     });
@@ -29,7 +29,7 @@ export class Shape {
     });
 
     toggle$.subscribe((event) => {
-      this.toggle([event.cellX, event.cellY]);
+      this.toggle(event);
     });
   }
 
@@ -41,19 +41,19 @@ export class Shape {
     let shapeWidth = 0;
     let shapeHeight = 0;
     this.current.forEach((cell) => {
-      if (cell[0] > shapeWidth) {
-        shapeWidth = cell[0];
+      if (cell.x > shapeWidth) {
+        shapeWidth = cell.x;
       }
-      if (cell[1] > shapeHeight) {
-        shapeHeight = cell[1];
+      if (cell.y > shapeHeight) {
+        shapeHeight = cell.y;
       }
     });
 
     const shapeLeft = Math.round((dimension.width - shapeWidth) / 2);
     const shapeTop = Math.round((dimension.height - shapeHeight) / 2);
     this.current.forEach((cell: Cell) => {
-      cell[0] += shapeLeft;
-      cell[1] += shapeTop;
+      cell.x += shapeLeft;
+      cell.y += shapeTop;
     });
   }
 
@@ -63,8 +63,8 @@ export class Shape {
       const dy = Math.round((dimension.height - oldDimension.height) / 2.001);
 
       this.current.forEach((cell: Cell) => {
-        cell[0] += dx;
-        cell[1] += dy;
+        cell.x += dx;
+        cell.y += dy;
       });
       this.redraw();
     }
@@ -72,7 +72,7 @@ export class Shape {
 
   toggle(toggleCell: Cell) {
     const index = this.current.findIndex(
-      (cell, index) => cell[0] == toggleCell[0] && cell[1] == toggleCell[1]
+      (cell, index) => cell.x == toggleCell.x && cell.y == toggleCell.y
     );
     if (index == -1) {
       this.current.push(toggleCell);

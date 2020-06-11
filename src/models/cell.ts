@@ -1,3 +1,4 @@
 interface Cell {
-  [index: number]: number;
+  x: number;
+  y: number;
 }
