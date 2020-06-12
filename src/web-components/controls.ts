@@ -50,9 +50,11 @@ export class GofControls extends HTMLElement implements CustomElement {
         }
         
         .generation {
-          font-family: helvetica, arial, sans-serif;
-          font-size: smaller;
+          display: inline-block;
+          min-width: 40px;
           margin-left: 2em;
+          font-family: helvetica, arial, sans-serif;
+          font-size: 20px;
         }
         
         nowrap {
@@ -62,23 +64,45 @@ export class GofControls extends HTMLElement implements CustomElement {
         nowrap > * {
           vertical-align: middle;
         }
+        
+        #shapes {
+          height: 40px;
+          padding-left: 20px;
+          border: none;
+          border-radius: 5px;
+          background-color: #2A4E97;
+          color: white;
+          font-size: 20px;
+          box-shadow: 2px 2px 3px hsla(0, 0%, 0%, 0.3);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+          width: 2em !important;
+          height: 2em !important;
+        }
+        
+        @media (min-width: 650px) {
+          form > * {
+            margin-left: 10px;
+            margin-right: 10px;
+          }
+        }
       </style>
       
       <form>
-        <select id="shapes" aria-label="Select predefined shape">
-        </select>
-        <input id="next" type="button" value="Next">
-        <input id="start" type="button" value="Start">
+        <gof-button id="info">Explanation</gof-button>
+        <select id="shapes" aria-label="Select predefined shape"></select>
+        <gof-button id="start" type="round">Start</gof-button>
+        <gof-button id="next">Next</gof-button>
         <label class="generation" title="Generations" aria-label="Generations">0</label>
+
         <nowrap>
           <img src="pix/speeddial.svg" alt="" width="20" height="20">
           <input id="speed" type="range" min="0" max="100" value="50" title="Speed dial" aria-label="Speed dial">
-        </nowrap>
-        <nowrap>
+
           <img src="pix/grid.svg" alt="" width="20" height="20">
           <input id="size" type="range" min="0" max="100" value="58" title="Grid size" aria-label="Grid size">
         </nowrap>
-        <input id="info" type="button" value="Explanation">
       </form>
     `;
   }
@@ -144,11 +168,11 @@ export class GofControls extends HTMLElement implements CustomElement {
     fromEvent($('#start', this.shadowRoot), 'click').subscribe((event) => {
       this.started = !this.started;
       if (this.started) {
-        (<HTMLInputElement>event.target).value = 'Stop';
+        (<HTMLInputElement>event.target).textContent = 'Stop';
         this.play();
 
       } else {
-        (<HTMLInputElement>event.target).value = 'Start';
+        (<HTMLInputElement>event.target).textContent = 'Start';
         if (this.timerSubscription) {
           this.timerSubscription.unsubscribe();
         }

@@ -31,24 +31,26 @@ export class GofInfo extends HTMLElement implements CustomElement {
         
         .close-button {
           position: absolute;
-          width: 22px;
-          height: 20px;
           right: 0.5em;
           top: 0.5em;
-          background: url(pix/close.svg) no-repeat;
         }
         
         section {
           background: white;
         }
+        
+        .center {
+          display: flex;
+          justify-content: center;
+        }
       </style>
       
       <section>
-        <button class="close-button" data-close aria-label="Close"></button>
+        <gof-button class="close-button" data-close>&times;</gof-button>
         <div class="info-content">
           <slot></slot>
           <p class="center">
-            <button data-close>Close</button>
+            <gof-button data-close>Close</gof-button>
           </p>
         </div>
       </section>

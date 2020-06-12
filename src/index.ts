@@ -3,6 +3,7 @@ import { GofInfo } from "./web-components/info";
 import { GofControls } from "./web-components/controls";
 import { Shape } from "./components/shape";
 import { $ } from 'carbonium';
+import { GofButton } from "./web-components/button";
 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = <GofCanvas>$('gof-canvas');
@@ -24,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Prevent tree shaking of web components
-  if (GofCanvas && GofInfo && GofControls) {
+  if (GofCanvas && GofInfo && GofControls && GofButton) {
   }
 });
 
