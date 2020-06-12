@@ -2,6 +2,7 @@ import { $ } from 'carbonium';
 
 export class GofButton extends HTMLElement implements CustomElement {
   private button: HTMLButtonElement;
+
   constructor() {
     super();
 
@@ -26,12 +27,24 @@ export class GofButton extends HTMLElement implements CustomElement {
           box-shadow: inset 2px 2px 3px hsla(0, 0%, 0%, 0.3);
         }
         
+        #button.pressed div {
+          position: relative;
+          top: 1px;
+        }
+        
         #button:focus {
           border: 2px solid white;
         }
+        #button.no-focus:focus {
+          border: 2px solid transparent;
+        }
       </style>
       
-      <button id="button"><slot></slot></button>
+      <button id="button">
+        <div>
+          <slot></slot>
+        </div>
+      </button>
     `;
   }
 
@@ -52,9 +65,17 @@ export class GofButton extends HTMLElement implements CustomElement {
     this.button.removeEventListener('blur', this.onRelease);
   }
 
-  private onPress(event: KeyboardEvent) {
-    if (event.key != "Tab") {
-      (<HTMLButtonElement>event.target).closest("#button").classList.add('pressed');
+  private onPress(event: Event) {
+    const button = (<HTMLButtonElement>event.target).closest("#button");
+    if ((<KeyboardEvent>event).key != "Tab") {
+      button.classList.add('pressed');
+      if (event.type == "keydown") {
+        button.classList.remove('no-focus');
+      } else {
+        button.classList.add('no-focus');
+      }
+    } else {
+      button.classList.remove('no-focus');
     }
   }
 

@@ -1,3 +1,10 @@
+/*@font-face {*/
+/*  font-family: 'Play';*/
+/*  src: url('fonts/Play-Bold.woff2') format('woff2');*/
+/*  font-weight: bold;*/
+/*  font-style: normal;*/
+/*}*/
+
 html {
   box-sizing: border-box;
   overflow: hidden;
@@ -15,10 +22,14 @@ html.standalone {
 }
 
 body {
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: MavenPro, Trebuchet MS, Arial, Helvetica, sans-serif;
   margin: 0;
   hyphens: auto;
 }
+
+/*h1, h2, h3 {*/
+/*  font-family: Play;*/
+/*}*/
 
 main {
   flex-direction: column;

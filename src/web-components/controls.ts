@@ -67,18 +67,13 @@ export class GofControls extends HTMLElement implements CustomElement {
         
         #shapes {
           height: 40px;
-          padding-left: 20px;
+          padding: 0 5px 0 15px;
           border: none;
-          border-radius: 5px;
+          border-radius: 8px;
           background-color: #2A4E97;
           color: white;
           font-size: 20px;
           box-shadow: 2px 2px 3px hsla(0, 0%, 0%, 0.3);
-        }
-        
-        input[type="range"]::-moz-range-thumb {
-          width: 2em !important;
-          height: 2em !important;
         }
         
         @media (min-width: 650px) {
