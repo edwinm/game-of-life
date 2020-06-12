@@ -1,10 +1,11 @@
 import { $ } from 'carbonium';
-import { fromEvent, Cuprum, merge, Observable } from "cuprum";
+import { fromEvent, Cuprum, merge, Observable, Subscription, interval } from "cuprum";
 import { gofNext } from "../components/gameoflife";
 
 export class GofControls extends HTMLElement implements CustomElement {
   private started: boolean;
   private timer: NodeJS.Timeout;
+  private timerSubscription: Subscription;
   private generation: number;
   private speed: number;
   private collection: Collection;
@@ -13,7 +14,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   private size$: Cuprum<number>;
   private newShape$: Cuprum<Cell[]>;
   private nextShape$: Cuprum<Cell[]>;
-  private nextGeneration$: Cuprum<Event>;
+  private nextGeneration$: Cuprum<void>;
   private resize$: Cuprum<Event>;
   private info$: Cuprum<Event>;
 
@@ -87,7 +88,6 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.timer = null;
     this.generation = 0;
     this.collection = this.getCollection();
-    this.nextGeneration$ = new Cuprum<Event>();
     this.resize$ = fromEvent(window, 'resize');
     this.info$ = fromEvent($('#info', this.shadowRoot), 'click');
 
@@ -116,19 +116,95 @@ export class GofControls extends HTMLElement implements CustomElement {
     });
   }
 
-  setGeneration(gen: number) {
+  private setGeneration(gen: number) {
     this.generation = gen;
     $('.generation', this.shadowRoot).textContent = gen.toString(10);
   }
 
-  play() {
-    clearInterval(this.timer);
-    this.timer = setInterval((event) => {
-      this.nextGeneration$.dispatch(event);
-    }, this.speed);
+
+  private setupSize() {
+    const size = $('#size', this.shadowRoot);
+    this.size$ = merge(
+      fromEvent(size, 'input').map(event => Number((<HTMLInputElement>event.target).value)),
+      new Cuprum<number>().dispatch(size.value)
+    ).map((value) => Math.round(2 + 38 / 100 * value));
   }
 
-  getCollection() {
+  private play() {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
+
+    this.timerSubscription = interval(this.speed).subscribe(() => {
+      this.nextGeneration$.dispatch();
+    })
+  }
+
+  private setupStart() {
+    fromEvent($('#start', this.shadowRoot), 'click').subscribe((event) => {
+      this.started = !this.started;
+      if (this.started) {
+        (<HTMLInputElement>event.target).value = 'Stop';
+        this.play();
+
+      } else {
+        (<HTMLInputElement>event.target).value = 'Start';
+        if (this.timerSubscription) {
+          this.timerSubscription.unsubscribe();
+        }
+      }
+    });
+  }
+
+  private setupSpeed() {
+    const speed = $('#speed', this.shadowRoot);
+    merge(
+      fromEvent(speed, 'input').map((event) => Number((<HTMLInputElement>event.target).value)),
+      new Cuprum<number>().dispatch(speed.value)
+    ).subscribe((value) => {
+      this.speed = 1000 - Math.sqrt(value) * 99;
+      if (this.started) {
+        this.play();
+      }
+    });
+  }
+
+  private setupShapeSelect() {
+    const shapesSelect = $('#shapes', this.shadowRoot);
+
+    this.collection.forEach((shape) => {
+      const option = document.createElement('option');
+      option.text = shape.name;
+      shapesSelect.appendChild(option);
+    });
+    shapesSelect.selectedIndex = 1;
+
+    const shape$ = merge(
+      fromEvent(shapesSelect, 'change'),
+      new Cuprum<Event>().dispatch(null)
+    );
+
+    shape$.subscribe(() => {
+      this.setGeneration(0);
+    });
+
+    this.newShape$ = shape$.map(() => this.collection[shapesSelect.selectedIndex].data);
+  }
+
+  private setupGeneration() {
+    this.nextGeneration$ = fromEvent($('#next', this.shadowRoot), 'click').map(() => {
+    });
+
+    this.nextGeneration$.subscribe(() => {
+      this.setGeneration(this.generation + 1);
+    });
+
+    this.nextShape$ = this.nextGeneration$.map(() =>
+      gofNext(this.redraw$.value())
+    );
+  }
+
+  private getCollection() {
     return <Collection>[
       {name: "Clear", data: []},
       {name: "Glider", data: [{x: 1, y: 0}, {x: 2, y: 1}, {x: 2, y: 2}, {x: 1, y: 2}, {x: 0, y: 2}]},
@@ -184,74 +260,6 @@ export class GofControls extends HTMLElement implements CustomElement {
         }, {x: 35, y: 1}, {x: 35, y: 7}, {x: 35, y: 8}, {x: 35, y: 9}, {x: 36, y: 7}, {x: 37, y: 8}],
       }
     ];
-  }
-
-  private setupStart() {
-    fromEvent($('#start', this.shadowRoot), 'click').subscribe((event) => {
-      this.started = !this.started;
-      if (this.started) {
-        (<HTMLInputElement>event.target).value = 'Stop';
-        this.play();
-      } else {
-        (<HTMLInputElement>event.target).value = 'Start';
-        clearInterval(this.timer);
-      }
-    });
-  }
-
-  private setupSize() {
-    const size = $('#size', this.shadowRoot);
-    this.size$ = merge(
-      fromEvent(size, 'input').map(event => Number((<HTMLInputElement>event.target).value)),
-      new Cuprum<number>().dispatch(size.value)
-    ).map((value) => Math.round(2 + 38 / 100 * value));
-  }
-
-  private setupSpeed() {
-    const speed = $('#speed', this.shadowRoot);
-    merge(
-      fromEvent(speed, 'input').map((event) => Number((<HTMLInputElement>event.target).value)),
-      new Cuprum<number>().dispatch(speed.value)
-    ).subscribe((value) => {
-      this.speed = 1000 - Math.sqrt(value) * 99;
-      if (this.started) {
-        this.play();
-      }
-    });
-  }
-
-  private setupShapeSelect() {
-    const shapesSelect = $('#shapes', this.shadowRoot);
-
-    this.collection.forEach((shape) => {
-      const option = document.createElement('option');
-      option.text = shape.name;
-      shapesSelect.appendChild(option);
-    });
-    shapesSelect.selectedIndex = 1;
-
-    const shape$ = merge(
-      fromEvent(shapesSelect, 'change'),
-      new Cuprum<Event>().dispatch(null)
-    );
-
-    shape$.subscribe(() => {
-      this.setGeneration(0);
-    });
-
-    this.newShape$ = shape$.map(()=>this.collection[shapesSelect.selectedIndex].data);
-  }
-
-  private setupGeneration() {
-    this.nextGeneration$ = fromEvent($('#next', this.shadowRoot), 'click');
-
-    this.nextGeneration$.subscribe(() => {
-      this.setGeneration(this.generation + 1);
-    });
-
-    this.nextShape$ = this.nextGeneration$.map(() =>
-      gofNext(this.redraw$.value())
-    );
   }
 }
 

@@ -1,12 +1,8 @@
 import { Cuprum, Observable } from "cuprum";
 
 export class Shape {
-  private current: Cell[];
+  private current = <Cell[]>[];
   private redraw$ = new Cuprum<Cell[]>();
-
-  constructor() {
-    this.current = [];
-  }
 
   getObservers() {
     return {redraw$:this.redraw$.observable()};
@@ -37,11 +33,11 @@ export class Shape {
     });
   }
 
-  redraw() {
+  private redraw() {
     this.redraw$.dispatch(this.current);
   }
 
-  center(dimension: Dimension) {
+  private center(dimension: Dimension) {
     let shapeWidth = 0;
     let shapeHeight = 0;
     this.current.forEach((cell) => {
@@ -61,7 +57,7 @@ export class Shape {
     });
   }
 
-  offset(dimension: Dimension, oldDimension: Dimension) {
+  private offset(dimension: Dimension, oldDimension: Dimension) {
     if (oldDimension && dimension.width != oldDimension.width && dimension.height != oldDimension.height) {
       const dx = Math.round((dimension.width - oldDimension.width) / 2.001);
       const dy = Math.round((dimension.height - oldDimension.height) / 2.001);
@@ -74,7 +70,7 @@ export class Shape {
     }
   }
 
-  toggle(toggleCell: Cell) {
+  private toggle(toggleCell: Cell) {
     const index = this.current.findIndex(
       (cell, index) => cell.x == toggleCell.x && cell.y == toggleCell.y
     );

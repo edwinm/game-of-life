@@ -82,7 +82,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     return {click$: click$.observable(), dimension$: this.dimension$.observable()};
   }
 
-  draw(cells: Cell[]) {
+  private draw(cells: Cell[]) {
     const ctx = this.ctx;
     const size = this.cellSize;
 
@@ -116,7 +116,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     }
   }
 
-  calculateDimensions() {
+  private calculateDimensions() {
     const rect = this.canvasDomElement.getBoundingClientRect();
     const pixelWidth = document.documentElement.clientWidth;
     const widthMod = (pixelWidth % this.cellSize) / 2;
@@ -135,7 +135,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     });
   }
 
-  setCellSize(size: number) {
+  private setCellSize(size: number) {
     this.cellSize = size;
     this.dimension$.dispatch({
       width: Math.floor(this.canvasDomElement.width / size),

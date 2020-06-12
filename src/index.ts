@@ -3,7 +3,6 @@ import { GofInfo } from "./web-components/info";
 import { GofControls } from "./web-components/controls";
 import { Shape } from "./components/shape";
 import { $ } from 'carbonium';
-import { Cuprum } from "cuprum";
 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = <GofCanvas>$('gof-canvas');
@@ -34,6 +33,3 @@ declare global {
     standalone: boolean;
   }
 }
-
-// TODO: delete later
-type Observable<T> = Omit<Cuprum<T>, "dispatch">;
