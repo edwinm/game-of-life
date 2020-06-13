@@ -20,17 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   info.setObservers(info$);
   controls.setObservers(redraw$, click$);
 
-  if (window.navigator.standalone) {
-    document.documentElement.classList.add('standalone');
-  }
-
   // Prevent tree shaking of web components
   if (GofCanvas && GofInfo && GofControls && GofButton) {
   }
 });
-
-declare global {
-  interface Navigator {
-    standalone: boolean;
-  }
-}
