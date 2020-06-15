@@ -11,14 +11,15 @@ export class GofButton extends HTMLElement implements CustomElement {
     this.shadowRoot.innerHTML = `
       <style>
         #button {
+          min-width: var(--min-width, 0);
           height: 40px;
           padding: 0 30px;
           border-radius: 20px;
           border: 2px solid transparent;
           font-size: 20px;
           text-transform: uppercase;
-          color: white;
-          background-color: #2A4E97;
+          color: var(--color, white);
+          background-color: var(--background, royalblue);
           box-shadow: 2px 2px 3px hsla(0, 0%, 0%, 0.3);
           outline: none;
         }

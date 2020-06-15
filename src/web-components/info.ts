@@ -12,11 +12,17 @@ export class GofInfo extends HTMLElement implements CustomElement {
 
     this.shadowRoot.innerHTML = `
       <style>
+        * {
+          box-sizing: border-box;
+        }
+
         #info {
           position: absolute;
           display: none;
           left: 0;
           top: 0;
+          justify-content: center;
+          align-items: center;
           background-color: rgba(60, 60, 60, 0.8);
           z-index: 1000;
           width: 100%;
@@ -24,10 +30,8 @@ export class GofInfo extends HTMLElement implements CustomElement {
         }
         #info section {
           position: absolute;
-          top: 150px;
-          left: 10vw;
           width: 80vw;
-          height: calc(100vh - 300px);
+          max-height: 90vh;
           background: white;
           border: 1px solid #666;
           box-shadow: hsla(0, 0%, 0%, 0.3) 5px 5px 5px;
@@ -35,15 +39,15 @@ export class GofInfo extends HTMLElement implements CustomElement {
         }
         
         #info.open {
-          display: block;
+          display: flex;
         }
         
         .info-content {
+          max-height: 90vh;
           overflow: scroll;
           overflow-scrolling: touch;
           -webkit-overflow-scrolling: touch;
-          height: calc(100vh - 300px);
-          padding: 1em;
+          padding: 2em 1em 1em 1em;
         }
         
         .close-button {
@@ -52,10 +56,17 @@ export class GofInfo extends HTMLElement implements CustomElement {
           top: 0.5em;
         }
         
-        .center {
+        .close-button-container {
           display: flex;
           justify-content: center;
+          padding-top: 2em;
         }
+        
+        gof-button {
+          --background: #2A4E97;
+          --color: white;
+        }
+
       </style>
       
       <div id="info">
@@ -63,7 +74,7 @@ export class GofInfo extends HTMLElement implements CustomElement {
           <gof-button class="close-button" data-close>&times;</gof-button>
           <div class="info-content">
             <slot></slot>
-            <p class="center">
+            <p class="close-button-container">
               <gof-button data-close>Close</gof-button>
             </p>
           </div>
