@@ -1,5 +1,5 @@
 import { $ } from 'carbonium';
-import { combine, fromEvent, Observable } from "cuprum";
+import { combine, fromEvent } from "cuprum";
 
 export class GofInfo extends HTMLElement implements CustomElement {
   constructor() {
@@ -9,7 +9,17 @@ export class GofInfo extends HTMLElement implements CustomElement {
 
     this.shadowRoot.innerHTML = `
       <style>
-        :host {
+        #info {
+          position: absolute;
+          display: none;
+          left: 0;
+          top: 0;
+          background-color: rgba(60, 60, 60, 0.8);
+          z-index: 1000;
+          width: 100%;
+          height: 100%;
+        }
+        #info section {
           position: absolute;
           top: 150px;
           left: 10vw;
@@ -19,6 +29,10 @@ export class GofInfo extends HTMLElement implements CustomElement {
           border: 1px solid #666;
           box-shadow: #666 5px 5px 5px;
           z-index: 2000;
+        }
+        
+        #info.open {
+          display: block;
         }
         
         .info-content {
@@ -35,26 +49,39 @@ export class GofInfo extends HTMLElement implements CustomElement {
           top: 0.5em;
         }
         
-        section {
-          background: white;
-        }
-        
         .center {
           display: flex;
           justify-content: center;
         }
       </style>
       
-      <section>
-        <gof-button class="close-button" data-close>&times;</gof-button>
-        <div class="info-content">
-          <slot></slot>
-          <p class="center">
-            <gof-button data-close>Close</gof-button>
-          </p>
-        </div>
-      </section>
+      <div id="info">
+        <section>
+          <gof-button class="close-button" data-close>&times;</gof-button>
+          <div class="info-content">
+            <slot></slot>
+            <p class="center">
+              <gof-button data-close>Close</gof-button>
+            </p>
+          </div>
+        </section>
+      </div>
     `;
+  }
+
+  static get observedAttributes() {
+    return ['open'];
+  }
+
+  attributeChangedCallback(attr, oldValue, newValue) {
+    if (attr == 'open') {
+      if (this.hasAttribute('open')) {
+        $('#info', this.shadowRoot).classList.add('open');
+        $('.close-button', this.shadowRoot).focus();
+      } else {
+        $('#info', this.shadowRoot).classList.remove('open');
+      }
+    }
   }
 
   connectedCallback() {
@@ -63,29 +90,21 @@ export class GofInfo extends HTMLElement implements CustomElement {
     const escKey = fromEvent(document.documentElement, 'keyup')
       .filter((event: KeyboardEvent) => event.key == 'Escape');
 
-    const outsideClick = fromEvent(document.documentElement, 'click')
-      .filter(event => (<HTMLElement>event.target).classList.contains('whitebox'));
+    const outsideClick = fromEvent($('#info', this.shadowRoot), 'click')
+      .filter(event => (<HTMLElement>event.target).id == "info")
 
     combine(closeButtonClick, escKey, outsideClick).subscribe(() => {
-      this.setAttribute('hidden', '');
-      document.body.classList.remove('whitebox');
-    })
-
-    fromEvent(document.documentElement, 'focusout')
-      .filter((event) => (<HTMLElement>event.target).closest("gof-info") != null)
-      .subscribe(() => {
-          $('.close-button', this.shadowRoot).focus();
-          return false;
-        }
-      );
-  }
-
-  setObservers(info$: Observable<Event>) {
-    info$.subscribe(() => {
-      this.removeAttribute('hidden');
-      document.body.classList.add('whitebox');
-      $('.close-button', this.shadowRoot).focus();
+      this.removeAttribute('open');
     });
+
+    // fromEvent(document.documentElement, 'focusin')
+    //   .map((val) => {
+    //     return val
+    //   })
+    //   .filter((event) => (<HTMLElement>event.target).closest("gof-info") != null)
+    //   .subscribe(() => {
+    //     }
+    //   );
   }
 }
 

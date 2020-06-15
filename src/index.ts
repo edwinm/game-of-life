@@ -13,11 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const {click$, dimension$} = canvas.getObservers();
   const {redraw$} = shape.getObservers();
-  const {newShape$, nextShape$, resize$, size$, info$} = controls.getObservers();
+  const {newShape$, nextShape$, resize$, size$} = controls.getObservers();
 
   canvas.setObservers(redraw$, resize$, size$);
   shape.setObservers(size$, newShape$, nextShape$, resize$, dimension$, click$);
-  info.setObservers(info$);
   controls.setObservers(redraw$, click$);
 
   // Prevent tree shaking of web components

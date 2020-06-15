@@ -108,8 +108,8 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.generation = 0;
     this.collection = this.getCollection();
     this.resize$ = fromEvent(window, 'resize');
-    this.info$ = fromEvent($('#info', this.shadowRoot), 'click');
 
+    this.setupInfo();
     this.setupShapeSelect();
     this.setupSpeed();
     this.setupSize();
@@ -123,7 +123,6 @@ export class GofControls extends HTMLElement implements CustomElement {
       nextShape$: this.nextShape$.observable(),
       resize$: this.resize$.observable(),
       size$: this.size$.observable(),
-      info$: this.info$.observable()
     };
   }
 
@@ -140,6 +139,11 @@ export class GofControls extends HTMLElement implements CustomElement {
     $('.generation', this.shadowRoot).textContent = gen.toString(10);
   }
 
+  private setupInfo() {
+    fromEvent($('#info', this.shadowRoot), 'click').subscribe(() => {
+      $('#info').setAttribute('open', '');
+    });
+  }
 
   private setupSize() {
     const size = $('#size', this.shadowRoot);
