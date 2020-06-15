@@ -16,37 +16,51 @@ export class GofInfo extends HTMLElement implements CustomElement {
           box-sizing: border-box;
         }
 
-        #info {
+        #whitebox {
           position: absolute;
           display: none;
           left: 0;
           top: 0;
+          width: 100vw;
+          height: 100vh;
           justify-content: center;
           align-items: center;
-          background-color: rgba(60, 60, 60, 0.8);
+          background-color: rgba(60, 60, 60, 0);
+          transition: background-color 250ms ease;
           z-index: 1000;
-          width: 100%;
-          height: 100%;
         }
-        #info section {
+
+        #whitebox.open {
+          display: flex;
+        }
+        
+        #whitebox.anim {
+          background-color: rgba(60, 60, 60, 0.8);
+        }
+        
+        section {
           position: absolute;
+          transform: translate(0, 100px);
+          opacity: 0;
           width: 80vw;
           max-height: 90vh;
           background: white;
           border: 1px solid #666;
           box-shadow: hsla(0, 0%, 0%, 0.3) 5px 5px 5px;
           z-index: 2000;
+          transition: all 250ms ease;
         }
         
-        #info.open {
-          display: flex;
+        .anim section {
+          transform: translate(0, 0);
+          opacity: 1;
         }
         
         .info-content {
+          top: 0;
           max-height: 90vh;
           overflow: scroll;
           overflow-scrolling: touch;
-          -webkit-overflow-scrolling: touch;
           padding: 2em 1em 1em 1em;
         }
         
@@ -69,7 +83,7 @@ export class GofInfo extends HTMLElement implements CustomElement {
 
       </style>
       
-      <div id="info">
+      <div id="whitebox">
         <section>
           <gof-button class="close-button" data-close>&times;</gof-button>
           <div class="info-content">
@@ -90,11 +104,17 @@ export class GofInfo extends HTMLElement implements CustomElement {
   attributeChangedCallback(attr, oldValue, newValue) {
     if (attr == 'open') {
       if (this.hasAttribute('open')) {
-        $('#info', this.shadowRoot).classList.add('open');
+        $('#whitebox', this.shadowRoot).classList.add('open');
+        setTimeout(()=>{
+          $('#whitebox', this.shadowRoot).classList.add('anim');
+        }, 0);
         $('.close-button', this.shadowRoot).focus();
         this.infoIsOpen$.dispatch(true);
       } else {
-        $('#info', this.shadowRoot).classList.remove('open');
+        $('#whitebox', this.shadowRoot).classList.remove('anim');
+        setTimeout(()=>{
+          $('#whitebox', this.shadowRoot).classList.remove('open');
+        }, 250);
         this.infoIsOpen$.dispatch(false);
       }
     }
@@ -108,8 +128,8 @@ export class GofInfo extends HTMLElement implements CustomElement {
     const escKey = fromEvent(document.documentElement, 'keyup')
       .filter((event: KeyboardEvent) => event.key == 'Escape');
 
-    const outsideClick = fromEvent($('#info', this.shadowRoot), 'click')
-      .filter(event => (<HTMLElement>event.target).id == "info")
+    const outsideClick = fromEvent($('#whitebox', this.shadowRoot), 'click')
+      .filter(event => (<HTMLElement>event.target).id == "whitebox")
 
     this.subscribers.add(combine(closeButtonClick, escKey, outsideClick).subscribe(() => {
       this.removeAttribute('open');
