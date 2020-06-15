@@ -214,7 +214,7 @@ export class GofControls extends HTMLElement implements CustomElement {
       this.setGeneration(0);
     });
 
-    this.newShape$ = shape$.map(() => this.collection[shapesSelect.selectedIndex].data);
+    this.newShape$ = shape$.map(() => this.collection[shapesSelect.selectedIndex || 0].data);
   }
 
   private setupGeneration() {
