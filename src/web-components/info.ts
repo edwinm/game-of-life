@@ -1,7 +1,10 @@
 import { $ } from 'carbonium';
-import { combine, fromEvent } from "cuprum";
+import { Cuprum, combine, fromEvent, Subscription } from "cuprum";
 
 export class GofInfo extends HTMLElement implements CustomElement {
+  subscribers = new Set<Subscription>();
+  private infoIsOpen$: Cuprum<boolean>;
+
   constructor() {
     super();
 
@@ -27,7 +30,7 @@ export class GofInfo extends HTMLElement implements CustomElement {
           height: calc(100vh - 300px);
           background: white;
           border: 1px solid #666;
-          box-shadow: #666 5px 5px 5px;
+          box-shadow: hsla(0, 0%, 0%, 0.3) 5px 5px 5px;
           z-index: 2000;
         }
         
@@ -78,13 +81,17 @@ export class GofInfo extends HTMLElement implements CustomElement {
       if (this.hasAttribute('open')) {
         $('#info', this.shadowRoot).classList.add('open');
         $('.close-button', this.shadowRoot).focus();
+        this.infoIsOpen$.dispatch(true);
       } else {
         $('#info', this.shadowRoot).classList.remove('open');
+        this.infoIsOpen$.dispatch(false);
       }
     }
   }
 
   connectedCallback() {
+    this.infoIsOpen$ = new Cuprum<boolean>();
+
     const closeButtonClick = fromEvent($('[data-close]', this.shadowRoot), 'click');
 
     const escKey = fromEvent(document.documentElement, 'keyup')
@@ -93,18 +100,21 @@ export class GofInfo extends HTMLElement implements CustomElement {
     const outsideClick = fromEvent($('#info', this.shadowRoot), 'click')
       .filter(event => (<HTMLElement>event.target).id == "info")
 
-    combine(closeButtonClick, escKey, outsideClick).subscribe(() => {
+    this.subscribers.add(combine(closeButtonClick, escKey, outsideClick).subscribe(() => {
       this.removeAttribute('open');
-    });
+    }));
+  }
 
-    // fromEvent(document.documentElement, 'focusin')
-    //   .map((val) => {
-    //     return val
-    //   })
-    //   .filter((event) => (<HTMLElement>event.target).closest("gof-info") != null)
-    //   .subscribe(() => {
-    //     }
-    //   );
+  disconnectedCallback() {
+    this.subscribers.forEach((subscriber) => {
+      subscriber.unsubscribe();
+    })
+  }
+
+  getObservers() {
+    return {
+      infoIsOpen$: this.infoIsOpen$.observable(),
+    };
   }
 }
 

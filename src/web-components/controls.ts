@@ -16,7 +16,6 @@ export class GofControls extends HTMLElement implements CustomElement {
   private nextShape$: Cuprum<Cell[]>;
   private nextGeneration$: Cuprum<void>;
   private resize$: Cuprum<Event>;
-  private info$: Cuprum<Event>;
 
   constructor() {
     super();
@@ -126,11 +125,15 @@ export class GofControls extends HTMLElement implements CustomElement {
     };
   }
 
-  setObservers(redraw$: Observable<Cell[]>, toggle$: Observable<Cell>) {
+  setObservers(redraw$: Observable<Cell[]>, toggle$: Observable<Cell>, infoIsOpen$: Observable<boolean>) {
     this.redraw$ = redraw$;
 
     toggle$.subscribe(() => {
       this.setGeneration(0);
+    });
+
+    infoIsOpen$.subscribe((infoIsOpen) => {
+      $("input, select, gof-button", this.shadowRoot).disabled = infoIsOpen;
     });
   }
 

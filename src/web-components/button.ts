@@ -65,6 +65,18 @@ export class GofButton extends HTMLElement implements CustomElement {
     this.button.removeEventListener('blur', this.onRelease);
   }
 
+  focus(options?: FocusOptions) {
+    this.button.focus(options);
+  }
+
+  blur() {
+    this.button.blur();
+  }
+
+  set disabled(isDisabled) {
+    this.button.disabled = isDisabled;
+  }
+
   private onPress(event: Event) {
     const button = (<HTMLButtonElement>event.target).closest("#button");
     if ((<KeyboardEvent>event).key != "Tab") {
