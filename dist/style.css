@@ -28,18 +28,16 @@ body {
 /*}*/
 
 main {
-  flex-direction: column;
-  align-items: center;
-  padding: 0;
+  position: relative;
   height: 100vh;
 }
 
 header {
+  width: 100vw;
+  height: 100px;
+  border-bottom: 3px solid #2A4E97;
   background: url(/pix/header.png) no-repeat, url(/pix/header-bg.png) repeat-x;
   background-size: contain;
-  width: 100vw;
-  border-bottom: 3px solid #2A4E97;
-  height: 100px;
 }
 
 .invisible {
@@ -49,14 +47,17 @@ header {
 
 gof-canvas {
   display: block;
+  /*height: calc(100vh - 200px);*/
+  width: 100vw;
   padding: 10px;
   background: #404040;
-  height: calc(100vh - 200px);
-  width: 100vw;
 }
 
 gof-controls {
-  height: 100px;
+  position: absolute;
+  bottom: 0;
+  min-height: 100px;
+  background-color: #b3b3b3;
 }
 
 .header-img {

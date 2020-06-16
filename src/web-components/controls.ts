@@ -25,23 +25,24 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.shadowRoot.innerHTML = `
       <style>
         :host {
+          width: 100vw;
+        }
+        
+        form {
           display: flex;
           justify-content:  center;
           flex-wrap: wrap;
           align-items:  center;
+          margin: 0 5vw;
         }
         
         img {
           vertical-align: bottom;
-          margin-left: 30px;
-        }
-        
-        :host > * {
-          margin: 0 5vw;
+          margin-left: 10px;
         }
         
         form > * {
-          margin: 10px 0;
+          margin: 5px;
         }
         
         input[type="range"] {
@@ -50,10 +51,9 @@ export class GofControls extends HTMLElement implements CustomElement {
         
         .generation {
           display: inline-block;
-          min-width: 40px;
-          margin-left: 2em;
-          font-family: helvetica, arial, sans-serif;
+          min-width: 42px;
           font-size: 20px;
+          text-align: right;
         }
         
         nowrap {
@@ -86,9 +86,14 @@ export class GofControls extends HTMLElement implements CustomElement {
         }
         
         @media (min-width: 650px) {
+          form {
+            margin: 20px 5px;
+          }
           form > * {
-            margin-left: 20px;
-            margin-right: 20px;
+            margin: 5px 20px;
+          }
+          img {
+            margin-left: 30px;
           }
         }
       </style>
@@ -98,7 +103,7 @@ export class GofControls extends HTMLElement implements CustomElement {
         <select id="shapes" aria-label="Select predefined shape"></select>
         <gof-button id="start" type="round">Start</gof-button>
         <gof-button id="next">Next</gof-button>
-        <label class="generation" title="Generations" aria-label="Generations">0</label>
+        <div class="generation" title="Generations" aria-label="Generations">0</div>
 
         <nowrap>
           <img src="pix/speeddial.svg" alt="" width="20" height="20">
