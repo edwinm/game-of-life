@@ -74,8 +74,6 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     size$.subscribe((newGridSize) => {
       this.setCellSize(newGridSize);
     });
-
-    this.setCellSize(11);
   }
 
   private draw(cells: Cell[]) {
