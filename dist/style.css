@@ -8,7 +8,7 @@
 html {
   box-sizing: border-box;
   overflow: hidden;
-  background-color: #999;
+  background-color: #b3b3b3;
 }
 
 *,
@@ -48,8 +48,11 @@ header {
 }
 
 gof-canvas {
+  display: block;
+  padding: 10px;
+  background: #404040;
   height: calc(100vh - 200px);
-  width: 100%;
+  width: 100vw;
 }
 
 gof-controls {

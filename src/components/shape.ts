@@ -8,7 +8,7 @@ export class Shape {
     return {redraw$:this.redraw$.observable()};
   }
 
-  setObservers(size$: Observable<number>, newShape$: Observable<Cell[]>, nextShape$: Observable<Cell[]>, resize$: Observable<Event>, dimension$: Observable<Dimension>, toggle$: Observable<Cell>) {
+  setObservers(newShape$: Observable<Cell[]>, nextShape$: Observable<Cell[]>, dimension$: Observable<Dimension>, toggle$: Observable<Cell>) {
     dimension$.subscribe((newDimension, oldDimension) => {
       this.offset(newDimension, oldDimension);
     });
@@ -21,10 +21,6 @@ export class Shape {
 
     nextShape$.subscribe((shape) => {
       this.current = shape;
-      this.redraw();
-    });
-
-    resize$.subscribe(() => {
       this.redraw();
     });
 
@@ -66,8 +62,8 @@ export class Shape {
         cell.x += dx;
         cell.y += dy;
       });
-      this.redraw();
     }
+    this.redraw();
   }
 
   private toggle(toggleCell: Cell) {

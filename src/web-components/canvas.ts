@@ -17,11 +17,9 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
     this.shadowRoot.innerHTML = `
       <style>
-        :host {
-          display: flex;
-          background: #7e7e7e;
-        }
         #canvas{
+          border: 1px #999;
+          border-style: none solid solid none;
           margin-left: var(--width-mod, 0);
         }
       </style>
@@ -49,24 +47,6 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     } catch (e) {
       this.ctx = this.canvasDomElement.getContext('2d', {alpha: false});
     }
-
-    this.setCellSize(11);
-    this.calculateDimensions();
-  }
-
-  setObservers(redraw$: Observable<Cell[]>, resize$: Observable<Event>, size$: Observable<number>) {
-    redraw$.subscribe((cells) => {
-      this.draw(cells);
-    });
-
-    resize$.subscribe(() => {
-      this.calculateDimensions();
-    });
-
-    size$.subscribe((newGridSize) => {
-      this.setCellSize(newGridSize);
-    });
-
   }
 
   getObservers() {
@@ -82,6 +62,22 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     return {click$: click$.observable(), dimension$: this.dimension$.observable()};
   }
 
+  setObservers(redraw$: Observable<Cell[]>, resize$: Observable<Event>, size$: Observable<number>) {
+    redraw$.subscribe((cells) => {
+      this.draw(cells);
+    });
+
+    resize$.subscribe(() => {
+      this.calculateDimensions();
+    });
+
+    size$.subscribe((newGridSize) => {
+      this.setCellSize(newGridSize);
+    });
+
+    this.setCellSize(11);
+  }
+
   private draw(cells: Cell[]) {
     const ctx = this.ctx;
     const size = this.cellSize;
@@ -91,13 +87,13 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     ctx.fillRect(0, 0, this.canvasDomElement.width + this.cellSize, this.canvasDomElement.height);
     ctx.strokeStyle = "#999";
 
-    for (let n = 0; n <= this.canvasDomElement.width; n += this.cellSize) {
+    for (let n = 0; n < this.canvasDomElement.width; n += this.cellSize) {
       ctx.beginPath();
       ctx.moveTo(n + .5, 0);
       ctx.lineTo(n + .5, this.canvasDomElement.height);
       ctx.stroke();
     }
-    for (let n = this.cellSize; n < this.canvasDomElement.height; n += this.cellSize) {
+    for (let n = 0; n < this.canvasDomElement.height; n += this.cellSize) {
       ctx.beginPath();
       ctx.moveTo(0, n + .5);
       ctx.lineTo(this.canvasDomElement.width, n + .5);
@@ -117,13 +113,12 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   }
 
   private calculateDimensions() {
-    const rect = this.canvasDomElement.getBoundingClientRect();
-    const pixelWidth = document.documentElement.clientWidth;
+    const pixelWidth = document.documentElement.clientWidth - 20;
+    const pixelHeight = document.documentElement.clientHeight - 220;
     const widthMod = (pixelWidth % this.cellSize) / 2;
     this.canvasDomElement.style.setProperty('--width-mod', `${widthMod}px`);
     this.canvasDomElement.width = pixelWidth - pixelWidth % this.cellSize;
-    this.canvasDomElement.height = rect.height;
-
+    this.canvasDomElement.height = pixelHeight - pixelHeight % this.cellSize;
     if (this.ctxOffscreen) {
       this.offscreen = new OffscreenCanvas(this.canvasDomElement.width, this.canvasDomElement.height);
       this.ctx = this.offscreen.getContext('2d', {alpha: false});
@@ -137,10 +132,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
   private setCellSize(size: number) {
     this.cellSize = size;
-    this.dimension$.dispatch({
-      width: Math.floor(this.canvasDomElement.width / size),
-      height: Math.floor(this.canvasDomElement.height / size)
-    });
+    this.calculateDimensions();
   }
 }
 

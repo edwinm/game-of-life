@@ -81,7 +81,6 @@ export class GofControls extends HTMLElement implements CustomElement {
         }
         
         gof-button {
-          --min-width: 160px;
           --background: #2A4E97;
           --color: white;
         }
