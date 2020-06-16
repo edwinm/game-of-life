@@ -75,16 +75,21 @@ export class GofControls extends HTMLElement implements CustomElement {
           box-shadow: 2px 2px 3px hsla(0, 0%, 0%, 0.3);
         }
         
+        #start {
+          --size: 60px;
+          --min-width: 200px;
+        }
+        
         gof-button {
-          --min-width: 150px;
+          --min-width: 160px;
           --background: #2A4E97;
           --color: white;
         }
         
         @media (min-width: 650px) {
           form > * {
-            margin-left: 10px;
-            margin-right: 10px;
+            margin-left: 20px;
+            margin-right: 20px;
           }
         }
       </style>

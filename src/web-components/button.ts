@@ -12,11 +12,11 @@ export class GofButton extends HTMLElement implements CustomElement {
       <style>
         #button {
           min-width: var(--min-width, 0);
-          height: 40px;
+          height: var(--size, 40px);
           padding: 0 30px;
-          border-radius: 20px;
+          border-radius: calc( var(--size, 40px) * 0.5);
           border: 2px solid transparent;
-          font-size: 20px;
+          font-size: calc( var(--size, 40px) * 0.5);
           text-transform: uppercase;
           color: var(--color, white);
           background-color: var(--background, royalblue);
@@ -53,6 +53,7 @@ export class GofButton extends HTMLElement implements CustomElement {
     this.button = $('#button', this.shadowRoot);
     this.button.addEventListener('mousedown', this.onPress);
     this.button.addEventListener('keydown', this.onPress);
+
     this.button.addEventListener('mouseup', this.onRelease);
     this.button.addEventListener('keyup', this.onRelease);
     this.button.addEventListener('blur', this.onRelease);
@@ -61,6 +62,7 @@ export class GofButton extends HTMLElement implements CustomElement {
   disconnectedCallback() {
     this.button.removeEventListener('mousedown', this.onPress);
     this.button.removeEventListener('keydown', this.onPress);
+
     this.button.removeEventListener('mouseup', this.onRelease);
     this.button.removeEventListener('keyup', this.onRelease);
     this.button.removeEventListener('blur', this.onRelease);
