@@ -77,7 +77,7 @@ export class GofControls extends HTMLElement implements CustomElement {
         
         #start {
           --size: 60px;
-          --min-width: 200px;
+          --min-width: 220px;
         }
         
         gof-button {
@@ -99,10 +99,10 @@ export class GofControls extends HTMLElement implements CustomElement {
       </style>
       
       <form>
-        <gof-button id="info">Explanation</gof-button>
+        <gof-button id="info" icon="info">Explanation</gof-button>
         <select id="shapes" aria-label="Select predefined shape"></select>
-        <gof-button id="start" type="round">Start</gof-button>
-        <gof-button id="next">Next</gof-button>
+        <gof-button id="start" icon="play">Start</gof-button>
+        <gof-button id="next" icon="redo">Next</gof-button>
         <div class="generation" title="Generations" aria-label="Generations">0</div>
 
         <nowrap>
@@ -186,10 +186,12 @@ export class GofControls extends HTMLElement implements CustomElement {
       this.started = !this.started;
       if (this.started) {
         (<HTMLInputElement>event.target).textContent = 'Stop';
+        (<HTMLInputElement>event.target).setAttribute('icon', 'stop');
         this.play();
 
       } else {
         (<HTMLInputElement>event.target).textContent = 'Start';
+        (<HTMLInputElement>event.target).setAttribute('icon', 'play');
         if (this.timerSubscription) {
           this.timerSubscription.unsubscribe();
         }

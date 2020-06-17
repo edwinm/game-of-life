@@ -4,3 +4,4 @@ built
 deploy.sh
 dist/bundle.min.js
 dist/bundle.min.js.map
+backlog.txt

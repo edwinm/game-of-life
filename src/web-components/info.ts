@@ -85,11 +85,11 @@ export class GofInfo extends HTMLElement implements CustomElement {
       
       <div id="whitebox">
         <section>
-          <gof-button class="close-button" data-close>&times;</gof-button>
+          <gof-button class="close-button" icon="close" data-close></gof-button>
           <div class="info-content">
             <slot></slot>
             <p class="close-button-container">
-              <gof-button data-close>Close</gof-button>
+              <gof-button data-close icon="close">Close</gof-button>
             </p>
           </div>
         </section>
