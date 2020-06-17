@@ -8,9 +8,13 @@ export class Shape {
     return {redraw$:this.redraw$.observable()};
   }
 
-  setObservers(newShape$: Observable<Cell[]>, nextShape$: Observable<Cell[]>, dimension$: Observable<Dimension>, toggle$: Observable<Cell>) {
+  setObservers(newShape$: Observable<Cell[]>, nextShape$: Observable<Cell[]>, dimension$: Observable<Dimension>, toggle$: Observable<Cell>, offset$: Observable<Offset>) {
     dimension$.subscribe((newDimension, oldDimension) => {
-      this.offset(newDimension, oldDimension);
+      this.setNewDimension(newDimension, oldDimension);
+    });
+
+    offset$.subscribe((offset) => {
+      this.setOffset(offset);
     });
 
     newShape$.subscribe((shape) => {
@@ -53,7 +57,7 @@ export class Shape {
     });
   }
 
-  private offset(dimension: Dimension, oldDimension: Dimension) {
+  private setNewDimension(dimension: Dimension, oldDimension: Dimension) {
     if (oldDimension && dimension.width != oldDimension.width && dimension.height != oldDimension.height) {
       const dx = Math.round((dimension.width - oldDimension.width) / 2.001);
       const dy = Math.round((dimension.height - oldDimension.height) / 2.001);
@@ -63,6 +67,14 @@ export class Shape {
         cell.y += dy;
       });
     }
+    this.redraw();
+  }
+
+  private setOffset(offset: Offset) {
+    this.current.forEach((cell: Cell) => {
+      cell.x += offset.x;
+      cell.y += offset.y;
+    });
     this.redraw();
   }
 
