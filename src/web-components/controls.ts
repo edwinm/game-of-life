@@ -99,7 +99,7 @@ export class GofControls extends HTMLElement implements CustomElement {
       </style>
       
       <form>
-        <gof-button id="info" icon="info">Explanation</gof-button>
+        <gof-button icon="info" href="/info">Explanation</gof-button>
         <select id="shapes" aria-label="Select predefined shape"></select>
         <gof-button id="start" icon="play">Start</gof-button>
         <gof-button id="next" icon="redo">Next</gof-button>
@@ -123,7 +123,6 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.collection = this.getCollection();
     this.resize$ = fromEvent(window, 'resize');
 
-    this.setupInfo();
     this.setupShapeSelect();
     this.setupSpeed();
     this.setupSize();
@@ -155,12 +154,6 @@ export class GofControls extends HTMLElement implements CustomElement {
   private setGeneration(gen: number) {
     this.generation = gen;
     $('.generation', this.shadowRoot).textContent = gen.toString(10);
-  }
-
-  private setupInfo() {
-    fromEvent($('#info', this.shadowRoot), 'click').subscribe(() => {
-      $('#info').setAttribute('open', '');
-    });
   }
 
   private setupSize() {

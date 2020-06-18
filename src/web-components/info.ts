@@ -1,5 +1,6 @@
 import { $ } from 'carbonium';
 import { Cuprum, combine, fromEvent, Subscription } from "cuprum";
+import router from "../components/router";
 
 export class GofInfo extends HTMLElement implements CustomElement {
   subscribers = new Set<Subscription>();
@@ -132,7 +133,7 @@ export class GofInfo extends HTMLElement implements CustomElement {
       .filter(event => (<HTMLElement>event.target).id == "whitebox")
 
     this.subscribers.add(combine(closeButtonClick, escKey, outsideClick).subscribe(() => {
-      this.removeAttribute('open');
+      router.back();
     }));
   }
 
