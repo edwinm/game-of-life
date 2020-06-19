@@ -148,8 +148,8 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   }
 
   private calculateDimensions() {
-    const pixelWidth = document.documentElement.clientWidth - 20;
-    const pixelHeight = document.documentElement.clientHeight - 120 - $('gof-controls').clientHeight;
+    const pixelWidth = window.innerWidth - 20;
+    const pixelHeight = window.innerHeight - 120 - $('gof-controls').offsetHeight;
     const widthMod = (pixelWidth % this.cellSize) / 2;
     this.canvasDomElement.style.setProperty('--width-mod', `${widthMod}px`);
     this.canvasDomElement.width = pixelWidth - pixelWidth % this.cellSize + 1;

@@ -96,6 +96,21 @@ export class GofControls extends HTMLElement implements CustomElement {
             margin-left: 30px;
           }
         }
+        
+        @media (max-width: 650px) {
+          form {
+            align-items: flex-start;
+            padding-bottom: 40px;
+          }
+          gof-button {
+            --size: 30px;
+          }
+        
+          #start {
+            --size: 40px;
+            --min-width: 170px;
+          }
+        }
       </style>
       
       <form>

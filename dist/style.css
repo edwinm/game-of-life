@@ -7,7 +7,7 @@
 
 html {
   box-sizing: border-box;
-  overflow: hidden;
+  /*overflow: hidden;*/
   background-color: #b3b3b3;
 }
 
@@ -47,7 +47,7 @@ header {
 
 gof-canvas {
   display: block;
-  /*height: calc(100vh - 200px);*/
+  height: calc(100vh - 200px);
   width: 100vw;
   padding: 10px;
   background: #404040;
