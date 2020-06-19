@@ -12,6 +12,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   private click$ = new Cuprum<Cell>();
   private drag$ = new Cuprum<Offset>();
   private dragStart: Offset;
+  private lastTouch: Offset;
   private isDragging = false;
   private isMouseDown = false;
 
@@ -92,6 +93,30 @@ export class GofCanvas extends HTMLElement implements CustomElement {
           this.drag$.dispatch({x: dragX, y: dragY});
         }
       }
+    });
+
+    fromEvent(this.canvasDomElement, 'touchstart').subscribe((event: TouchEvent) => {
+      this.lastTouch = {x: event.touches[0].clientX, y: event.touches[0].clientY};
+      this.dragStart = {x: this.lastTouch.x, y: this.lastTouch.y};
+    });
+
+    fromEvent(this.canvasDomElement, 'touchmove').subscribe((event: TouchEvent) => {
+      this.lastTouch = {x: event.touches[0].clientX, y: event.touches[0].clientY};
+      this.drag$.dispatch({x: this.lastTouch.x - this.dragStart.x, y: this.lastTouch.y - this.dragStart.y});
+      event.preventDefault();
+    });
+
+    fromEvent(this.canvasDomElement, 'touchend').subscribe(() => {
+      this.drag$.dispatch({x: 0, y: 0});
+      this.offset$.dispatch({
+        x: Math.round((this.lastTouch.x - this.dragStart.x) / this.cellSize),
+        y: Math.round((this.lastTouch.y - this.dragStart.y) / this.cellSize)
+      });
+    });
+
+    fromEvent(this.canvasDomElement, 'touchcancel').subscribe(() => {
+      this.drag$.dispatch({x: 0, y: 0});
+      this.offset$.dispatch({x: 0, y: 0});
     });
 
     this.drag$.subscribe(({x, y}) => {
