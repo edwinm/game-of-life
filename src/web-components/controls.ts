@@ -33,16 +33,16 @@ export class GofControls extends HTMLElement implements CustomElement {
           justify-content:  center;
           flex-wrap: wrap;
           align-items:  center;
-          margin: 0 5vw;
+            margin: 20px 5px;
         }
         
         img {
           vertical-align: bottom;
-          margin-left: 10px;
+            margin-left: 30px;
         }
         
         form > * {
-          margin: 5px;
+            margin: 5px 20px;
         }
         
         input[type="range"] {
@@ -85,22 +85,14 @@ export class GofControls extends HTMLElement implements CustomElement {
           --color: white;
         }
         
-        @media (min-width: 650px) {
-          form {
-            margin: 20px 5px;
-          }
-          form > * {
-            margin: 5px 20px;
-          }
-          img {
-            margin-left: 30px;
-          }
-        }
-        
         @media (max-width: 650px) {
           form {
             align-items: flex-start;
             padding-bottom: 40px;
+            margin: 0 5vw;
+          }
+          form > * {
+            margin: 5px;
           }
           gof-button {
             --size: 30px;
@@ -109,6 +101,10 @@ export class GofControls extends HTMLElement implements CustomElement {
           #start {
             --size: 40px;
             --min-width: 170px;
+          }
+
+          img {
+            margin-left: 10px;
           }
         }
       </style>

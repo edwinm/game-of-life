@@ -6,8 +6,8 @@
 /*}*/
 
 html {
+  position: fixed;
   box-sizing: border-box;
-  /*overflow: hidden;*/
   background-color: #b3b3b3;
 }
 
@@ -65,9 +65,17 @@ gof-controls {
   border-bottom: 4px solid #005EC6;
   display: block;
 }
+html {
+}
+
+@media (max-width: 650px), (max-height: 650px) {
+  main {
+    height: 100%;
+  }
+}
 
 @media (display-mode: standalone) {
-  html {
-    position: fixed;
+  main {
+    height: 100vh;
   }
 }
