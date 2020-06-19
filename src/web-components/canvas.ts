@@ -124,13 +124,15 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     });
   }
 
-  setObservers(redraw$: Observable<Cell[]>, resize$: Observable<Event>, size$: Observable<number>) {
+  setObservers(redraw$: Observable<Cell[]>, resize$: Observable<[Event, Event]>, size$: Observable<number>) {
     combine(redraw$, this.drag$).subscribe(([cells, drag = {x: 0, y: 0}]) => {
       this.draw(cells, drag);
     });
 
     resize$.subscribe(() => {
-      this.calculateDimensions();
+      setTimeout(()=>{
+        this.calculateDimensions();
+      }, 10);
     });
 
     size$.subscribe((newGridSize) => {
@@ -173,8 +175,11 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   }
 
   private calculateDimensions() {
+    // const fixMobile = window.matchMedia("(max-width: 650px), (max-height: 650px)").matches && !window.matchMedia("(display-mode: standalone)").matches;
+    const controlHeightFix = window.matchMedia("(max-width: 650px), (max-height: 650px)").matches
+      && !window.matchMedia("(display-mode: standalone)").matches ? 40 : 0;
     const pixelWidth = window.innerWidth - 20;
-    const pixelHeight = window.innerHeight - 120 - $('gof-controls').offsetHeight;
+    const pixelHeight = window.innerHeight - 20 - $('header').offsetHeight - $('gof-controls').offsetHeight - controlHeightFix;
     const widthMod = (pixelWidth % this.cellSize) / 2;
     this.canvasDomElement.style.setProperty('--width-mod', `${widthMod}px`);
     this.canvasDomElement.width = pixelWidth - pixelWidth % this.cellSize + 1;

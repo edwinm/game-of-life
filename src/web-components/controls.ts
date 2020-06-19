@@ -1,5 +1,5 @@
 import { $ } from 'carbonium';
-import { fromEvent, Cuprum, merge, Observable, Subscription, interval } from "cuprum";
+import { fromEvent, Cuprum, merge, Observable, Subscription, interval, combine } from "cuprum";
 import { gofNext } from "../components/gameoflife";
 
 export class GofControls extends HTMLElement implements CustomElement {
@@ -15,7 +15,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   private newShape$: Cuprum<Cell[]>;
   private nextShape$: Cuprum<Cell[]>;
   private nextGeneration$: Cuprum<void>;
-  private resize$: Cuprum<Event>;
+  private resize$: Observable<[Event, Event]>;
 
   constructor() {
     super();
@@ -85,10 +85,9 @@ export class GofControls extends HTMLElement implements CustomElement {
           --color: white;
         }
         
-        @media (max-width: 650px) {
+        @media (max-width: 650px), (max-height: 650px) {
           form {
             align-items: flex-start;
-            padding-bottom: 40px;
             margin: 0 5vw;
           }
           form > * {
@@ -105,6 +104,12 @@ export class GofControls extends HTMLElement implements CustomElement {
 
           img {
             margin-left: 10px;
+          }
+        }
+
+        @media (display-mode: standalone) {
+          form {
+            padding-bottom: 40px;
           }
         }
       </style>
@@ -132,7 +137,7 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.timer = null;
     this.generation = 0;
     this.collection = this.getCollection();
-    this.resize$ = fromEvent(window, 'resize');
+    this.resize$ = combine(fromEvent(window, 'resize'), fromEvent(window, 'orientationchange'));
 
     this.setupShapeSelect();
     this.setupSpeed();

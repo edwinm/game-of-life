@@ -82,6 +82,9 @@ export class GofInfo extends HTMLElement implements CustomElement {
           --color: white;
         }
 
+        @media (max-width: 650px) {
+          width: 90vw;
+        }
       </style>
       
       <div id="whitebox">
