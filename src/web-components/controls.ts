@@ -33,7 +33,7 @@ export class GofControls extends HTMLElement implements CustomElement {
           justify-content:  center;
           flex-wrap: wrap;
           align-items:  center;
-            margin: 20px 5px;
+          margin: 20px 5px;
         }
         
         img {
@@ -87,7 +87,6 @@ export class GofControls extends HTMLElement implements CustomElement {
         
         @media (max-width: 650px), (max-height: 650px) {
           form {
-            align-items: flex-start;
             margin: 0 5vw;
           }
           form > * {
@@ -107,9 +106,9 @@ export class GofControls extends HTMLElement implements CustomElement {
           }
         }
 
-        @media (display-mode: standalone) {
+        @media (max-width: 650px) and (display-mode: standalone) {
           form {
-            padding-bottom: 40px;
+            padding-bottom: 80px;
           }
         }
       </style>
