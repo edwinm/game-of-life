@@ -2,6 +2,7 @@ import { Cuprum } from "cuprum";
 
 class Router {
   private subject$ = new Cuprum<string>();
+  private depth = 0;
 
   constructor() {
     this.dispatch(this.fullPath);
@@ -12,13 +13,18 @@ class Router {
   }
 
   push(url) {
+    this.depth ++;
     history.pushState(null, "", url);
     this.dispatch(url);
   }
 
   back() {
-    history.back();
-    this.subject$.dispatch(this.fullPath);
+    if (this.depth > 0) {
+      this.depth --;
+      history.back();
+    } else {
+      this.push("/");
+    }
   }
 
   get fullPath() {
