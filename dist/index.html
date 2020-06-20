@@ -1,75 +1,101 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>John Conway's Game of Life</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-  <meta name="description" content="Play John Conway’s Game of Life right now in your browser.">
-  <meta name="keywords" content="John Conway Conways Game of Life cellular automaton math mathematica">
-  <meta property="og:title" content="John Conway’s Game of Life">
-  <meta property="og:description" content="Play John Conway’s Game of Life right now in your browser.">
-  <meta property="og:image" content="https://playgameoflife.com/pix/share.png">
-  <meta property="og:url" content="https://playgameoflife.com/">
+  <head>
+    <meta charset="UTF-8" />
+    <title>John Conway’s Game of Life</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="Play John Conway’s Game of Life right now in your browser."
+    />
+    <meta
+      name="keywords"
+      content="John Conway Conways Game of Life cellular automaton math mathematica"
+    />
+    <meta property="og:title" content="John Conway’s Game of Life" />
+    <meta
+      property="og:description"
+      content="Play John Conway’s Game of Life right now in your browser."
+    />
+    <meta
+      property="og:image"
+      content="https://playgameoflife.com/pix/share.png"
+    />
+    <meta property="og:url" content="https://playgameoflife.com/" />
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:creator" content="@edwinm">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@edwinm" />
 
-  <link rel="canonical" href="https://playgameoflife.com/">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png">
+    <link rel="canonical" href="https://playgameoflife.com/" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png" />
 
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <script src="bundle.min.js"></script>
-</head>
-<body>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="bundle.min.js"></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1 class="invisible">Play John Conway’s Game of Life</h1>
+      </header>
 
-<main>
+      <gof-canvas class="gof-canvas"></gof-canvas>
 
-  <header>
-    <h1 class="invisible">John Conway's Game of Life</h1>
-  </header>
+      <gof-controls></gof-controls>
+    </main>
 
-  <gof-canvas class="gof-canvas"></gof-canvas>
+    <gof-info id="info" role="complementary">
+      <h1>John Conway’s Game of Life</h1>
 
-  <gof-controls></gof-controls>
-</main>
+      <h3>The Game</h3>
 
+      <p>
+        The Game of Life is not your typical computer game. It is a cellular
+        automaton, and was invented by Cambridge mathematician John Conway.
+      </p>
 
-<gof-info id="info" role="complementary">
-  <h1>John Conway’s Game of Life</h1>
+      <p>
+        This game became widely known when it was mentioned in an article
+        published by Scientific American in 1970. It consists of a collection of
+        cells which, based on a few mathematical rules, can live, die or
+        multiply. Depending on the initial conditions, the cells form various
+        patterns throughout the course of the game.
+      </p>
 
-  <h3>The Game</h3>
+      <h3>The Rules</h3>
 
-  <p>The Game of Life is not your typical computer game. It is a cellular
-    automaton, and was invented by Cambridge mathematician John Conway.</p>
+      <dl>
+        <dt>For a space that is populated:</dt>
+        <dd>Each cell with one or no neighbors dies, as if by solitude.</dd>
+        <dd>
+          Each cell with four or more neighbors dies, as if by overpopulation.
+        </dd>
+        <dd>Each cell with two or three neighbors survives.</dd>
 
-  <p>This game became widely known when it was mentioned in an article published
-    by Scientific American in 1970. It consists of a collection of cells which,
-    based on a few mathematical rules, can live, die or multiply. Depending on
-    the initial conditions, the cells form various patterns throughout the course of the game.
+        <dt>For a space that is empty or unpopulated</dt>
+        <dd>Each cell with three neighbors becomes populated.</dd>
+      </dl>
 
-  <h3>The Rules</h3>
+      <h3>The Controls</h3>
 
-  <dl>
-    <dt><b>For a space that is populated:</b>
-    <dd>Each cell with one or no neighbors dies, as if by solitude.
-    <dd>Each cell with four or more neighbors dies, as if by overpopulation.
-    <dd>Each cell with two or three neighbors survives.
-    <dt><b>For a space that is empty or unpopulated</b>
-    <dd>Each cell with three neighbors becomes populated.
-  </dl>
+      <p>
+        Choose a figure from the pull-down menu or make one yourself by clicking
+        on the cells with a mouse. A new generation of cells (corresponding to
+        one iteration of the rules) is initiated by the 'Next' button. The
+        'Start' button advances the game by several generations.
+      </p>
 
-  <h3>The Controls</h3>
-
-  <p>Choose a figure from the pull-down menu or make one yourself by clicking on
-    the cells with a mouse. A new generation of cells (corresponding to one
-    iteration of the rules) is initiated by the 'Next' button. The 'Start'
-    button advances the game by several generations.
-    Game speed is regulated by the speed dial and the size of the cells with the size dial.</p>
-
-  <p>Implemented by Edwin Martin &lt;<a href="mailto:edwin@bitstorm.org">edwin@bitstorm.org</a>&gt;</p>
-  </gof-info>
-
-</body>
+      <p>
+        Implemented by Edwin Martin &lt;<a
+          rel="author"
+          href="mailto:edwin@bitstorm.org"
+          >edwin@bitstorm.org</a
+        >&gt;
+      </p>
+    </gof-info>
+  </body>
 </html>

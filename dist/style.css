@@ -23,6 +23,10 @@ body {
   hyphens: auto;
 }
 
+dt {
+  font-weight: bold;
+}
+
 /*h1, h2, h3 {*/
 /*  font-family: Play;*/
 /*}*/
@@ -35,7 +39,7 @@ main {
 header {
   width: 100vw;
   height: 100px;
-  border-bottom: 3px solid #2A4E97;
+  border-bottom: 3px solid #2a4e97;
   background: url(/pix/header.png) no-repeat, url(/pix/header-bg.png) repeat-x;
   background-size: contain;
 }
@@ -62,10 +66,8 @@ gof-controls {
 
 .header-img {
   width: 100vw;
-  border-bottom: 4px solid #005EC6;
+  border-bottom: 4px solid #005ec6;
   display: block;
-}
-html {
 }
 
 @media (max-width: 650px), (max-height: 650px) {
