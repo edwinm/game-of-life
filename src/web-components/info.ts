@@ -1,4 +1,4 @@
-import { $ } from 'carbonium';
+import { $ } from "carbonium";
 import { Cuprum, combine, fromEvent, Subscription } from "cuprum";
 import router from "../components/router";
 
@@ -9,7 +9,7 @@ export class GofInfo extends HTMLElement implements CustomElement {
   constructor() {
     super();
 
-    this.attachShadow({mode: 'open'});
+    this.attachShadow({ mode: "open" });
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -104,22 +104,22 @@ export class GofInfo extends HTMLElement implements CustomElement {
   }
 
   static get observedAttributes() {
-    return ['open'];
+    return ["open"];
   }
 
   attributeChangedCallback(attr, oldValue, newValue) {
-    if (attr == 'open') {
-      if (this.hasAttribute('open')) {
-        $('#whitebox', this.shadowRoot).classList.add('open');
-        setTimeout(()=>{
-          $('#whitebox', this.shadowRoot).classList.add('anim');
+    if (attr == "open") {
+      if (this.hasAttribute("open")) {
+        $("#whitebox", this.shadowRoot).classList.add("open");
+        setTimeout(() => {
+          $("#whitebox", this.shadowRoot).classList.add("anim");
         }, 0);
-        $('.close-button', this.shadowRoot).focus();
+        $(".close-button", this.shadowRoot).focus();
         this.infoIsOpen$.dispatch(true);
       } else {
-        $('#whitebox', this.shadowRoot).classList.remove('anim');
-        setTimeout(()=>{
-          $('#whitebox', this.shadowRoot).classList.remove('open');
+        $("#whitebox", this.shadowRoot).classList.remove("anim");
+        setTimeout(() => {
+          $("#whitebox", this.shadowRoot).classList.remove("open");
         }, 250);
         this.infoIsOpen$.dispatch(false);
       }
@@ -129,23 +129,31 @@ export class GofInfo extends HTMLElement implements CustomElement {
   connectedCallback() {
     this.infoIsOpen$ = new Cuprum<boolean>();
 
-    const closeButtonClick = fromEvent($('[data-close]', this.shadowRoot), 'click');
+    const closeButtonClick = fromEvent(
+      $("[data-close]", this.shadowRoot),
+      "click"
+    );
 
-    const escKey = fromEvent(document.documentElement, 'keyup')
-      .filter((event: KeyboardEvent) => event.key == 'Escape');
+    const escKey = fromEvent(document.documentElement, "keyup").filter(
+      (event: KeyboardEvent) => event.key == "Escape"
+    );
 
-    const outsideClick = fromEvent($('#whitebox', this.shadowRoot), 'click')
-      .filter(event => (<HTMLElement>event.target).id == "whitebox")
+    const outsideClick = fromEvent(
+      $("#whitebox", this.shadowRoot),
+      "click"
+    ).filter((event) => (<HTMLElement>event.target).id == "whitebox");
 
-    this.subscribers.add(combine(closeButtonClick, escKey, outsideClick).subscribe(() => {
-      router.back();
-    }));
+    this.subscribers.add(
+      combine(closeButtonClick, escKey, outsideClick).subscribe(() => {
+        router.back();
+      })
+    );
   }
 
   disconnectedCallback() {
     this.subscribers.forEach((subscriber) => {
       subscriber.unsubscribe();
-    })
+    });
   }
 
   getObservers() {
@@ -155,4 +163,4 @@ export class GofInfo extends HTMLElement implements CustomElement {
   }
 }
 
-customElements.define('gof-info', GofInfo);
+customElements.define("gof-info", GofInfo);

@@ -1,4 +1,4 @@
-import { $ } from 'carbonium';
+import { $ } from "carbonium";
 import { Cuprum, fromEvent, Observable, combine } from "cuprum";
 
 export class GofCanvas extends HTMLElement implements CustomElement {
@@ -19,7 +19,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   constructor() {
     super();
 
-    this.attachShadow({mode: 'open'});
+    this.attachShadow({ mode: "open" });
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -31,11 +31,10 @@ export class GofCanvas extends HTMLElement implements CustomElement {
       
       <canvas id="canvas"></canvas>
     `;
-
   }
 
   connectedCallback() {
-    this.canvasDomElement = $('#canvas', this.shadowRoot);
+    this.canvasDomElement = $("#canvas", this.shadowRoot);
 
     if (!this.canvasDomElement.getContext) {
       return;
@@ -44,10 +43,10 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     try {
       let rect = this.canvasDomElement.getBoundingClientRect();
       this.offscreen = new OffscreenCanvas(rect.width, rect.height);
-      this.ctx = this.offscreen.getContext('2d', {alpha: false});
-      this.ctxOffscreen = this.canvasDomElement.getContext('bitmaprenderer');
+      this.ctx = this.offscreen.getContext("2d", { alpha: false });
+      this.ctxOffscreen = this.canvasDomElement.getContext("bitmaprenderer");
     } catch (e) {
-      this.ctx = this.canvasDomElement.getContext('2d', {alpha: false});
+      this.ctx = this.canvasDomElement.getContext("2d", { alpha: false });
     }
 
     this.setDragging();
@@ -57,75 +56,101 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     return {
       click$: this.click$.observable(),
       dimension$: this.dimension$.observable(),
-      offset$: this.offset$.observable()
+      offset$: this.offset$.observable(),
     };
   }
 
   setDragging() {
-    fromEvent(this.canvasDomElement, 'mousedown').subscribe((event: MouseEvent) => {
-      this.dragStart = {x: event.x, y: event.y};
-      this.isMouseDown = true;
-    });
-
-    fromEvent(this.canvasDomElement, 'mouseup').subscribe((event: MouseEvent) => {
-      this.isMouseDown = false;
-      this.drag$.dispatch({x: 0, y: 0});
-      this.offset$.dispatch({
-        x: Math.round((event.x - this.dragStart.x) / this.cellSize),
-        y: Math.round((event.y - this.dragStart.y) / this.cellSize)
-      });
-      if (!this.isDragging) {
-        const canvasRect = this.canvasDomElement.getBoundingClientRect();
-        this.click$.dispatch(<Cell>{
-          x: Math.floor((event.x - canvasRect.left - 2) / this.cellSize),
-          y: Math.floor((event.y - canvasRect.top - 3) / this.cellSize)
-        })
+    fromEvent(this.canvasDomElement, "mousedown").subscribe(
+      (event: MouseEvent) => {
+        this.dragStart = { x: event.x, y: event.y };
+        this.isMouseDown = true;
       }
-      this.isDragging = false;
-    });
+    );
 
-    fromEvent(this.canvasDomElement, 'mousemove').subscribe((event: MouseEvent) => {
-      if (this.isMouseDown) {
-        const dragX = event.x - this.dragStart.x;
-        const dragY = event.y - this.dragStart.y;
-        this.isDragging = Math.abs(dragX) > 5 || Math.abs(dragY) > 5;
-        if (this.isDragging) {
-          this.drag$.dispatch({x: dragX, y: dragY});
+    fromEvent(this.canvasDomElement, "mouseup").subscribe(
+      (event: MouseEvent) => {
+        this.isMouseDown = false;
+        this.drag$.dispatch({ x: 0, y: 0 });
+        this.offset$.dispatch({
+          x: Math.round((event.x - this.dragStart.x) / this.cellSize),
+          y: Math.round((event.y - this.dragStart.y) / this.cellSize),
+        });
+        if (!this.isDragging) {
+          const canvasRect = this.canvasDomElement.getBoundingClientRect();
+          this.click$.dispatch(<Cell>{
+            x: Math.floor((event.x - canvasRect.left - 2) / this.cellSize),
+            y: Math.floor((event.y - canvasRect.top - 3) / this.cellSize),
+          });
+        }
+        this.isDragging = false;
+      }
+    );
+
+    fromEvent(this.canvasDomElement, "mousemove").subscribe(
+      (event: MouseEvent) => {
+        if (this.isMouseDown) {
+          const dragX = event.x - this.dragStart.x;
+          const dragY = event.y - this.dragStart.y;
+          this.isDragging = Math.abs(dragX) > 5 || Math.abs(dragY) > 5;
+          if (this.isDragging) {
+            this.drag$.dispatch({ x: dragX, y: dragY });
+          }
         }
       }
-    });
+    );
 
-    fromEvent(this.canvasDomElement, 'touchstart').subscribe((event: TouchEvent) => {
-      this.lastTouch = {x: event.touches[0].clientX, y: event.touches[0].clientY};
-      this.dragStart = {x: this.lastTouch.x, y: this.lastTouch.y};
-    });
+    fromEvent(this.canvasDomElement, "touchstart").subscribe(
+      (event: TouchEvent) => {
+        this.lastTouch = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY,
+        };
+        this.dragStart = { x: this.lastTouch.x, y: this.lastTouch.y };
+      }
+    );
 
-    fromEvent(this.canvasDomElement, 'touchmove').subscribe((event: TouchEvent) => {
-      this.lastTouch = {x: event.touches[0].clientX, y: event.touches[0].clientY};
-      this.drag$.dispatch({x: this.lastTouch.x - this.dragStart.x, y: this.lastTouch.y - this.dragStart.y});
-      event.preventDefault();
-    });
+    fromEvent(this.canvasDomElement, "touchmove").subscribe(
+      (event: TouchEvent) => {
+        this.lastTouch = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY,
+        };
+        this.drag$.dispatch({
+          x: this.lastTouch.x - this.dragStart.x,
+          y: this.lastTouch.y - this.dragStart.y,
+        });
+        event.preventDefault();
+      }
+    );
 
-    fromEvent(this.canvasDomElement, 'touchend').subscribe(() => {
-      this.drag$.dispatch({x: 0, y: 0});
+    fromEvent(this.canvasDomElement, "touchend").subscribe(() => {
+      this.drag$.dispatch({ x: 0, y: 0 });
       this.offset$.dispatch({
         x: Math.round((this.lastTouch.x - this.dragStart.x) / this.cellSize),
-        y: Math.round((this.lastTouch.y - this.dragStart.y) / this.cellSize)
+        y: Math.round((this.lastTouch.y - this.dragStart.y) / this.cellSize),
       });
     });
 
-    fromEvent(this.canvasDomElement, 'touchcancel').subscribe(() => {
-      this.drag$.dispatch({x: 0, y: 0});
-      this.offset$.dispatch({x: 0, y: 0});
+    fromEvent(this.canvasDomElement, "touchcancel").subscribe(() => {
+      this.drag$.dispatch({ x: 0, y: 0 });
+      this.offset$.dispatch({ x: 0, y: 0 });
     });
 
-    this.drag$.subscribe(({x, y}) => {
-      this.canvasDomElement.style.setProperty('--cursor', (x == 0 && y == 0) ? 'auto' : 'grab')
+    this.drag$.subscribe(({ x, y }) => {
+      this.canvasDomElement.style.setProperty(
+        "--cursor",
+        x == 0 && y == 0 ? "auto" : "grab"
+      );
     });
   }
 
-  setObservers(redraw$: Observable<Cell[]>, resize$: Observable<[Event, Event]>, size$: Observable<number>) {
-    combine(redraw$, this.drag$).subscribe(([cells, drag = {x: 0, y: 0}]) => {
+  setObservers(
+    redraw$: Observable<Cell[]>,
+    resize$: Observable<[Event, Event]>,
+    size$: Observable<number>
+  ) {
+    combine(redraw$, this.drag$).subscribe(([cells, drag = { x: 0, y: 0 }]) => {
       this.draw(cells, drag);
     });
 
@@ -146,26 +171,44 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
     ctx.fillStyle = "#7e7e7e";
     ctx.lineWidth = 1;
-    ctx.fillRect(0, 0, this.canvasDomElement.width + this.cellSize, this.canvasDomElement.height);
+    ctx.fillRect(
+      0,
+      0,
+      this.canvasDomElement.width + this.cellSize,
+      this.canvasDomElement.height
+    );
     ctx.strokeStyle = "#999";
 
-    for (let n = drag.x % this.cellSize; n <= this.canvasDomElement.width; n += this.cellSize) {
+    for (
+      let n = drag.x % this.cellSize;
+      n <= this.canvasDomElement.width;
+      n += this.cellSize
+    ) {
       ctx.beginPath();
-      ctx.moveTo(n + .5, 0);
-      ctx.lineTo(n + .5, this.canvasDomElement.height);
+      ctx.moveTo(n + 0.5, 0);
+      ctx.lineTo(n + 0.5, this.canvasDomElement.height);
       ctx.stroke();
     }
-    for (let n = drag.y % this.cellSize; n <= this.canvasDomElement.height; n += this.cellSize) {
+    for (
+      let n = drag.y % this.cellSize;
+      n <= this.canvasDomElement.height;
+      n += this.cellSize
+    ) {
       ctx.beginPath();
-      ctx.moveTo(0, n + .5);
-      ctx.lineTo(this.canvasDomElement.width, n + .5);
+      ctx.moveTo(0, n + 0.5);
+      ctx.lineTo(this.canvasDomElement.width, n + 0.5);
       ctx.stroke();
     }
 
     ctx.fillStyle = "yellow";
     ctx.lineWidth = 1;
     cells.forEach((cell) => {
-      ctx.fillRect(cell.x * size + 1 + drag.x, cell.y * size + 1 + drag.y, size - 1, size - 1);
+      ctx.fillRect(
+        cell.x * size + 1 + drag.x,
+        cell.y * size + 1 + drag.y,
+        size - 1,
+        size - 1
+      );
     });
 
     if (this.ctxOffscreen) {
@@ -190,19 +233,27 @@ export class GofCanvas extends HTMLElement implements CustomElement {
       }
     }
     const pixelWidth = window.innerWidth - 20;
-    const pixelHeight = window.innerHeight - $('header').offsetHeight - $('gof-controls').offsetHeight - controlHeightFix;
+    const pixelHeight =
+      window.innerHeight -
+      $("header").offsetHeight -
+      $("gof-controls").offsetHeight -
+      controlHeightFix;
     const widthMod = (pixelWidth % this.cellSize) / 2;
-    this.canvasDomElement.style.setProperty('--width-mod', `${widthMod}px`);
-    this.canvasDomElement.width = pixelWidth - pixelWidth % this.cellSize + 1;
-    this.canvasDomElement.height = pixelHeight - pixelHeight % this.cellSize + 1;
+    this.canvasDomElement.style.setProperty("--width-mod", `${widthMod}px`);
+    this.canvasDomElement.width = pixelWidth - (pixelWidth % this.cellSize) + 1;
+    this.canvasDomElement.height =
+      pixelHeight - (pixelHeight % this.cellSize) + 1;
     if (this.ctxOffscreen) {
-      this.offscreen = new OffscreenCanvas(this.canvasDomElement.width, this.canvasDomElement.height);
-      this.ctx = this.offscreen.getContext('2d', {alpha: false});
+      this.offscreen = new OffscreenCanvas(
+        this.canvasDomElement.width,
+        this.canvasDomElement.height
+      );
+      this.ctx = this.offscreen.getContext("2d", { alpha: false });
     }
 
     this.dimension$.dispatch({
       width: Math.floor(this.canvasDomElement.width / this.cellSize),
-      height: Math.floor(this.canvasDomElement.height / this.cellSize)
+      height: Math.floor(this.canvasDomElement.height / this.cellSize),
     });
   }
 
@@ -212,6 +263,4 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   }
 }
 
-customElements.define('gof-canvas', GofCanvas);
-
-
+customElements.define("gof-canvas", GofCanvas);

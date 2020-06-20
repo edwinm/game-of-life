@@ -5,10 +5,16 @@ export class Shape {
   private redraw$ = new Cuprum<Cell[]>();
 
   getObservers() {
-    return {redraw$:this.redraw$.observable()};
+    return { redraw$: this.redraw$.observable() };
   }
 
-  setObservers(newShape$: Observable<Cell[]>, nextShape$: Observable<Cell[]>, dimension$: Observable<Dimension>, toggle$: Observable<Cell>, offset$: Observable<Offset>) {
+  setObservers(
+    newShape$: Observable<Cell[]>,
+    nextShape$: Observable<Cell[]>,
+    dimension$: Observable<Dimension>,
+    toggle$: Observable<Cell>,
+    offset$: Observable<Offset>
+  ) {
     dimension$.subscribe((newDimension, oldDimension) => {
       this.setNewDimension(newDimension, oldDimension);
     });
@@ -18,7 +24,7 @@ export class Shape {
     });
 
     newShape$.subscribe((shape) => {
-      this.current = shape.map(cell => ({x:cell.x, y:cell.y}));
+      this.current = shape.map((cell) => ({ x: cell.x, y: cell.y }));
       this.center(dimension$.value());
       this.redraw();
     });
@@ -58,7 +64,11 @@ export class Shape {
   }
 
   private setNewDimension(dimension: Dimension, oldDimension: Dimension) {
-    if (oldDimension && dimension.width != oldDimension.width && dimension.height != oldDimension.height) {
+    if (
+      oldDimension &&
+      dimension.width != oldDimension.width &&
+      dimension.height != oldDimension.height
+    ) {
       const dx = Math.round((dimension.width - oldDimension.width) / 2.001);
       const dy = Math.round((dimension.height - oldDimension.height) / 2.001);
 
@@ -90,5 +100,3 @@ export class Shape {
     this.redraw();
   }
 }
-
-

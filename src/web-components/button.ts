@@ -1,4 +1,4 @@
-import { $ } from 'carbonium';
+import { $ } from "carbonium";
 import router from "../components/router";
 
 export class GofButton extends HTMLElement implements CustomElement {
@@ -7,7 +7,7 @@ export class GofButton extends HTMLElement implements CustomElement {
   constructor() {
     super();
 
-    this.attachShadow({mode: 'open'});
+    this.attachShadow({ mode: "open" });
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -82,36 +82,36 @@ export class GofButton extends HTMLElement implements CustomElement {
   }
 
   connectedCallback() {
-    this.button = $('#button', this.shadowRoot);
-    this.button.addEventListener('mousedown', this.onPress);
-    this.button.addEventListener('keydown', this.onPress);
+    this.button = $("#button", this.shadowRoot);
+    this.button.addEventListener("mousedown", this.onPress);
+    this.button.addEventListener("keydown", this.onPress);
 
-    this.button.addEventListener('mouseup', this.onRelease);
-    this.button.addEventListener('keyup', this.onRelease);
-    this.button.addEventListener('blur', this.onRelease);
+    this.button.addEventListener("mouseup", this.onRelease);
+    this.button.addEventListener("keyup", this.onRelease);
+    this.button.addEventListener("blur", this.onRelease);
 
-    this.button.addEventListener('click', ()=> {
+    this.button.addEventListener("click", () => {
       this.onClick();
     });
   }
 
   disconnectedCallback() {
-    this.button.removeEventListener('mousedown', this.onPress);
-    this.button.removeEventListener('keydown', this.onPress);
+    this.button.removeEventListener("mousedown", this.onPress);
+    this.button.removeEventListener("keydown", this.onPress);
 
-    this.button.removeEventListener('mouseup', this.onRelease);
-    this.button.removeEventListener('keyup', this.onRelease);
-    this.button.removeEventListener('blur', this.onRelease);
+    this.button.removeEventListener("mouseup", this.onRelease);
+    this.button.removeEventListener("keyup", this.onRelease);
+    this.button.removeEventListener("blur", this.onRelease);
   }
 
   static get observedAttributes() {
-    return ['icon'];
+    return ["icon"];
   }
 
   attributeChangedCallback(attr, oldValue, newValue) {
-    if (attr == 'icon') {
-      $('svg.visible', this.shadowRoot).classList.remove('visible');
-      $(`svg.${newValue}`, this.shadowRoot).classList.add('visible');
+    if (attr == "icon") {
+      $("svg.visible", this.shadowRoot).classList.remove("visible");
+      $(`svg.${newValue}`, this.shadowRoot).classList.add("visible");
     }
   }
 
@@ -128,28 +128,30 @@ export class GofButton extends HTMLElement implements CustomElement {
   }
 
   private onClick() {
-    if (this.hasAttribute('href')) {
-      router.push(this.getAttribute('href'));
+    if (this.hasAttribute("href")) {
+      router.push(this.getAttribute("href"));
     }
   }
 
   private onPress(event: Event) {
     const button = (<HTMLButtonElement>event.target).closest("#button");
     if ((<KeyboardEvent>event).key != "Tab") {
-      button.classList.add('pressed');
+      button.classList.add("pressed");
       if (event.type == "keydown") {
-        button.classList.remove('no-focus');
+        button.classList.remove("no-focus");
       } else {
-        button.classList.add('no-focus');
+        button.classList.add("no-focus");
       }
     } else {
-      button.classList.remove('no-focus');
+      button.classList.remove("no-focus");
     }
   }
 
   private onRelease(event: Event) {
-    (<HTMLButtonElement>event.target).closest("#button").classList.remove('pressed');
+    (<HTMLButtonElement>event.target)
+      .closest("#button")
+      .classList.remove("pressed");
   }
 }
 
-customElements.define('gof-button', GofButton);
+customElements.define("gof-button", GofButton);

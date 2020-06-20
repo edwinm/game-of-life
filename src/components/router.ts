@@ -13,14 +13,14 @@ class Router {
   }
 
   push(url) {
-    this.depth ++;
+    this.depth++;
     history.pushState(null, "", url);
     this.dispatch(url);
   }
 
   back() {
     if (this.depth > 0) {
-      this.depth --;
+      this.depth--;
       history.back();
     } else {
       this.push("/");
@@ -36,7 +36,7 @@ class Router {
   }
 
   private dispatch(url: string) {
-    setTimeout(()=>{
+    setTimeout(() => {
       this.subject$.dispatch(url);
     }, 0);
   }

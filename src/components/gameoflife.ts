@@ -15,49 +15,73 @@ export function gofNext(shape: Cell[]) {
     if (neighbourCells[index]) {
       neighbourCells[index].neighbours++;
     } else {
-      neighbourCells[index] = {neighbours: 1, cell: {x: cell.x - 1, y: cell.y - 1}};
+      neighbourCells[index] = {
+        neighbours: 1,
+        cell: { x: cell.x - 1, y: cell.y - 1 },
+      };
     }
     index = `${cell.x},${cell.y - 1}`;
     if (neighbourCells[index]) {
       neighbourCells[index].neighbours++;
     } else {
-      neighbourCells[index] = {neighbours: 1, cell: {x: cell.x, y: cell.y - 1}};
+      neighbourCells[index] = {
+        neighbours: 1,
+        cell: { x: cell.x, y: cell.y - 1 },
+      };
     }
     index = `${cell.x + 1},${cell.y - 1}`;
     if (neighbourCells[index]) {
       neighbourCells[index].neighbours++;
     } else {
-      neighbourCells[index] = {neighbours: 1, cell: {x: cell.x + 1, y: cell.y - 1}};
+      neighbourCells[index] = {
+        neighbours: 1,
+        cell: { x: cell.x + 1, y: cell.y - 1 },
+      };
     }
     index = `${cell.x - 1},${cell.y}`;
     if (neighbourCells[index]) {
       neighbourCells[index].neighbours++;
     } else {
-      neighbourCells[index] = {neighbours: 1, cell: {x: cell.x - 1, y: cell.y}};
+      neighbourCells[index] = {
+        neighbours: 1,
+        cell: { x: cell.x - 1, y: cell.y },
+      };
     }
     index = `${cell.x + 1},${cell.y}`;
     if (neighbourCells[index]) {
       neighbourCells[index].neighbours++;
     } else {
-      neighbourCells[index] = {neighbours: 1, cell: {x: cell.x + 1, y: cell.y}};
+      neighbourCells[index] = {
+        neighbours: 1,
+        cell: { x: cell.x + 1, y: cell.y },
+      };
     }
     index = `${cell.x - 1},${cell.y + 1}`;
     if (neighbourCells[index]) {
       neighbourCells[index].neighbours++;
     } else {
-      neighbourCells[index] = {neighbours: 1, cell: {x: cell.x - 1, y: cell.y + 1}};
+      neighbourCells[index] = {
+        neighbours: 1,
+        cell: { x: cell.x - 1, y: cell.y + 1 },
+      };
     }
     index = `${cell.x},${cell.y + 1}`;
     if (neighbourCells[index]) {
       neighbourCells[index].neighbours++;
     } else {
-      neighbourCells[index] = {neighbours: 1, cell: {x: cell.x, y: cell.y + 1}};
+      neighbourCells[index] = {
+        neighbours: 1,
+        cell: { x: cell.x, y: cell.y + 1 },
+      };
     }
     index = `${cell.x + 1},${cell.y + 1}`;
     if (neighbourCells[index]) {
       neighbourCells[index].neighbours++;
     } else {
-      neighbourCells[index] = {neighbours: 1, cell: {x: cell.x + 1, y: cell.y + 1}};
+      neighbourCells[index] = {
+        neighbours: 1,
+        cell: { x: cell.x + 1, y: cell.y + 1 },
+      };
     }
   });
 
@@ -76,4 +100,3 @@ export function gofNext(shape: Cell[]) {
 
   return newShape;
 }
-

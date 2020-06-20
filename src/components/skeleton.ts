@@ -2,7 +2,7 @@ export class GofSkeleton extends HTMLElement {
   constructor() {
     super();
 
-    this.attachShadow({ mode: 'open' });
+    this.attachShadow({ mode: "open" });
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -12,17 +12,13 @@ export class GofSkeleton extends HTMLElement {
       
       <div></div>
     `;
-
   }
 
   static get observedAttributes() {
     return [];
   }
 
-  connectedCallback() {
-
-  }
+  connectedCallback() {}
 }
 
-customElements.define('gof-skeleton', GofSkeleton);
-
+customElements.define("gof-skeleton", GofSkeleton);

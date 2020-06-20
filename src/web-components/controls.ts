@@ -1,5 +1,13 @@
-import { $ } from 'carbonium';
-import { fromEvent, Cuprum, merge, Observable, Subscription, interval, combine } from "cuprum";
+import { $ } from "carbonium";
+import {
+  fromEvent,
+  Cuprum,
+  merge,
+  Observable,
+  Subscription,
+  interval,
+  combine,
+} from "cuprum";
 import { gofNext } from "../components/gameoflife";
 
 export class GofControls extends HTMLElement implements CustomElement {
@@ -20,7 +28,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   constructor() {
     super();
 
-    this.attachShadow({mode: 'open'});
+    this.attachShadow({ mode: "open" });
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -136,7 +144,10 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.timer = null;
     this.generation = 0;
     this.collection = this.getCollection();
-    this.resize$ = combine(fromEvent(window, 'resize'), fromEvent(window, 'orientationchange'));
+    this.resize$ = combine(
+      fromEvent(window, "resize"),
+      fromEvent(window, "orientationchange")
+    );
 
     this.setupShapeSelect();
     this.setupSpeed();
@@ -154,7 +165,11 @@ export class GofControls extends HTMLElement implements CustomElement {
     };
   }
 
-  setObservers(redraw$: Observable<Cell[]>, toggle$: Observable<Cell>, infoIsOpen$: Observable<boolean>) {
+  setObservers(
+    redraw$: Observable<Cell[]>,
+    toggle$: Observable<Cell>,
+    infoIsOpen$: Observable<boolean>
+  ) {
     this.redraw$ = redraw$;
 
     toggle$.subscribe(() => {
@@ -168,15 +183,17 @@ export class GofControls extends HTMLElement implements CustomElement {
 
   private setGeneration(gen: number) {
     this.generation = gen;
-    $('.generation', this.shadowRoot).textContent = gen.toString(10);
+    $(".generation", this.shadowRoot).textContent = gen.toString(10);
   }
 
   private setupSize() {
-    const size = $('#size', this.shadowRoot);
+    const size = $("#size", this.shadowRoot);
     this.size$ = merge(
-      fromEvent(size, 'input').map(event => Number((<HTMLInputElement>event.target).value)),
+      fromEvent(size, "input").map((event) =>
+        Number((<HTMLInputElement>event.target).value)
+      ),
       new Cuprum<number>().dispatch(size.value)
-    ).map((value) => Math.round(2 + 38 / 100 * value));
+    ).map((value) => Math.round(2 + (38 / 100) * value));
   }
 
   private play() {
@@ -186,20 +203,19 @@ export class GofControls extends HTMLElement implements CustomElement {
 
     this.timerSubscription = interval(this.speed).subscribe(() => {
       this.nextGeneration$.dispatch();
-    })
+    });
   }
 
   private setupStart() {
-    fromEvent($('#start', this.shadowRoot), 'click').subscribe((event) => {
+    fromEvent($("#start", this.shadowRoot), "click").subscribe((event) => {
       this.started = !this.started;
       if (this.started) {
-        (<HTMLInputElement>event.target).textContent = 'Stop';
-        (<HTMLInputElement>event.target).setAttribute('icon', 'stop');
+        (<HTMLInputElement>event.target).textContent = "Stop";
+        (<HTMLInputElement>event.target).setAttribute("icon", "stop");
         this.play();
-
       } else {
-        (<HTMLInputElement>event.target).textContent = 'Start';
-        (<HTMLInputElement>event.target).setAttribute('icon', 'play');
+        (<HTMLInputElement>event.target).textContent = "Start";
+        (<HTMLInputElement>event.target).setAttribute("icon", "play");
         if (this.timerSubscription) {
           this.timerSubscription.unsubscribe();
         }
@@ -208,9 +224,11 @@ export class GofControls extends HTMLElement implements CustomElement {
   }
 
   private setupSpeed() {
-    const speed = $('#speed', this.shadowRoot);
+    const speed = $("#speed", this.shadowRoot);
     merge(
-      fromEvent(speed, 'input').map((event) => Number((<HTMLInputElement>event.target).value)),
+      fromEvent(speed, "input").map((event) =>
+        Number((<HTMLInputElement>event.target).value)
+      ),
       new Cuprum<number>().dispatch(speed.value)
     ).subscribe((value) => {
       this.speed = 1000 - Math.sqrt(value) * 99;
@@ -221,17 +239,17 @@ export class GofControls extends HTMLElement implements CustomElement {
   }
 
   private setupShapeSelect() {
-    const shapesSelect = $('#shapes', this.shadowRoot);
+    const shapesSelect = $("#shapes", this.shadowRoot);
 
     this.collection.forEach((shape) => {
-      const option = document.createElement('option');
+      const option = document.createElement("option");
       option.text = shape.name;
       shapesSelect.appendChild(option);
     });
     shapesSelect.selectedIndex = 1;
 
     const shape$ = merge(
-      fromEvent(shapesSelect, 'change'),
+      fromEvent(shapesSelect, "change"),
       new Cuprum<Event>().dispatch(null)
     );
 
@@ -239,12 +257,16 @@ export class GofControls extends HTMLElement implements CustomElement {
       this.setGeneration(0);
     });
 
-    this.newShape$ = shape$.map(() => this.collection[shapesSelect.selectedIndex || 0].data);
+    this.newShape$ = shape$.map(
+      () => this.collection[shapesSelect.selectedIndex || 0].data
+    );
   }
 
   private setupGeneration() {
-    this.nextGeneration$ = fromEvent($('#next', this.shadowRoot), 'click').map(() => {
-    });
+    this.nextGeneration$ = fromEvent(
+      $("#next", this.shadowRoot),
+      "click"
+    ).map(() => {});
 
     this.nextGeneration$.subscribe(() => {
       this.setGeneration(this.generation + 1);
@@ -257,62 +279,171 @@ export class GofControls extends HTMLElement implements CustomElement {
 
   private getCollection() {
     return <Collection>[
-      {name: "Clear", data: []},
-      {name: "Glider", data: [{x: 1, y: 0}, {x: 2, y: 1}, {x: 2, y: 2}, {x: 1, y: 2}, {x: 0, y: 2}]},
+      { name: "Clear", data: [] },
+      {
+        name: "Glider",
+        data: [
+          { x: 1, y: 0 },
+          { x: 2, y: 1 },
+          { x: 2, y: 2 },
+          { x: 1, y: 2 },
+          { x: 0, y: 2 },
+        ],
+      },
       {
         name: "Small Exploder",
-        data: [{x: 0, y: 1}, {x: 0, y: 2}, {x: 1, y: 0}, {x: 1, y: 1}, {x: 1, y: 3}, {x: 2, y: 1}, {x: 2, y: 2}]
+        data: [
+          { x: 0, y: 1 },
+          { x: 0, y: 2 },
+          { x: 1, y: 0 },
+          { x: 1, y: 1 },
+          { x: 1, y: 3 },
+          { x: 2, y: 1 },
+          { x: 2, y: 2 },
+        ],
       },
       {
         name: "Exploder",
-        data: [{x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}, {x: 0, y: 3}, {x: 0, y: 4}, {x: 2, y: 0}, {x: 2, y: 4}, {
-          x: 4,
-          y: 0
-        }, {x: 4, y: 1}, {x: 4, y: 2}, {x: 4, y: 3}, {x: 4, y: 4}],
+        data: [
+          { x: 0, y: 0 },
+          { x: 0, y: 1 },
+          { x: 0, y: 2 },
+          { x: 0, y: 3 },
+          { x: 0, y: 4 },
+          { x: 2, y: 0 },
+          { x: 2, y: 4 },
+          {
+            x: 4,
+            y: 0,
+          },
+          { x: 4, y: 1 },
+          { x: 4, y: 2 },
+          { x: 4, y: 3 },
+          { x: 4, y: 4 },
+        ],
       },
       {
         name: "10 Cell Row",
-        data: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 3, y: 0}, {x: 4, y: 0}, {x: 5, y: 0}, {x: 6, y: 0}, {
-          x: 7,
-          y: 0
-        }, {x: 8, y: 0}, {x: 9, y: 0}]
+        data: [
+          { x: 0, y: 0 },
+          { x: 1, y: 0 },
+          { x: 2, y: 0 },
+          { x: 3, y: 0 },
+          { x: 4, y: 0 },
+          { x: 5, y: 0 },
+          { x: 6, y: 0 },
+          {
+            x: 7,
+            y: 0,
+          },
+          { x: 8, y: 0 },
+          { x: 9, y: 0 },
+        ],
       },
       {
         name: "Lightweight spaceship",
-        data: [{x: 0, y: 1}, {x: 0, y: 3}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 3, y: 0}, {x: 3, y: 3}, {x: 4, y: 0}, {
-          x: 4,
-          y: 1
-        }, {x: 4, y: 2}],
+        data: [
+          { x: 0, y: 1 },
+          { x: 0, y: 3 },
+          { x: 1, y: 0 },
+          { x: 2, y: 0 },
+          { x: 3, y: 0 },
+          { x: 3, y: 3 },
+          { x: 4, y: 0 },
+          {
+            x: 4,
+            y: 1,
+          },
+          { x: 4, y: 2 },
+        ],
       },
       {
         name: "Tumbler",
-        data: [{x: 0, y: 3}, {x: 0, y: 4}, {x: 0, y: 5}, {x: 1, y: 0}, {x: 1, y: 1}, {x: 1, y: 5}, {x: 2, y: 0}, {
-          x: 2,
-          y: 1
-        }, {x: 2, y: 2}, {x: 2, y: 3}, {x: 2, y: 4}, {x: 4, y: 0}, {x: 4, y: 1}, {x: 4, y: 2}, {x: 4, y: 3}, {
-          x: 4,
-          y: 4
-        }, {x: 5, y: 0}, {x: 5, y: 1}, {x: 5, y: 5}, {x: 6, y: 3}, {x: 6, y: 4}, {x: 6, y: 5}],
+        data: [
+          { x: 0, y: 3 },
+          { x: 0, y: 4 },
+          { x: 0, y: 5 },
+          { x: 1, y: 0 },
+          { x: 1, y: 1 },
+          { x: 1, y: 5 },
+          { x: 2, y: 0 },
+          {
+            x: 2,
+            y: 1,
+          },
+          { x: 2, y: 2 },
+          { x: 2, y: 3 },
+          { x: 2, y: 4 },
+          { x: 4, y: 0 },
+          { x: 4, y: 1 },
+          { x: 4, y: 2 },
+          { x: 4, y: 3 },
+          {
+            x: 4,
+            y: 4,
+          },
+          { x: 5, y: 0 },
+          { x: 5, y: 1 },
+          { x: 5, y: 5 },
+          { x: 6, y: 3 },
+          { x: 6, y: 4 },
+          { x: 6, y: 5 },
+        ],
       },
       {
         name: "Gosper Glider Gun",
-        data: [{x: 0, y: 2}, {x: 0, y: 3}, {x: 1, y: 2}, {x: 1, y: 3}, {x: 8, y: 3}, {x: 8, y: 4}, {x: 9, y: 2}, {
-          x: 9,
-          y: 4
-        }, {x: 10, y: 2}, {x: 10, y: 3}, {x: 16, y: 4}, {x: 16, y: 5}, {x: 16, y: 6}, {x: 17, y: 4}, {
-          x: 18,
-          y: 5
-        }, {x: 22, y: 1}, {x: 22, y: 2}, {x: 23, y: 0}, {x: 23, y: 2}, {x: 24, y: 0}, {x: 24, y: 1}, {
-          x: 24,
-          y: 12
-        }, {x: 24, y: 13}, {x: 25, y: 12}, {x: 25, y: 14}, {x: 26, y: 12}, {x: 34, y: 0}, {x: 34, y: 1}, {
-          x: 35,
-          y: 0
-        }, {x: 35, y: 1}, {x: 35, y: 7}, {x: 35, y: 8}, {x: 35, y: 9}, {x: 36, y: 7}, {x: 37, y: 8}],
-      }
+        data: [
+          { x: 0, y: 2 },
+          { x: 0, y: 3 },
+          { x: 1, y: 2 },
+          { x: 1, y: 3 },
+          { x: 8, y: 3 },
+          { x: 8, y: 4 },
+          { x: 9, y: 2 },
+          {
+            x: 9,
+            y: 4,
+          },
+          { x: 10, y: 2 },
+          { x: 10, y: 3 },
+          { x: 16, y: 4 },
+          { x: 16, y: 5 },
+          { x: 16, y: 6 },
+          { x: 17, y: 4 },
+          {
+            x: 18,
+            y: 5,
+          },
+          { x: 22, y: 1 },
+          { x: 22, y: 2 },
+          { x: 23, y: 0 },
+          { x: 23, y: 2 },
+          { x: 24, y: 0 },
+          { x: 24, y: 1 },
+          {
+            x: 24,
+            y: 12,
+          },
+          { x: 24, y: 13 },
+          { x: 25, y: 12 },
+          { x: 25, y: 14 },
+          { x: 26, y: 12 },
+          { x: 34, y: 0 },
+          { x: 34, y: 1 },
+          {
+            x: 35,
+            y: 0,
+          },
+          { x: 35, y: 1 },
+          { x: 35, y: 7 },
+          { x: 35, y: 8 },
+          { x: 35, y: 9 },
+          { x: 36, y: 7 },
+          { x: 37, y: 8 },
+        ],
+      },
     ];
   }
 }
 
-customElements.define('gof-controls', GofControls);
-
+customElements.define("gof-controls", GofControls);
