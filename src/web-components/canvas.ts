@@ -36,10 +36,6 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   connectedCallback() {
     this.canvasDomElement = $("#canvas", this.shadowRoot);
 
-    if (!this.canvasDomElement.getContext) {
-      return;
-    }
-
     try {
       let rect = this.canvasDomElement.getBoundingClientRect();
       this.offscreen = new OffscreenCanvas(rect.width, rect.height);

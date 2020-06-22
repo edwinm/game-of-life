@@ -177,7 +177,10 @@ export class GofControls extends HTMLElement implements CustomElement {
     });
 
     infoIsOpen$.subscribe((infoIsOpen) => {
-      $("input, select, gof-button", this.shadowRoot).disabled = infoIsOpen;
+      $<HTMLInputElement>(
+        "input, select, gof-button",
+        this.shadowRoot
+      ).disabled = infoIsOpen;
     });
   }
 
@@ -187,12 +190,12 @@ export class GofControls extends HTMLElement implements CustomElement {
   }
 
   private setupSize() {
-    const size = $("#size", this.shadowRoot);
+    const size = $<HTMLInputElement>("#size", this.shadowRoot);
     this.size$ = merge(
       fromEvent(size, "input").map((event) =>
         Number((<HTMLInputElement>event.target).value)
       ),
-      new Cuprum<number>().dispatch(size.value)
+      new Cuprum<number>().dispatch(Number(size.value))
     ).map((value) => Math.round(2 + (38 / 100) * value));
   }
 
@@ -224,12 +227,12 @@ export class GofControls extends HTMLElement implements CustomElement {
   }
 
   private setupSpeed() {
-    const speed = $("#speed", this.shadowRoot);
+    const speed = $<HTMLInputElement>("#speed", this.shadowRoot);
     merge(
       fromEvent(speed, "input").map((event) =>
         Number((<HTMLInputElement>event.target).value)
       ),
-      new Cuprum<number>().dispatch(speed.value)
+      new Cuprum<number>().dispatch(Number(speed.value))
     ).subscribe((value) => {
       this.speed = 1000 - Math.sqrt(value) * 99;
       if (this.started) {
@@ -239,7 +242,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   }
 
   private setupShapeSelect() {
-    const shapesSelect = $("#shapes", this.shadowRoot);
+    const shapesSelect = $<HTMLSelectElement>("#shapes", this.shadowRoot);
 
     this.collection.forEach((shape) => {
       const option = document.createElement("option");
