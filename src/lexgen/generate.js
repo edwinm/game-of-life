@@ -31,15 +31,15 @@ async function parse() {
     const nameMatches = line.match(/<p>:(<a name=[^>]+>)?<b>([^<]+)<\/b>/);
     if (nameMatches) {
       if (pattern != "") {
+        console.log("writedata 1", fileName);
         writeData(fileName, {
           name,
           date,
           description,
           pattern,
         });
-
-        description = "";
       }
+      description = "";
 
       name = nameMatches[2];
       fileName = name.replace(" ", "_").replace("'", "").replace("/", ";");
@@ -49,16 +49,24 @@ async function parse() {
 
     if (line == "</pre>") {
       if (fileName == oldFileName) {
-        uniqueFileName = `${fileName}-${fileNameCount++}`;
+        uniqueFileName = `${fileName}_(${fileNameCount})`;
+        console.log("writedata 2", uniqueFileName);
+        writeData(uniqueFileName, {
+          name: `${name} (${fileNameCount})`,
+          date,
+          description,
+          pattern,
+        });
+        fileNameCount++;
       } else {
         uniqueFileName = fileName;
-        fileNameCount = 1;
+        fileNameCount = 2;
       }
       oldFileName = fileName;
 
       const imageData = writeImage(uniqueFileName, pattern);
       indexOutStream.write(`${line}\n`);
-      line = `<p><a href='#${fileName}'><img src='${imageData.filePath}' width='${imageData.width}' height='${imageData.height}'></a></p>\n`;
+      line = `<p><a href='data/${uniqueFileName}.json'><img src='${imageData.filePath}' width='${imageData.width}' height='${imageData.height}'></a></p>\n`;
       inPre = false;
       pattern = "";
     }
@@ -148,8 +156,7 @@ function writeImage(fileName, pattern) {
   const localPath = `pix/${fileName}.png`;
   const filePath = `${distDir}${localPath}`;
   const imageOutStream = fs.createWriteStream(filePath, { flags: "w" });
-  const stream = canvas.createPNGStream();
-  stream.pipe(imageOutStream);
+  canvas.createPNGStream().pipe(imageOutStream);
 
   return { filePath: localPath, width: canvas.width, height: canvas.height };
 }
