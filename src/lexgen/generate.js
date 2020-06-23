@@ -10,91 +10,112 @@ const distFile = `${distDir}index.html`;
 
 const date = new Date().toISOString();
 
-let inPre = false;
+const patternPlaceholder = "<!-- pattern -->";
+const termState = 2;
+const patternState = 3;
+
+let state = termState;
+let data = {};
 
 parse();
 
 async function parse() {
   const fileInStream = fs.createReadStream(srcFile);
   const indexOutStream = fs.createWriteStream(distFile, { flags: "w" });
-  let name = "";
-  let fileName = "";
-  let uniqueFileName = "";
-  let oldFileName = "";
-  let fileNameCount = 1;
   let pattern = "";
-  let description = "";
 
   const rl = readline.createInterface({ input: fileInStream });
 
   for await (let line of rl) {
-    const nameMatches = line.match(/<p>:(<a name=[^>]+>)?<b>([^<]+)<\/b>/);
-    if (nameMatches) {
-      if (pattern != "") {
-        console.log("writedata 1", fileName);
-        writeData(fileName, {
-          name,
-          date,
-          description,
-          pattern,
-        });
-      }
-      description = "";
+    switch (state) {
+      case termState:
+        // Possible lines to match:
+        // <p>:<a name=nxn><b>0hd Demonoid</b>
+        // <p><a name=Y>:</a><b>Y-pentomino</b> Co
+        // <p><a name=Z>:</a><a name=wss><b>zebra stripes
+        // <p>:<b>tumbling T-tetson</b> (p8)
+        const newPatternMatches =
+          line.match(/<p>:/) || line.match(/<p><a name=[^>]+>:/);
 
-      name = nameMatches[2];
-      fileName = name.replace(" ", "_").replace("'", "").replace("/", ";");
+        if (newPatternMatches) {
+          // save current data
+          saveData(indexOutStream, data);
 
-      console.log(`\nPattern: ${name}`);
-    }
+          const nameMatches = line.match(/<b>([^<]+)<\/b>/);
+          // start new data
+          data = {
+            name: nameMatches[1],
+            date,
+            description: "",
+            patterns: [],
+          };
+          state = termState;
+        }
 
-    if (line == "</pre>") {
-      if (fileName == oldFileName) {
-        uniqueFileName = `${fileName}_(${fileNameCount})`;
-        console.log("writedata 2", uniqueFileName);
-        writeData(uniqueFileName, {
-          name: `${name} (${fileNameCount})`,
-          date,
-          description,
-          pattern,
-        });
-        fileNameCount++;
-      } else {
-        uniqueFileName = fileName;
-        fileNameCount = 2;
-      }
-      oldFileName = fileName;
+        if (line == "<pre>") {
+          state = patternState;
+        } else {
+          data.description += `${line}\n`;
+        }
+        break;
 
-      const imageData = writeImage(uniqueFileName, pattern);
-      indexOutStream.write(`${line}\n`);
-      line = `<p><a href='data/${uniqueFileName}.json'><img src='${imageData.filePath}' width='${imageData.width}' height='${imageData.height}'></a></p>\n`;
-      inPre = false;
-      pattern = "";
-    }
+      case patternState:
+        if (line == "</pre>") {
+          data.patterns.push(pattern);
+          data.description += `${patternPlaceholder}\n`;
+          pattern = "";
+          state = termState;
+        } else {
+          const patternMatches = line.match(/^	([O.]+)$/);
 
-    if (inPre) {
-      const patternMatches = line.match(/^	([O.]+)$/);
-
-      if (patternMatches) {
-        console.log(patternMatches[1]);
-        pattern = `${pattern}${patternMatches[1]}\n`;
-      }
-    } else {
-      description = `${description}${line}\n`;
-    }
-
-    if (line == "<pre>") {
-      inPre = true;
-    }
-
-    if (!inPre) {
-      indexOutStream.write(`${line}\n`);
+          if (patternMatches) {
+            pattern += `${patternMatches[1]}\n`;
+          } else {
+            // track back
+            data.description += `<pre>\n${line}\n`;
+            state = termState;
+          }
+        }
+        break;
     }
   }
+
   fileInStream.close();
   indexOutStream.end();
 }
 
-function writeData(fileName, data) {
+function saveData(outStream, data) {
+  console.log("Saving", data.name);
+
+  if (!data.name) {
+    return;
+  }
+
+  if (data.patterns.length == 0) {
+  } else {
+    data.saveName = saveString(data.name);
+    for (pattern in data.patterns) {
+      const filename = saveFileName(data, pattern);
+      const imageData = writeImage(filename, data.patterns[pattern]);
+      data.description = data.description.replace(
+        patternPlaceholder,
+        `<p><a href='data/${filename}.json'><img src='${imageData.filePath}' width='${imageData.width}' height='${imageData.height}'></a></p>\n`
+      );
+    }
+    for (pattern in data.patterns) {
+      const filename = saveFileName(data, pattern);
+      writeData(filename, data, pattern);
+    }
+  }
+
+  outStream.write(`<section>${data.description}</section>\n`);
+}
+
+function writeData(fileName, data, pattern) {
+  data = { ...data };
+  data.pattern = data.patterns[pattern];
+  delete data.patterns;
+
   const patternOutStream = fs.createWriteStream(
     `${distDir}data/${fileName}.json`,
     { flags: "w" }
@@ -159,4 +180,16 @@ function writeImage(fileName, pattern) {
   canvas.createPNGStream().pipe(imageOutStream);
 
   return { filePath: localPath, width: canvas.width, height: canvas.height };
+}
+
+function saveFileName(data, i) {
+  return saveString(
+    data.patterns.length == 1
+      ? data.name
+      : `${data.name}_(${Number(pattern) + 1})`
+  );
+}
+
+function saveString(str) {
+  return str.replace(/ /g, "_").replace(/'/g, "").replace(/\//g, ";");
 }
