@@ -49,7 +49,6 @@ async function parse() {
             description: "",
             patterns: [],
           };
-          state = termState;
         }
 
         if (line == "<pre>") {
@@ -91,8 +90,7 @@ function saveData(outStream, data) {
     return;
   }
 
-  if (data.patterns.length == 0) {
-  } else {
+  if (data.patterns.length > 0) {
     data.saveName = saveString(data.name);
     for (pattern in data.patterns) {
       const filename = saveFileName(data, pattern);
@@ -184,9 +182,7 @@ function writeImage(fileName, pattern) {
 
 function saveFileName(data, i) {
   return saveString(
-    data.patterns.length == 1
-      ? data.name
-      : `${data.name}_(${Number(pattern) + 1})`
+    data.patterns.length == 1 ? data.name : `${data.name}_(${Number(i) + 1})`
   );
 }
 
