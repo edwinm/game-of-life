@@ -1,5 +1,7 @@
 const fs = require("fs");
 const readline = require("readline");
+const stripHtml = require("string-strip-html");
+const Entities = require("html-entities").AllHtmlEntities;
 const { createCanvas } = require("canvas");
 
 console.log("Generate lexicon files");
@@ -17,7 +19,55 @@ const patternState = 3;
 let state = termState;
 let data = {};
 
-parse();
+// parse();
+
+fs.readFile("src/lexgen/template.html", "utf8", (err, template) => {
+  if (err) throw err;
+
+  const entities = new Entities();
+
+  writePage(`${distDir}html/lex.html`, {
+    title: "Play John Conway’s Game of Life",
+    url: "https://playgameoflife.com/",
+    name: "",
+    date: "2020-06-23T09:42:29.198Z",
+    description: "Play John Conway’s Game of Life in your browser.",
+    info: "Example patterns…",
+    saveName: "index",
+    pattern: ".O.\n..O\nOOO\n",
+    image: "https://playgameoflife.com/pix/share.png",
+  });
+
+  writePage(`${distDir}html/glider.html`, {
+    title: "Glider - John Conway’s Game of Life",
+    url: "https://playgameoflife.com/lexicon/glider",
+    name: "glider",
+    date: "2020-06-23T09:55:23.415Z",
+    description: entities.encode(
+      stripHtml(
+        '<p>:<a name=p9q><b>glider</b></a> (<i>c</i>/4 diagonally, p4) The smallest, most common and first\ndiscovered <a href="#iz5">spaceship</a>. This was found by Richard Guy in 1970 while\nConway\'s group was attempting to track the <a href="#t2z">evolution</a> of the\n<a href="#rax">R-pentomino</a>. The name is due in part to the fact that it is\n<a href="#u97">glide symmetric</a>. (It is often stated that Conway discovered the\nglider, but he himself has said it was Guy. See also the cryptic\nreference ("some guy") in <a href="#uik">Winning Ways</a>.)\n<p><a href=\'data/glider.json\'><img src=\'pix/glider.png\' width=\'43\' height=\'43\'></a></p>\n\nThe term "glider" is also occasionally (mis)used to mean "spaceship".\n'
+      )
+    ),
+    info:
+      '<p>:<a name=p9q><b>glider</b></a> (<i>c</i>/4 diagonally, p4) The smallest, most common and first\ndiscovered <a href="#iz5">spaceship</a>. This was found by Richard Guy in 1970 while\nConway\'s group was attempting to track the <a href="#t2z">evolution</a> of the\n<a href="#rax">R-pentomino</a>. The name is due in part to the fact that it is\n<a href="#u97">glide symmetric</a>. (It is often stated that Conway discovered the\nglider, but he himself has said it was Guy. See also the cryptic\nreference ("some guy") in <a href="#uik">Winning Ways</a>.)\n<p><a href=\'data/glider.json\'><img src=\'pix/glider.png\' width=\'43\' height=\'43\'></a></p>\n\nThe term "glider" is also occasionally (mis)used to mean "spaceship".\n',
+    saveName: "glider",
+    pattern: "OOO\nO..\n.O.\n",
+    image: "https://playgameoflife.com/lexicon/pix/glider.png",
+  });
+
+  function writePage(file, data) {
+    let out = template;
+
+    for (item in data) {
+      out = out.replace(new RegExp(`{{${item}}}`, "g"), data[item]);
+    }
+
+    fs.writeFile(file, out, "utf8", (err, data) => {
+      if (err) throw err;
+      console.log("done", file);
+    });
+  }
+});
 
 async function parse() {
   const fileInStream = fs.createReadStream(srcFile);
