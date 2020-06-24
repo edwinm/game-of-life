@@ -2,6 +2,7 @@ const fs = require("fs");
 const readline = require("readline");
 const stripHtml = require("string-strip-html");
 const Entities = require("html-entities").AllHtmlEntities;
+const sanitize = require("sanitize-filename");
 const { createCanvas } = require("canvas");
 
 console.log("Generate lexicon files");
@@ -111,18 +112,21 @@ function saveAll(outStream, template, data) {
   }
 
   if (data.patterns.length > 0) {
-    for (pattern in data.patterns) {
-      const filename = saveFileName(data, pattern);
-      const imageData = writeImage(filename, data.patterns[pattern]);
+    for (patternIndex in data.patterns) {
+      const filename = saveFileName(data, patternIndex);
+
+      const imageData = writeImage(filename, data.patterns[patternIndex]);
+
       data.description = data.description.replace(
         patternPlaceholder,
         `<p><a href='/lexicon/${filename}'><img src='${imageData.filePath}' width='${imageData.width}' height='${imageData.height}'></a></p>\n`
       );
     }
-    for (pattern in data.patterns) {
-      const filename = saveFileName(data, pattern);
 
-      writeData(filename, data, pattern);
+    for (patternIndex in data.patterns) {
+      const filename = saveFileName(data, patternIndex);
+
+      writeData(filename, data, patternIndex);
 
       writePage(`${distDir}html/${filename}.html`, template, {
         title: `${titleCase(data.name)} - John Conway’s Game of Life`,
@@ -132,7 +136,7 @@ function saveAll(outStream, template, data) {
         description: entities.encode(stripHtml(data.description)),
         info: data.description,
         saveName: filename,
-        pattern: data.patterns[pattern],
+        pattern: data.patterns[patternIndex],
         image: `https://playgameoflife.com/lexicon/pix/${filename}.png`,
       });
     }
@@ -229,7 +233,7 @@ function saveFileName(data, i) {
 }
 
 function saveString(str) {
-  return str.replace(/ /g, "_").replace(/'/g, "").replace(/\//g, ";");
+  return sanitize(str.replace(/ /g, "_").replace(/'/g, "").replace(/\//g, ";"));
 }
 
 function titleCase(str) {
