@@ -9,12 +9,19 @@ export class Shape {
   }
 
   setObservers(
+    initialPattern$: Observable<string>,
     newShape$: Observable<Cell[]>,
     nextShape$: Observable<Cell[]>,
     dimension$: Observable<Dimension>,
     toggle$: Observable<Cell>,
     offset$: Observable<Offset>
   ) {
+    initialPattern$.subscribe((initialPattern) => {
+      this.current = this.patternToShape(initialPattern);
+      this.center(dimension$.value());
+      this.redraw();
+    });
+
     dimension$.subscribe((newDimension, oldDimension) => {
       this.setNewDimension(newDimension, oldDimension);
     });
@@ -98,5 +105,22 @@ export class Shape {
       this.current.splice(index, 1);
     }
     this.redraw();
+  }
+
+  private patternToShape(pattern: string): Cell[] {
+    let cells = <Cell[]>[];
+
+    const lines = pattern.split(/\n/);
+    lines.shift(); // Skip first empty line
+
+    for (let y = 0; y < lines.length; y++) {
+      for (let x = 0; x < lines.length; x++) {
+        const line = lines[y].trim();
+        if (line[x] == "O") {
+          cells.push({ x, y });
+        }
+      }
+    }
+    return cells;
   }
 }

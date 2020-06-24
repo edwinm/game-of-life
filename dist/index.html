@@ -2,23 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>John Conway’s Game of Life</title>
+    <title>Play John Conway’s Game of Life</title>
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
     />
     <meta
       name="description"
-      content="Play John Conway’s Game of Life right now in your browser."
+      content="Play John Conway’s Game of Life in your browser."
     />
     <meta
       name="keywords"
       content="John Conway Conways Game of Life cellular automaton math mathematica"
     />
-    <meta property="og:title" content="John Conway’s Game of Life" />
+    <meta property="og:title" content="Play John Conway’s Game of Life" />
     <meta
       property="og:description"
-      content="Play John Conway’s Game of Life right now in your browser."
+      content="Play John Conway’s Game of Life in your browser."
     />
     <meta
       property="og:image"
@@ -34,8 +34,8 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png" />
 
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <script src="bundle.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <script src="/bundle.min.js"></script>
   </head>
   <body>
     <main>
@@ -43,10 +43,18 @@
         <h1 class="invisible">Play John Conway’s Game of Life</h1>
       </header>
 
-      <gof-canvas class="gof-canvas"></gof-canvas>
+      <gof-canvas class="gof-canvas">
+.O.
+..O
+OOO
+      </gof-canvas>
 
       <gof-controls></gof-controls>
     </main>
+
+    <gof-info id="lexicon" role="complementary">
+      Example patterns…
+    </gof-info>
 
     <gof-info id="info" role="complementary">
       <h1>John Conway’s Game of Life</h1>

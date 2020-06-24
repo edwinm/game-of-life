@@ -11,6 +11,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   private offset$ = new Cuprum<Cell>();
   private click$ = new Cuprum<Cell>();
   private drag$ = new Cuprum<Offset>();
+  private initialPattern$ = new Cuprum<string>();
   private dragStart: Offset;
   private lastTouch: Offset;
   private isDragging = false;
@@ -46,6 +47,10 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     }
 
     this.setDragging();
+
+    setTimeout(() => {
+      this.initialPattern$.dispatch(this.textContent);
+    }, 0);
   }
 
   getObservers() {
@@ -53,6 +58,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
       click$: this.click$.observable(),
       dimension$: this.dimension$.observable(),
       offset$: this.offset$.observable(),
+      initialPattern$: this.initialPattern$.observable(),
     };
   }
 

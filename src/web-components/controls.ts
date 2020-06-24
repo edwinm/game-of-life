@@ -251,10 +251,7 @@ export class GofControls extends HTMLElement implements CustomElement {
     });
     shapesSelect.selectedIndex = 1;
 
-    const shape$ = merge(
-      fromEvent(shapesSelect, "change"),
-      new Cuprum<Event>().dispatch(null)
-    );
+    const shape$ = fromEvent(shapesSelect, "change");
 
     shape$.subscribe(() => {
       this.setGeneration(0);

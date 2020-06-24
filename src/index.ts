@@ -13,12 +13,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const shape = new Shape();
 
   const { infoIsOpen$ } = info.getObservers();
-  const { click$, dimension$, offset$ } = canvas.getObservers();
+  const {
+    click$,
+    dimension$,
+    offset$,
+    initialPattern$,
+  } = canvas.getObservers();
   const { redraw$ } = shape.getObservers();
   const { newShape$, nextShape$, resize$, size$ } = controls.getObservers();
 
   canvas.setObservers(redraw$, resize$, size$);
-  shape.setObservers(newShape$, nextShape$, dimension$, click$, offset$);
+  shape.setObservers(
+    initialPattern$,
+    newShape$,
+    nextShape$,
+    dimension$,
+    click$,
+    offset$
+  );
   controls.setObservers(redraw$, click$, infoIsOpen$);
 
   routeListener();
