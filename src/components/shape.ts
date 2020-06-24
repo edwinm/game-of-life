@@ -114,7 +114,7 @@ export class Shape {
     lines.shift(); // Skip first empty line
 
     for (let y = 0; y < lines.length; y++) {
-      for (let x = 0; x < lines.length; x++) {
+      for (let x = 0; x < lines[y].length; x++) {
         const line = lines[y].trim();
         if (line[x] == "O") {
           cells.push({ x, y });

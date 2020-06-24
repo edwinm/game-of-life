@@ -1,3 +1,9 @@
 {
-  "rewrites": [{ "source": "/info", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/info", "destination": "/index.html" },
+    {
+      "source": "/lexicon/:pattern",
+      "destination": "/lexicon/html/:pattern.html"
+    }
+  ]
 }
