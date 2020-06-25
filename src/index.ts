@@ -44,18 +44,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function routeListener() {
-    router.observable$.subscribe((url, oldUrl) => {
-      go(oldUrl, false);
-      go(url, true);
+    router.observable$.subscribe(({ path, isNew }, oldState) => {
+      if (oldState) {
+        go(oldState.path, false, oldState.isNew);
+      }
+      go(path, true, isNew);
     });
   }
 
-  async function go(url: string, enter: boolean) {
+  async function go(url: string, enter: boolean, isNew: boolean) {
     if (!url) {
       return;
     }
 
-    // console.log('go', url, enter);
+    // console.log('go', url, enter, isNew);
 
     switch (url) {
       case "/info":
@@ -73,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         break;
       default:
-        if (enter) {
+        if (enter && isNew) {
           const matchArray = url.match(/\/lexicon\/(.+)/);
           if (matchArray && matchArray[1] != currentPattern) {
             currentPattern = matchArray[1];

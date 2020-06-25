@@ -1,21 +1,21 @@
 import { Cuprum } from "cuprum";
 
 class Router {
-  private subject$ = new Cuprum<string>();
+  private subject$ = new Cuprum<HistoryState>();
   private depth = 0;
 
   constructor() {
     this.dispatch(this.fullPath);
 
     window.onpopstate = () => {
-      this.dispatch(this.fullPath);
+      this.dispatch(this.fullPath, false);
     };
   }
 
-  push(url) {
+  push(url: string, isNew: boolean = true) {
     this.depth++;
     history.pushState(null, "", url);
-    this.dispatch(url);
+    this.dispatch(url, isNew);
   }
 
   back() {
@@ -23,7 +23,7 @@ class Router {
       this.depth--;
       history.back();
     } else {
-      this.push("/");
+      this.push("/", false);
     }
   }
 
@@ -35,9 +35,9 @@ class Router {
     return this.subject$.observable();
   }
 
-  private dispatch(url: string) {
+  private dispatch(path: string, isNew: boolean = true) {
     setTimeout(() => {
-      this.subject$.dispatch(url);
+      this.subject$.dispatch({ path, isNew });
     }, 0);
   }
 }
