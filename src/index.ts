@@ -5,12 +5,16 @@ import { Shape } from "./components/shape";
 import { $ } from "carbonium";
 import { GofButton } from "./web-components/button";
 import router from "./components/router";
+import { Cuprum } from "cuprum";
 
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = <GofCanvas>$("gof-canvas");
   const controls = <GofControls>$("gof-controls");
-  const info = <GofInfo>$("gof-info");
+  const info = <GofInfo>$("#info");
+  const lexicon = <GofInfo>$("#lexicon");
   const shape = new Shape();
+  const newPattern$ = new Cuprum<string>();
+  let currentPattern = "";
 
   const { infoIsOpen$ } = info.getObservers();
   const {
@@ -20,12 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
     initialPattern$,
   } = canvas.getObservers();
   const { redraw$ } = shape.getObservers();
-  const { newShape$, nextShape$, resize$, size$ } = controls.getObservers();
+  const { nextShape$, resize$, size$ } = controls.getObservers();
 
   canvas.setObservers(redraw$, resize$, size$);
   shape.setObservers(
     initialPattern$,
-    newShape$,
+    newPattern$,
     nextShape$,
     dimension$,
     click$,
@@ -46,7 +50,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function go(url: string, enter: boolean) {
+  async function go(url: string, enter: boolean) {
+    if (!url) {
+      return;
+    }
+
+    // console.log('go', url, enter);
+
     switch (url) {
       case "/info":
         if (enter) {
@@ -55,6 +65,24 @@ document.addEventListener("DOMContentLoaded", () => {
           info.removeAttribute("open");
         }
         break;
+      case "/lexicon":
+        if (enter) {
+          lexicon.setAttribute("open", "");
+        } else {
+          lexicon.removeAttribute("open");
+        }
+        break;
+      default:
+        if (enter) {
+          const matchArray = url.match(/\/lexicon\/(.+)/);
+          if (matchArray && matchArray[1] != currentPattern) {
+            currentPattern = matchArray[1];
+            const json = await (
+              await fetch(`/lexicon/data/${currentPattern}.json`)
+            ).json();
+            newPattern$.dispatch(json.pattern);
+          }
+        }
     }
   }
 });

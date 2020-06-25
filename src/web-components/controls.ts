@@ -16,11 +16,9 @@ export class GofControls extends HTMLElement implements CustomElement {
   private timerSubscription: Subscription;
   private generation: number;
   private speed: number;
-  private collection: Collection;
   private redraw$: Observable<Cell[]>;
 
   private size$: Cuprum<number>;
-  private newShape$: Cuprum<Cell[]>;
   private nextShape$: Cuprum<Cell[]>;
   private nextGeneration$: Cuprum<void>;
   private resize$: Observable<[Event, Event]>;
@@ -123,7 +121,7 @@ export class GofControls extends HTMLElement implements CustomElement {
       
       <form>
         <gof-button icon="info" href="/info">Explanation</gof-button>
-        <select id="shapes" aria-label="Select predefined shape"></select>
+        <gof-button icon="book" href="/lexicon">Lexicon</gof-button>
         <gof-button id="start" icon="play">Start</gof-button>
         <gof-button id="next" icon="redo">Next</gof-button>
         <div class="generation" title="Generations" aria-label="Generations">0</div>
@@ -133,7 +131,7 @@ export class GofControls extends HTMLElement implements CustomElement {
           <input id="speed" type="range" min="0" max="100" value="50" title="Speed dial" aria-label="Speed dial">
 
           <svg width="20" height="20" viewBox="0 0 225 225" version="1.1" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><path d="M181.444,0l-6.437,0l0,224.662l6.437,0l0,-224.662ZM49.655,0l-6.437,0l0,224.662l6.437,0l0,-224.662Z" style="fill:#000;"/><path d="M224.662,181.444l0,-6.437l-224.662,0l0,6.437l224.662,0ZM224.662,49.655l0,-6.437l-224.662,0l0,6.437l224.662,0Z" style="fill:#000;"/></svg>
-          <input id="size" type="range" min="0" max="100" value="58" title="Grid size" aria-label="Grid size">
+          <input id="size" type="range" min="0" max="100" value="43" title="Grid size" aria-label="Grid size">
         </nowrap>
       </form>
     `;
@@ -143,13 +141,12 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.started = false;
     this.timer = null;
     this.generation = 0;
-    this.collection = this.getCollection();
+    // this.collection = this.getCollection();
     this.resize$ = combine(
       fromEvent(window, "resize"),
       fromEvent(window, "orientationchange")
     );
 
-    this.setupShapeSelect();
     this.setupSpeed();
     this.setupSize();
     this.setupStart();
@@ -158,7 +155,6 @@ export class GofControls extends HTMLElement implements CustomElement {
 
   getObservers() {
     return {
-      newShape$: this.newShape$.observable(),
       nextShape$: this.nextShape$.observable(),
       resize$: this.resize$.observable(),
       size$: this.size$.observable(),
@@ -241,27 +237,6 @@ export class GofControls extends HTMLElement implements CustomElement {
     });
   }
 
-  private setupShapeSelect() {
-    const shapesSelect = $<HTMLSelectElement>("#shapes", this.shadowRoot);
-
-    this.collection.forEach((shape) => {
-      const option = document.createElement("option");
-      option.text = shape.name;
-      shapesSelect.appendChild(option);
-    });
-    shapesSelect.selectedIndex = 1;
-
-    const shape$ = fromEvent(shapesSelect, "change");
-
-    shape$.subscribe(() => {
-      this.setGeneration(0);
-    });
-
-    this.newShape$ = shape$.map(
-      () => this.collection[shapesSelect.selectedIndex || 0].data
-    );
-  }
-
   private setupGeneration() {
     this.nextGeneration$ = fromEvent(
       $("#next", this.shadowRoot),
@@ -275,147 +250,6 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.nextShape$ = this.nextGeneration$.map(() =>
       gofNext(this.redraw$.value())
     );
-  }
-
-  private getCollection() {
-    return <Collection>[
-      { name: "Clear", data: [] },
-      {
-        name: "Glider",
-        data: [
-          { x: 1, y: 0 },
-          { x: 2, y: 1 },
-          { x: 2, y: 2 },
-          { x: 1, y: 2 },
-          { x: 0, y: 2 },
-        ],
-      },
-      {
-        name: "Small Exploder",
-        data: [
-          { x: 0, y: 1 },
-          { x: 0, y: 2 },
-          { x: 1, y: 0 },
-          { x: 1, y: 1 },
-          { x: 1, y: 3 },
-          { x: 2, y: 1 },
-          { x: 2, y: 2 },
-        ],
-      },
-      {
-        name: "Exploder",
-        data: [
-          { x: 0, y: 0 },
-          { x: 0, y: 1 },
-          { x: 0, y: 2 },
-          { x: 0, y: 3 },
-          { x: 0, y: 4 },
-          { x: 2, y: 0 },
-          { x: 2, y: 4 },
-          { x: 4, y: 0 },
-          { x: 4, y: 1 },
-          { x: 4, y: 2 },
-          { x: 4, y: 3 },
-          { x: 4, y: 4 },
-        ],
-      },
-      {
-        name: "10 Cell Row",
-        data: [
-          { x: 0, y: 0 },
-          { x: 1, y: 0 },
-          { x: 2, y: 0 },
-          { x: 3, y: 0 },
-          { x: 4, y: 0 },
-          { x: 5, y: 0 },
-          { x: 6, y: 0 },
-          { x: 7, y: 0 },
-          { x: 8, y: 0 },
-          { x: 9, y: 0 },
-        ],
-      },
-      {
-        name: "Lightweight spaceship",
-        data: [
-          { x: 0, y: 1 },
-          { x: 0, y: 3 },
-          { x: 1, y: 0 },
-          { x: 2, y: 0 },
-          { x: 3, y: 0 },
-          { x: 3, y: 3 },
-          { x: 4, y: 0 },
-          { x: 4, y: 1 },
-          { x: 4, y: 2 },
-        ],
-      },
-      {
-        name: "Tumbler",
-        data: [
-          { x: 0, y: 3 },
-          { x: 0, y: 4 },
-          { x: 0, y: 5 },
-          { x: 1, y: 0 },
-          { x: 1, y: 1 },
-          { x: 1, y: 5 },
-          { x: 2, y: 0 },
-          { x: 2, y: 1 },
-          { x: 2, y: 2 },
-          { x: 2, y: 3 },
-          { x: 2, y: 4 },
-          { x: 4, y: 0 },
-          { x: 4, y: 1 },
-          { x: 4, y: 2 },
-          { x: 4, y: 3 },
-          { x: 4, y: 4 },
-          { x: 5, y: 0 },
-          { x: 5, y: 1 },
-          { x: 5, y: 5 },
-          { x: 6, y: 3 },
-          { x: 6, y: 4 },
-          { x: 6, y: 5 },
-        ],
-      },
-      {
-        name: "Gosper Glider Gun",
-        data: [
-          { x: 0, y: 2 },
-          { x: 0, y: 3 },
-          { x: 1, y: 2 },
-          { x: 1, y: 3 },
-          { x: 8, y: 3 },
-          { x: 8, y: 4 },
-          { x: 9, y: 2 },
-          { x: 9, y: 4 },
-          { x: 10, y: 2 },
-          { x: 10, y: 3 },
-          { x: 16, y: 4 },
-          { x: 16, y: 5 },
-          { x: 16, y: 6 },
-          { x: 17, y: 4 },
-          { x: 18, y: 5 },
-          { x: 22, y: 1 },
-          { x: 22, y: 2 },
-          { x: 23, y: 0 },
-          { x: 23, y: 2 },
-          { x: 24, y: 0 },
-          { x: 24, y: 1 },
-          { x: 24, y: 12 },
-          { x: 24, y: 13 },
-          { x: 25, y: 12 },
-          { x: 25, y: 14 },
-          { x: 26, y: 12 },
-          { x: 34, y: 0 },
-          { x: 34, y: 1 },
-          { x: 35, y: 0 },
-          { x: 35, y: 1 },
-          { x: 35, y: 7 },
-          { x: 35, y: 8 },
-          { x: 35, y: 9 },
-          { x: 36, y: 7 },
-          { x: 37, y: 8 },
-        ],
-      },
-    ];
   }
 }
 

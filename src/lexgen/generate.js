@@ -150,7 +150,7 @@ function writePage(file, out, data) {
     out = out.replace(new RegExp(`{{${item}}}`, "g"), data[item]);
   }
 
-  fs.writeFile(file, out, "utf8", (err, data) => {
+  fs.writeFile(file, out, "utf8", (err) => {
     if (err) throw err;
   });
 }

@@ -109,20 +109,20 @@ export class GofInfo extends HTMLElement implements CustomElement {
 
   attributeChangedCallback(attr, oldValue, newValue) {
     if (attr == "open") {
-      if (this.hasAttribute("open")) {
+      const isOpen = this.hasAttribute("open");
+      if (isOpen) {
         $("#whitebox", this.shadowRoot).classList.add("open");
         setTimeout(() => {
           $("#whitebox", this.shadowRoot).classList.add("anim");
         }, 0);
         $(".close-button", this.shadowRoot).focus();
-        this.infoIsOpen$.dispatch(true);
       } else {
         $("#whitebox", this.shadowRoot).classList.remove("anim");
         setTimeout(() => {
           $("#whitebox", this.shadowRoot).classList.remove("open");
         }, 250);
-        this.infoIsOpen$.dispatch(false);
       }
+      this.infoIsOpen$.dispatch(isOpen);
     }
   }
 
@@ -148,6 +148,14 @@ export class GofInfo extends HTMLElement implements CustomElement {
         router.back();
       })
     );
+
+    fromEvent(this, "click").subscribe((event) => {
+      const section = (<HTMLElement>event.target).closest("[data-url]");
+      if (section) {
+        // console.log('section', section, section.getAttribute('data-url'));
+        router.push(section.getAttribute("data-url"));
+      }
+    });
   }
 
   disconnectedCallback() {

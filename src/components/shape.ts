@@ -1,4 +1,4 @@
-import { Cuprum, Observable } from "cuprum";
+import { Cuprum, merge, Observable } from "cuprum";
 
 export class Shape {
   private current = <Cell[]>[];
@@ -10,13 +10,13 @@ export class Shape {
 
   setObservers(
     initialPattern$: Observable<string>,
-    newShape$: Observable<Cell[]>,
+    newPattern$: Observable<string>,
     nextShape$: Observable<Cell[]>,
     dimension$: Observable<Dimension>,
     toggle$: Observable<Cell>,
     offset$: Observable<Offset>
   ) {
-    initialPattern$.subscribe((initialPattern) => {
+    merge(initialPattern$, newPattern$).subscribe((initialPattern) => {
       this.current = this.patternToShape(initialPattern);
       this.center(dimension$.value());
       this.redraw();
@@ -28,12 +28,6 @@ export class Shape {
 
     offset$.subscribe((offset) => {
       this.setOffset(offset);
-    });
-
-    newShape$.subscribe((shape) => {
-      this.current = shape.map((cell) => ({ x: cell.x, y: cell.y }));
-      this.center(dimension$.value());
-      this.redraw();
     });
 
     nextShape$.subscribe((shape) => {
@@ -111,7 +105,9 @@ export class Shape {
     let cells = <Cell[]>[];
 
     const lines = pattern.split(/\n/);
-    lines.shift(); // Skip first empty line
+    if (lines[0].trim() == "") {
+      lines.shift(); // Skip first empty line
+    }
 
     for (let y = 0; y < lines.length; y++) {
       for (let x = 0; x < lines[y].length; x++) {

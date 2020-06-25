@@ -70,6 +70,33 @@ gof-controls {
   display: block;
 }
 
+.selection {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.selection section {
+  display: inline-block;
+  padding: 20px;
+  border: 1px solid #999;
+  border-radius: 5px;
+  margin: 10px;
+}
+.selection h3 {
+  margin: 0 0 10px 0;
+}
+.selection .image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 410px;
+  height: 110px;
+  background-color: #7e7e7e;
+}
+.selection img {
+  display: block;
+}
+
 @media (max-width: 650px), (max-height: 650px) {
   main {
     height: 100%;
