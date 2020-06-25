@@ -63,15 +63,19 @@ document.addEventListener("DOMContentLoaded", () => {
       case "/info":
         if (enter) {
           info.setAttribute("open", "");
+          setTitle("Info");
         } else {
           info.removeAttribute("open");
+          setTitle();
         }
         break;
       case "/lexicon":
         if (enter) {
           lexicon.setAttribute("open", "");
+          setTitle("Lexicon");
         } else {
           lexicon.removeAttribute("open");
+          setTitle();
         }
         break;
       default:
@@ -83,8 +87,21 @@ document.addEventListener("DOMContentLoaded", () => {
               await fetch(`/lexicon/data/${currentPattern}.json`)
             ).json();
             newPattern$.dispatch(json.pattern);
+            setTitle(json.name);
           }
         }
     }
   }
 });
+
+function titleCase(str) {
+  return `${str[0].toUpperCase()}${str.substr(1)}`;
+}
+
+function setTitle(title?: string) {
+  if (title) {
+    window.document.title = `${titleCase(title)} - John Conway’s Game of Life`;
+  } else {
+    window.document.title = "Play John Conway’s Game of Life";
+  }
+}
