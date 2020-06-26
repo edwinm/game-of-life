@@ -85,6 +85,11 @@ gof-controls {
   max-width: 100%;
 }
 
+.cc-icon {
+  float: right;
+  margin-left: 10px;
+}
+
 @media (max-width: 650px), (max-height: 650px) {
   main {
     height: 100%;

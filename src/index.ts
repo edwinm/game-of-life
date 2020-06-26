@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const lexicon = <GofInfo>$("#lexicon");
   const shape = new Shape();
   const newPattern$ = new Cuprum<string>();
-  let currentPattern = "";
   let isLexiconLoaded = false;
 
   const { infoIsOpen$ } = info.getObservers();
@@ -86,10 +85,9 @@ document.addEventListener("DOMContentLoaded", () => {
       default:
         if (enter && isNew) {
           const matchArray = url.match(/\/lexicon\/(.+)/);
-          if (matchArray && matchArray[1] != currentPattern) {
-            currentPattern = matchArray[1];
+          if (matchArray) {
             const json = await (
-              await fetch(`/lexicon/data/${currentPattern}.json`)
+              await fetch(`/lexicon/data/${matchArray[1]}.json`)
             ).json();
             newPattern$.dispatch(json.pattern);
             setTitle(json.name);
@@ -110,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#lexicon .selection").innerHTML = lexicon;
 
     if (currentTerm) {
-      console.log("currentTerm", currentTerm);
       $(`[data-term='${currentTerm}']`).scrollIntoView();
     } else {
       const currentHash = document.location.hash.substr(1);

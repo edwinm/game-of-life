@@ -38,7 +38,7 @@ fs.readFile("src/lexgen/template.html", "utf8", (err, template) => {
     image: "https://playgameoflife.com/pix/share.png",
   });
 
-  parse(template, 20);
+  parse(template, 10);
 });
 
 async function parse(template, count) {
