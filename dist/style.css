@@ -1,9 +1,9 @@
-/*@font-face {*/
-/*  font-family: 'Play';*/
-/*  src: url('fonts/Play-Bold.woff2') format('woff2');*/
-/*  font-weight: bold;*/
-/*  font-style: normal;*/
-/*}*/
+@font-face {
+  font-family: "Play";
+  src: url("fonts/Play-Bold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+}
 
 html {
   position: fixed;
@@ -27,9 +27,11 @@ dt {
   font-weight: bold;
 }
 
-/*h1, h2, h3 {*/
-/*  font-family: Play;*/
-/*}*/
+h1,
+h2,
+h3 {
+  font-family: Play;
+}
 
 main {
   position: relative;
@@ -70,37 +72,30 @@ gof-controls {
   display: block;
 }
 
-.selection {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.selection button:hover,
-.selection button:focus {
-  box-shadow: 0 0 5px hsla(0, 0%, 0%, 0.5);
-}
-
-.selection button {
-  display: inline-block;
+.selection section {
   padding: 20px;
-  border: 1px solid #999;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  margin: 10px;
+  margin-bottom: 20px;
 }
-.selection h3 {
-  margin: 0 0 10px 0;
+
+.selection b {
+  font-size: 26px;
 }
-.selection .image {
+
+.selection .image a {
   display: flex;
+  width: 100%;
+  padding: 25px;
   justify-content: center;
   align-items: center;
-  width: 410px;
-  height: 110px;
-  background-color: #7e7e7e;
+  border-radius: 3px;
+  background-color: #ccc;
 }
+
 .selection img {
   display: block;
+  max-width: 100%;
 }
 
 @media (max-width: 650px), (max-height: 650px) {

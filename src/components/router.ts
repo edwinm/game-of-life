@@ -37,9 +37,14 @@ class Router {
 
   private dispatch(path: string, isNew: boolean = true) {
     setTimeout(() => {
-      this.subject$.dispatch({ path, isNew });
+      this.subject$.dispatch({ path: stripHash(path), isNew });
     }, 0);
   }
+}
+
+function stripHash(url: string): string {
+  const matches = url.match(/(.+)#/);
+  return matches ? matches[1] : url;
 }
 
 const router = new Router();

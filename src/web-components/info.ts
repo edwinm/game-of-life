@@ -44,6 +44,7 @@ export class GofInfo extends HTMLElement implements CustomElement {
           transform: translate(0, 100px);
           opacity: 0;
           width: 80vw;
+          max-width: 60em;
           max-height: 90vh;
           background: white;
           border: 1px solid #666;
@@ -67,7 +68,7 @@ export class GofInfo extends HTMLElement implements CustomElement {
         
         .close-button {
           position: absolute;
-          right: 0.5em;
+          right: 1em;
           top: 0.5em;
         }
         
@@ -135,7 +136,8 @@ export class GofInfo extends HTMLElement implements CustomElement {
     );
 
     const escKey = fromEvent(document.documentElement, "keyup").filter(
-      (event: KeyboardEvent) => event.key == "Escape"
+      (event: KeyboardEvent) =>
+        event.key == "Escape" && this.hasAttribute("open")
     );
 
     const outsideClick = fromEvent(

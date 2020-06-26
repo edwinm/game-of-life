@@ -5,7 +5,7 @@ import { Shape } from "./components/shape";
 import { $ } from "carbonium";
 import { GofButton } from "./web-components/button";
 import router from "./components/router";
-import { Cuprum } from "cuprum";
+import { Cuprum, fromEvent } from "cuprum";
 
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = <GofCanvas>$("gof-canvas");
@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const shape = new Shape();
   const newPattern$ = new Cuprum<string>();
   let currentPattern = "";
+  let isLexiconLoaded = false;
 
   const { infoIsOpen$ } = info.getObservers();
   const {
@@ -46,6 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function routeListener() {
     router.observable$.subscribe(({ path, isNew }, oldState) => {
       if (oldState) {
+        if (path == oldState.path) {
+          return;
+        }
         go(oldState.path, false, oldState.isNew);
       }
       go(path, true, isNew);
@@ -73,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (enter) {
           lexicon.setAttribute("open", "");
           setTitle("Lexicon");
+          loadLexicon();
         } else {
           lexicon.removeAttribute("open");
           setTitle();
@@ -91,6 +96,35 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
     }
+  }
+
+  async function loadLexicon() {
+    if (isLexiconLoaded) {
+      return;
+    }
+
+    const currentTerm = $("[data-term]").getAttribute("data-term");
+
+    const lexicon = await (await fetch("/list.html")).text();
+
+    $("#lexicon .selection").innerHTML = lexicon;
+
+    if (currentTerm) {
+      console.log("currentTerm", currentTerm);
+      $(`[data-term='${currentTerm}']`).scrollIntoView();
+    } else {
+      const currentHash = document.location.hash.substr(1);
+      if (currentHash) {
+        document.location.hash = currentHash;
+      }
+    }
+
+    fromEvent($("#lexicon [data-internal]"), "click").subscribe((event) => {
+      const a = (<HTMLElement>event.target).closest("a");
+      router.push(a.href);
+      event.preventDefault();
+    });
+    isLexiconLoaded = true;
   }
 });
 

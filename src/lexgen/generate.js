@@ -8,8 +8,8 @@ const { createCanvas } = require("canvas");
 console.log("Generate lexicon files");
 
 const srcFile = "src/lexgen/lexicon/lexicon.htm";
-const distDir = "dist/lexicon/";
-const distFile = `${distDir}index.html`;
+const lexiconDir = "dist/lexicon/";
+const distFile = "dist/list.html";
 
 const date = new Date().toISOString();
 
@@ -24,20 +24,21 @@ const entities = new Entities();
 fs.readFile("src/lexgen/template.html", "utf8", (err, template) => {
   if (err) throw err;
 
-  writePage(`${distDir}html/lex.html`, template, {
+  writePage(`dist/index.html`, template, {
     title: "Play John Conway’s Game of Life",
     url: "https://playgameoflife.com/",
     name: "glider",
-    nameCase: "Glider",
+    nameCase: "Loading…",
+    term: "",
     date,
     description: "Play John Conway’s Game of Life in your browser.",
-    info: "Example patterns…",
+    info: "Loading full Life Lexicon…",
     saveName: "index",
     pattern: ".O.\n..O\nOOO\n",
     image: "https://playgameoflife.com/pix/share.png",
   });
 
-  parse(template, 10);
+  parse(template, 20);
 });
 
 async function parse(template, count) {
@@ -120,7 +121,7 @@ function saveAll(outStream, template, data) {
 
       data.description = data.description.replace(
         patternPlaceholder,
-        `<p><a href='/lexicon/${filename}'><img src='${imageData.filePath}' width='${imageData.width}' height='${imageData.height}'></a></p>\n`
+        `<p class="image"><a data-internal href='/lexicon/${filename}'><img src='/lexicon/${imageData.filePath}' width='${imageData.width}' height='${imageData.height}'></a></p>\n`
       );
     }
 
@@ -129,7 +130,7 @@ function saveAll(outStream, template, data) {
 
       writeData(filename, data, patternIndex);
 
-      writePage(`${distDir}html/${filename}.html`, template, {
+      writePage(`${lexiconDir}html/${filename}.html`, template, {
         title: `${titleCase(data.name)} - John Conway’s Game of Life`,
         url: `https://playgameoflife.com/lexicon/${filename}`,
         name: data.name,
@@ -138,13 +139,18 @@ function saveAll(outStream, template, data) {
         description: entities.encode(stripHtml(data.description)),
         info: data.description,
         saveName: filename,
+        term: saveFileName(data, 0),
         pattern: data.patterns[patternIndex],
         image: `https://playgameoflife.com/lexicon/pix/${filename}.png`,
       });
     }
   }
 
-  outStream.write(`<section>${data.description}</section>\n`);
+  outStream.write(
+    `<section data-term="${saveFileName(data, 0)}">${
+      data.description
+    }</section>\n`
+  );
 }
 
 function writePage(file, out, data) {
@@ -163,7 +169,7 @@ function writeData(fileName, data, pattern) {
   delete data.patterns;
 
   const patternOutStream = fs.createWriteStream(
-    `${distDir}data/${fileName}.json`,
+    `${lexiconDir}data/${fileName}.json`,
     { flags: "w" }
   );
   patternOutStream.write(JSON.stringify(data));
@@ -174,7 +180,7 @@ function writeImage(fileName, pattern) {
   const lines = pattern.split(/\n/);
 
   const cellSize = 11;
-  const padding = 5;
+  const padding = 10;
   const cols = lines[0].length;
   const rows = lines.length - 1;
 
@@ -195,14 +201,20 @@ function writeImage(fileName, pattern) {
   ctx.strokeStyle = "#999";
   for (let x = 0; x <= cols; x++) {
     ctx.beginPath();
-    ctx.moveTo(x * cellSize - 1 + padding, padding);
-    ctx.lineTo(x * cellSize - 1 + padding, cellSize * rows - 1 + padding);
+    ctx.moveTo(x * cellSize - 1 + padding - 0.5, padding - 0.5);
+    ctx.lineTo(
+      x * cellSize - 1 + padding + 0.5,
+      cellSize * rows - 1 + padding + 0.5
+    );
     ctx.stroke();
   }
   for (let y = 0; y <= rows; y++) {
     ctx.beginPath();
-    ctx.moveTo(padding, y * cellSize - 1 + padding);
-    ctx.lineTo(cellSize * cols - 1 + padding, y * cellSize - 1 + padding);
+    ctx.moveTo(padding - 0.5, y * cellSize - 1 + padding - 0.5);
+    ctx.lineTo(
+      cellSize * cols - 1 + padding + 0.5,
+      y * cellSize - 1 + padding + 0.5
+    );
     ctx.stroke();
   }
 
@@ -221,7 +233,7 @@ function writeImage(fileName, pattern) {
   }
 
   const localPath = `pix/${fileName}.png`;
-  const filePath = `${distDir}${localPath}`;
+  const filePath = `${lexiconDir}${localPath}`;
   const imageOutStream = fs.createWriteStream(filePath, { flags: "w" });
   canvas.createPNGStream().pipe(imageOutStream);
 
