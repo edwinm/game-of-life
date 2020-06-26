@@ -201,20 +201,14 @@ function writeImage(fileName, pattern) {
   ctx.strokeStyle = "#999";
   for (let x = 0; x <= cols; x++) {
     ctx.beginPath();
-    ctx.moveTo(x * cellSize - 1 + padding - 0.5, padding - 0.5);
-    ctx.lineTo(
-      x * cellSize - 1 + padding + 0.5,
-      cellSize * rows - 1 + padding + 0.5
-    );
+    ctx.moveTo(x * cellSize - 1 + padding - 0.5, padding - 1);
+    ctx.lineTo(x * cellSize - 1 + padding - 0.5, cellSize * rows - 1 + padding);
     ctx.stroke();
   }
   for (let y = 0; y <= rows; y++) {
     ctx.beginPath();
-    ctx.moveTo(padding - 0.5, y * cellSize - 1 + padding - 0.5);
-    ctx.lineTo(
-      cellSize * cols - 1 + padding + 0.5,
-      y * cellSize - 1 + padding + 0.5
-    );
+    ctx.moveTo(padding - 1, y * cellSize - 1 + padding - 0.5);
+    ctx.lineTo(cellSize * cols - 1 + padding, y * cellSize - 1 + padding - 0.5);
     ctx.stroke();
   }
 
@@ -223,8 +217,8 @@ function writeImage(fileName, pattern) {
     for (let x = 0; x < lines[y].length; x++) {
       if (lines[y][x] == "O") {
         ctx.fillRect(
-          x * cellSize + padding,
-          y * cellSize + padding,
+          x * cellSize + padding - 1,
+          y * cellSize + padding - 1,
           cellSize - 1,
           cellSize - 1
         );
