@@ -27,7 +27,8 @@ fs.readFile("src/lexgen/template.html", "utf8", (err, template) => {
   writePage(`${distDir}html/lex.html`, template, {
     title: "Play John Conway’s Game of Life",
     url: "https://playgameoflife.com/",
-    name: "",
+    name: "glider",
+    nameCase: "Glider",
     date,
     description: "Play John Conway’s Game of Life in your browser.",
     info: "Example patterns…",
@@ -132,6 +133,7 @@ function saveAll(outStream, template, data) {
         title: `${titleCase(data.name)} - John Conway’s Game of Life`,
         url: `https://playgameoflife.com/lexicon/${filename}`,
         name: data.name,
+        nameCase: titleCase(data.name),
         date,
         description: entities.encode(stripHtml(data.description)),
         info: data.description,

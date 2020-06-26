@@ -73,9 +73,15 @@ gof-controls {
 .selection {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
-.selection section {
+.selection button:hover,
+.selection button:focus {
+  box-shadow: 0 0 5px hsla(0, 0%, 0%, 0.5);
+}
+
+.selection button {
   display: inline-block;
   padding: 20px;
   border: 1px solid #999;
