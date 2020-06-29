@@ -9,6 +9,7 @@ import {
   combine,
 } from "cuprum";
 import { gofNext } from "../components/gameoflife";
+import router from "../components/router";
 
 export class GofControls extends HTMLElement implements CustomElement {
   private started: boolean;
@@ -22,6 +23,8 @@ export class GofControls extends HTMLElement implements CustomElement {
   private nextShape$: Cuprum<Cell[]>;
   private nextGeneration$: Cuprum<void>;
   private resize$: Observable<[Event, Event]>;
+  private resetShape$ = new Cuprum<void>();
+  private clearShape$ = new Cuprum<void>();
 
   constructor() {
     super();
@@ -124,6 +127,7 @@ export class GofControls extends HTMLElement implements CustomElement {
         <gof-button icon="book" href="/lexicon">Lexicon</gof-button>
         <gof-button id="start" icon="play">Start</gof-button>
         <gof-button id="next" icon="redo">Next</gof-button>
+        <gof-button id="reset" icon="replay">Clear</gof-button>
         <div class="generation" title="Generations" aria-label="Generations">0</div>
 
         <nowrap>
@@ -141,7 +145,6 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.started = false;
     this.timer = null;
     this.generation = 0;
-    // this.collection = this.getCollection();
     this.resize$ = combine(
       fromEvent(window, "resize"),
       fromEvent(window, "orientationchange")
@@ -151,6 +154,7 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.setupSize();
     this.setupStart();
     this.setupGeneration();
+    this.setupReset();
   }
 
   getObservers() {
@@ -158,6 +162,8 @@ export class GofControls extends HTMLElement implements CustomElement {
       nextShape$: this.nextShape$.observable(),
       resize$: this.resize$.observable(),
       size$: this.size$.observable(),
+      reset$: this.resetShape$.observable(),
+      clear$: this.clearShape$.observable(),
     };
   }
 
@@ -183,6 +189,15 @@ export class GofControls extends HTMLElement implements CustomElement {
   private setGeneration(gen: number) {
     this.generation = gen;
     $(".generation", this.shadowRoot).textContent = gen.toString(10);
+
+    const resetButton = $("#reset", this.shadowRoot);
+    if (gen == 0) {
+      resetButton.textContent = "Clear";
+      resetButton.setAttribute("icon", "close");
+    } else {
+      resetButton.textContent = "Reset";
+      resetButton.setAttribute("icon", "replay");
+    }
   }
 
   private setupSize() {
@@ -250,6 +265,18 @@ export class GofControls extends HTMLElement implements CustomElement {
     this.nextShape$ = this.nextGeneration$.map(() =>
       gofNext(this.redraw$.value())
     );
+  }
+
+  private setupReset() {
+    fromEvent($("#reset", this.shadowRoot), "click").subscribe(() => {
+      if (this.generation == 0) {
+        this.clearShape$.dispatch();
+        router.push("/");
+      } else {
+        this.resetShape$.dispatch();
+        this.setGeneration(0);
+      }
+    });
   }
 }
 

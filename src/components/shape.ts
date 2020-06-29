@@ -2,6 +2,7 @@ import { Cuprum, merge, Observable } from "cuprum";
 
 export class Shape {
   private current = <Cell[]>[];
+  private last = <Cell[]>[];
   private redraw$ = new Cuprum<Cell[]>();
 
   getObservers() {
@@ -14,10 +15,13 @@ export class Shape {
     nextShape$: Observable<Cell[]>,
     dimension$: Observable<Dimension>,
     toggle$: Observable<Cell>,
-    offset$: Observable<Offset>
+    offset$: Observable<Offset>,
+    reset$: Observable<void>,
+    clear$: Observable<void>
   ) {
     merge(initialPattern$, newPattern$).subscribe((initialPattern) => {
       this.current = this.patternToShape(initialPattern);
+      this.last = [...this.current];
       this.center(dimension$.value());
       this.redraw();
     });
@@ -37,6 +41,17 @@ export class Shape {
 
     toggle$.subscribe((event) => {
       this.toggle(event);
+    });
+
+    reset$.subscribe(() => {
+      this.current = [...this.last];
+      this.redraw();
+    });
+
+    clear$.subscribe(() => {
+      this.current = [];
+      this.last = [];
+      this.redraw();
     });
   }
 
@@ -62,6 +77,7 @@ export class Shape {
       cell.x += shapeLeft;
       cell.y += shapeTop;
     });
+    this.last = [...this.current];
   }
 
   private setNewDimension(dimension: Dimension, oldDimension: Dimension) {
@@ -78,6 +94,7 @@ export class Shape {
         cell.y += dy;
       });
     }
+    this.last = [...this.current];
     this.redraw();
   }
 
@@ -86,6 +103,7 @@ export class Shape {
       cell.x += offset.x;
       cell.y += offset.y;
     });
+    this.last = [...this.current];
     this.redraw();
   }
 
@@ -98,6 +116,7 @@ export class Shape {
     } else {
       this.current.splice(index, 1);
     }
+    this.last = [...this.current];
     this.redraw();
   }
 
