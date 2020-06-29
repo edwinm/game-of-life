@@ -65,7 +65,6 @@ gof-controls {
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 20px;
-  overflow: scroll;
 }
 
 .selection b {
@@ -92,8 +91,9 @@ gof-controls {
 }
 
 iframe {
-  margin-left: 50%;
-  transform: translateX(-280px);
+  position: relative;
+  margin-left: -280px;
+  left: 50%;
 }
 
 @media (max-width: 650px), (max-height: 650px) {
