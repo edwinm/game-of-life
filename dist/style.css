@@ -65,6 +65,7 @@ gof-controls {
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 20px;
+  overflow: scroll;
 }
 
 .selection b {
@@ -83,12 +84,16 @@ gof-controls {
 
 .selection img {
   display: block;
-  max-width: 100%;
 }
 
 .cc-icon {
   float: right;
   margin-left: 10px;
+}
+
+iframe {
+  margin-left: 50%;
+  transform: translateX(-280px);
 }
 
 @media (max-width: 650px), (max-height: 650px) {
@@ -98,6 +103,10 @@ gof-controls {
 
   header {
     height: 60px;
+  }
+
+  .selection section {
+    padding: 8px;
   }
 }
 
