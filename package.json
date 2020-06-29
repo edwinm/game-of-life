@@ -29,7 +29,7 @@
   "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-typescript": "^4.1.1",
-    "@types/node": "^14.0.4",
+    "@types/google.analytics": "0.0.40",
     "canvas": "^2.6.1",
     "carbonium": "^0.1.6",
     "cuprum": "^0.1.11",

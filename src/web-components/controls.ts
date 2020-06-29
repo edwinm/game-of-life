@@ -13,7 +13,6 @@ import router from "../components/router";
 
 export class GofControls extends HTMLElement implements CustomElement {
   private started: boolean;
-  private timer: NodeJS.Timeout;
   private timerSubscription: Subscription;
   private generation: number;
   private speed: number;
@@ -150,7 +149,6 @@ export class GofControls extends HTMLElement implements CustomElement {
 
   connectedCallback() {
     this.started = false;
-    this.timer = null;
     this.generation = 0;
     this.resize$ = combine(
       fromEvent(window, "resize"),

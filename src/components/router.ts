@@ -47,6 +47,4 @@ function stripHash(url: string): string {
   return matches ? matches[1] : url;
 }
 
-const router = new Router();
-
-export default router;
+export default new Router();

@@ -7,6 +7,8 @@ import { GofButton } from "./web-components/button";
 import router from "./components/router";
 import { Cuprum, fromEvent } from "cuprum";
 
+import analytics from "./components/analytics";
+
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = <GofCanvas>$("gof-canvas");
   const controls = <GofControls>$("gof-controls");
@@ -131,6 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     isLexiconLoaded = true;
   }
+
+  analytics("UA-93616-2");
 });
 
 function titleCase(str) {
