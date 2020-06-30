@@ -4,6 +4,8 @@
  @license MIT
  */
 
+const attrSymbol = Symbol();
+
 export function define(tag: string) {
   return function (constructor: CustomElementConstructor) {
     customElements.define(tag, constructor);
@@ -12,21 +14,23 @@ export function define(tag: string) {
 
 export function attribute(attr: string) {
   return function (
-    target: CustomElement,
+    target: any,
     propertyName: string,
     propertyDesciptor: PropertyDescriptor
   ): PropertyDescriptor {
-    if (target.constructor["observedAttributes"]) {
-      target.constructor["observedAttributes"].push(attr);
-      target.constructor["_attrMap"].set(attr, propertyDesciptor.value);
+    const prop = propertyDesciptor.value ? "value" : "set";
+
+    if (target.constructor[attrSymbol]) {
+      target.constructor.observedAttributes.push(attr);
+      target.constructor[attrSymbol].set(attr, propertyDesciptor[prop]);
     } else {
-      target.constructor["observedAttributes"] = [attr];
-      target.constructor["_attrMap"] = new Map();
-      target.constructor["_attrMap"].set(attr, propertyDesciptor.value);
+      target.constructor.observedAttributes = [attr];
+      target.constructor[attrSymbol] = new Map();
+      target.constructor[attrSymbol].set(attr, propertyDesciptor[prop]);
     }
 
     target.attributeChangedCallback = function (attr, oldValue, newValue) {
-      const fn = target.constructor["_attrMap"].get(attr);
+      const fn = target.constructor[attrSymbol].get(attr);
       fn.call(this, newValue, oldValue);
     };
 

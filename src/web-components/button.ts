@@ -117,14 +117,9 @@ export class GofButton extends HTMLElement implements CustomElement {
   }
 
   @attribute("icon")
-  setIcon(icon: string, iconOld: string) {
+  setIcon(icon: string) {
     $("svg.visible", this.shadowRoot).classList.remove("visible");
     $(`svg.${icon}`, this.shadowRoot).classList.add("visible");
-  }
-
-  @attribute("disabled")
-  setDisabled(disabled: string) {
-    this.disabled = disabled;
   }
 
   focus(options?: FocusOptions) {
@@ -135,6 +130,7 @@ export class GofButton extends HTMLElement implements CustomElement {
     this.button.blur();
   }
 
+  @attribute("disabled")
   set disabled(isDisabled) {
     this.button.disabled = isDisabled;
     $("#button", this.shadowRoot).classList.toggle("disabled", isDisabled);
