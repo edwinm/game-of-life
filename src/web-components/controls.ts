@@ -133,7 +133,7 @@ export class GofControls extends HTMLElement implements CustomElement {
         <gof-button icon="book" href="/lexicon">Lexicon</gof-button>
         <gof-button id="start" icon="play">Start</gof-button>
         <gof-button id="next" icon="redo">Next</gof-button>
-        <gof-button id="reset" icon="replay">Clear</gof-button>
+        <gof-button id="reset" icon="close">Clear</gof-button>
         <div class="generation" title="Generations" aria-label="Generations">0</div>
 
         <div id="controls">
