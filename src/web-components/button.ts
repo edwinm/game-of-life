@@ -1,6 +1,6 @@
 import { $ } from "carbonium";
 import router from "../components/router";
-import { define } from "../components/web-component-annotion";
+import { attribute, define } from "../components/web-component-annotion";
 
 @define("gof-button")
 export class GofButton extends HTMLElement implements CustomElement {
@@ -116,17 +116,15 @@ export class GofButton extends HTMLElement implements CustomElement {
     this.button.removeEventListener("blur", this.onRelease);
   }
 
-  static get observedAttributes() {
-    return ["icon", "disabled"];
+  @attribute("icon")
+  setIcon(icon: string, iconOld: string) {
+    $("svg.visible", this.shadowRoot).classList.remove("visible");
+    $(`svg.${icon}`, this.shadowRoot).classList.add("visible");
   }
 
-  attributeChangedCallback(attr, oldValue, newValue) {
-    if (attr == "icon") {
-      $("svg.visible", this.shadowRoot).classList.remove("visible");
-      $(`svg.${newValue}`, this.shadowRoot).classList.add("visible");
-    } else if (attr == "disabled") {
-      this.disabled = newValue;
-    }
+  @attribute("disabled")
+  setDisabled(disabled: string) {
+    this.disabled = disabled;
   }
 
   focus(options?: FocusOptions) {
