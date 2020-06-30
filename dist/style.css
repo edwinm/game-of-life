@@ -90,10 +90,10 @@ gof-controls {
   margin-left: 10px;
 }
 
-iframe {
-  position: relative;
-  margin-left: -280px;
-  left: 50%;
+.videos {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 650px), (max-height: 650px) {
