@@ -1,6 +1,8 @@
 import { $ } from "carbonium";
 import router from "../components/router";
+import { define } from "../components/web-component-annotion";
 
+@define("gof-button")
 export class GofButton extends HTMLElement implements CustomElement {
   private button: HTMLButtonElement;
 
@@ -166,5 +168,3 @@ export class GofButton extends HTMLElement implements CustomElement {
       .classList.remove("pressed");
   }
 }
-
-customElements.define("gof-button", GofButton);
