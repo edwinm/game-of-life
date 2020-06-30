@@ -10,7 +10,7 @@ import {
 } from "cuprum";
 import { gofNext } from "../components/gameoflife";
 import router from "../components/router";
-import { define } from "../components/web-component-annotion";
+import { CustomElement, define } from "../components/web-component-annotion";
 
 @define("gof-controls")
 export class GofControls extends HTMLElement implements CustomElement {

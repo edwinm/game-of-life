@@ -1,6 +1,10 @@
 import { $ } from "carbonium";
 import router from "../components/router";
-import { attribute, define } from "../components/web-component-annotion";
+import {
+  attribute,
+  CustomElement,
+  define,
+} from "../components/web-component-annotion";
 
 @define("gof-button")
 export class GofButton extends HTMLElement implements CustomElement {
