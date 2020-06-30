@@ -1,19 +1,19 @@
 {
-    "short_name": "Game of Life",
-    "name": "John Conway’s Game of Life",
-    "description": "Play John Conway’s Game of Life right now in your browser.",
-    "icons": [
-        {
-            "src": "/pix/share.png",
-            "sizes": "250x75",
-            "type": "image/png"
-        },
-        {
-            "src": "/apple-touch-icon.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        }
-    ],
-    "start_url": "https://playgameoflife.com/",
-    "display": "standalone"
+  "short_name": "Game of Life",
+  "name": "Play John Conway’s Game of Life",
+  "description": "Play John Conway’s Game of Life in your browser.",
+  "icons": [
+    {
+      "src": "/pix/gof-share.png",
+      "sizes": "1200x630",
+      "type": "image/jpg"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "https://playgameoflife.com/",
+  "display": "standalone"
 }

@@ -35,7 +35,7 @@ fs.readFile("src/lexgen/template.html", "utf8", (err, template) => {
     info: "Loading full Life Lexicon…",
     saveName: "index",
     pattern: ".O.\n..O\nOOO\n",
-    image: "https://playgameoflife.com/pix/share.png",
+    image: "https://playgameoflife.com/pix/gof-share.jpg",
   });
 
   parse(template, 3);
