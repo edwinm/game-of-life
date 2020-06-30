@@ -23,10 +23,20 @@ export class GofButton extends HTMLElement implements CustomElement {
           background-color: var(--background, royalblue);
           box-shadow: 2px 2px 3px hsla(0, 0%, 0%, 0.3);
           outline: none;
+          transition: all 250ms ease;
         }
         
         #button.pressed {
           box-shadow: inset 2px 2px 3px hsla(0, 0%, 0%, 0.3);
+        }
+        
+        #button.disabled {
+          background-color: #777;
+          color: #ccc;
+        }
+        
+        #button.disabled svg {
+          fill: #ccc;
         }
         
         .container {
@@ -51,14 +61,14 @@ export class GofButton extends HTMLElement implements CustomElement {
         /* Icons */
         svg {
           display: none;
-        }
-
-        svg.visible {
-          display: inline-block;
           width: calc(var(--size, 40px) * 0.7);
           height: calc(var(--size, 40px) * 0.7);
           fill: var(--color, white);
           margin-right: calc(var(--size, 40px) * 0.2);;
+        }
+
+        svg.visible {
+          display: inline-block;
         }
       </style>
       
@@ -105,13 +115,15 @@ export class GofButton extends HTMLElement implements CustomElement {
   }
 
   static get observedAttributes() {
-    return ["icon"];
+    return ["icon", "disabled"];
   }
 
   attributeChangedCallback(attr, oldValue, newValue) {
     if (attr == "icon") {
       $("svg.visible", this.shadowRoot).classList.remove("visible");
       $(`svg.${newValue}`, this.shadowRoot).classList.add("visible");
+    } else if (attr == "disabled") {
+      this.disabled = newValue;
     }
   }
 
@@ -125,6 +137,7 @@ export class GofButton extends HTMLElement implements CustomElement {
 
   set disabled(isDisabled) {
     this.button.disabled = isDisabled;
+    $("#button", this.shadowRoot).classList.toggle("disabled", isDisabled);
   }
 
   private onClick() {

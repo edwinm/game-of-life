@@ -183,11 +183,18 @@ export class GofControls extends HTMLElement implements CustomElement {
       this.setGeneration(0);
     });
 
-    infoIsOpen$.subscribe((infoIsOpen) => {
+    infoIsOpen$.subscribe((isInfoOpen) => {
       $<HTMLInputElement>(
         "input, select, gof-button",
         this.shadowRoot
-      ).disabled = infoIsOpen;
+      ).disabled = isInfoOpen;
+    });
+
+    redraw$.subscribe((cells: Cell[]) => {
+      if (!this.started) {
+        $<HTMLInputElement>("#start, #next, #reset", this.shadowRoot).disabled =
+          cells.length == 0;
+      }
     });
   }
 
@@ -216,13 +223,16 @@ export class GofControls extends HTMLElement implements CustomElement {
   }
 
   private play() {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-    }
-
+    this.stop();
     this.timerSubscription = interval(this.speed).subscribe(() => {
       this.nextGeneration$.dispatch();
     });
+  }
+
+  private stop() {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
   }
 
   private setupStart() {
