@@ -134,6 +134,8 @@ document.addEventListener("DOMContentLoaded", () => {
     isLexiconLoaded = true;
   }
 
+  errorHandler();
+
   analytics("UA-93616-2");
 });
 
@@ -147,4 +149,16 @@ function setTitle(title?: string) {
   } else {
     window.document.title = "Play John Conway’s Game of Life";
   }
+}
+
+function errorHandler() {
+  fromEvent(window, "error").subscribe((event) => {
+    if (
+      confirm(
+        "⚠️ An error occurred.\n\nAre you using an older browser? Do you want to visit the Game of Life for older browsers?"
+      )
+    ) {
+      document.location.assign("https://bitstorm.org/gameoflife/");
+    }
+  });
 }
