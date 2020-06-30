@@ -49,10 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   routeListener();
 
-  // Prevent tree shaking of web components
-  if (GofCanvas && GofInfo && GofControls && GofButton) {
-  }
-
   function routeListener() {
     router.observable$.subscribe(({ path, isNew }, oldState) => {
       if (oldState) {
@@ -134,9 +130,18 @@ document.addEventListener("DOMContentLoaded", () => {
     isLexiconLoaded = true;
   }
 
+  // Browser fix
+  fromEvent(window, "hashchange").subscribe(() => {
+    $(`a[name='${document.location.hash.substr(1)}']`).scrollIntoView();
+  });
+
   errorHandler();
 
   analytics("UA-93616-2");
+
+  // Prevent tree shaking of web components
+  if (GofCanvas && GofInfo && GofControls && GofButton) {
+  }
 });
 
 function titleCase(str) {
