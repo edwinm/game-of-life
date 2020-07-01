@@ -9,7 +9,7 @@ import { Cuprum, fromEvent } from "cuprum";
 
 import analytics from "./components/analytics";
 
-document.addEventListener("DOMContentLoaded", () => {
+fromEvent(document, "DOMContentLoaded").subscribe(() => {
   const canvas = <GofCanvas>$("gof-canvas");
   const controls = <GofControls>$("gof-controls");
   const info = <GofInfo>$("#info");

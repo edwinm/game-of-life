@@ -7,9 +7,8 @@
 const attrSymbol = Symbol();
 
 export function define(name: string, options?: ElementDefinitionOptions) {
-  return function (constructor: CustomElementConstructor) {
+  return (constructor: CustomElementConstructor) =>
     customElements.define(name, constructor, options);
-  };
 }
 
 export function attribute(attr: string) {
@@ -31,8 +30,7 @@ export function attribute(attr: string) {
     }
 
     target.attributeChangedCallback = function (attr, oldValue, newValue) {
-      const fn = target.constructor[attrSymbol].get(attr);
-      fn.call(this, newValue, oldValue);
+      target.constructor[attrSymbol].get(attr).call(this, newValue, oldValue);
     };
 
     return propertyDescriptor;

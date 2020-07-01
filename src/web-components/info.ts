@@ -1,11 +1,11 @@
 import { $ } from "carbonium";
 import { Cuprum, combine, fromEvent, Subscription } from "cuprum";
 import router from "../components/router";
-import { CustomElement, define } from "../components/web-component-annotion";
+import { CustomElement, define } from "../components/web-component-decorator";
 
 @define("gof-info")
 export class GofInfo extends HTMLElement implements CustomElement {
-  subscribers = new Set<Subscription>();
+  private subscribers = new Set<Subscription>();
   private infoIsOpen$: Cuprum<boolean>;
 
   constructor() {

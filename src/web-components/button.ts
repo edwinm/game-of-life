@@ -4,11 +4,13 @@ import {
   attribute,
   CustomElement,
   define,
-} from "../components/web-component-annotion";
+} from "../components/web-component-decorator";
+import { combine, fromEvent, Subscription } from "cuprum";
 
 @define("gof-button")
 export class GofButton extends HTMLElement implements CustomElement {
   private button: HTMLButtonElement;
+  private subscribers = new Set<Subscription>();
 
   constructor() {
     super();
@@ -99,25 +101,32 @@ export class GofButton extends HTMLElement implements CustomElement {
 
   connectedCallback() {
     this.button = $("#button", this.shadowRoot);
-    this.button.addEventListener("mousedown", this.onPress);
-    this.button.addEventListener("keydown", this.onPress);
-
-    this.button.addEventListener("mouseup", this.onRelease);
-    this.button.addEventListener("keyup", this.onRelease);
-    this.button.addEventListener("blur", this.onRelease);
-
-    this.button.addEventListener("click", () => {
-      this.onClick();
-    });
+    this.subscribers.add(
+      fromEvent(this.button, "mousedown").subscribe(this.onPress)
+    );
+    this.subscribers.add(
+      fromEvent(this.button, "keydown").subscribe(this.onPress)
+    );
+    this.subscribers.add(
+      fromEvent(this.button, "mouseup").subscribe(this.onRelease)
+    );
+    this.subscribers.add(
+      fromEvent(this.button, "keyup").subscribe(this.onRelease)
+    );
+    this.subscribers.add(
+      fromEvent(this.button, "blur").subscribe(this.onRelease)
+    );
+    this.subscribers.add(
+      fromEvent(this.button, "click").subscribe(() => {
+        this.onClick();
+      })
+    );
   }
 
   disconnectedCallback() {
-    this.button.removeEventListener("mousedown", this.onPress);
-    this.button.removeEventListener("keydown", this.onPress);
-
-    this.button.removeEventListener("mouseup", this.onRelease);
-    this.button.removeEventListener("keyup", this.onRelease);
-    this.button.removeEventListener("blur", this.onRelease);
+    this.subscribers.forEach((subscriber) => {
+      subscriber.unsubscribe();
+    });
   }
 
   @attribute("icon")

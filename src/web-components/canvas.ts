@@ -1,6 +1,6 @@
 import { $ } from "carbonium";
 import { Cuprum, fromEvent, Observable, combine } from "cuprum";
-import { CustomElement, define } from "../components/web-component-annotion";
+import { CustomElement, define } from "../components/web-component-decorator";
 
 @define("gof-canvas")
 export class GofCanvas extends HTMLElement implements CustomElement {
