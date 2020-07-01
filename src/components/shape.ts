@@ -104,7 +104,6 @@ export class Shape {
       cell.x += offset.x;
       cell.y += offset.y;
     });
-    this.last = [...this.current];
     this.redraw();
   }
 
