@@ -5,7 +5,7 @@ import {
   CustomElement,
   define,
 } from "../components/web-component-decorator";
-import { combine, fromEvent, Subscription } from "cuprum";
+import { fromEvent, Subscription } from "cuprum";
 
 @define("gof-button")
 export class GofButton extends HTMLElement implements CustomElement {
@@ -102,26 +102,17 @@ export class GofButton extends HTMLElement implements CustomElement {
 
   connectedCallback() {
     this.button = $("#button", this.shadowRoot);
-    this.subscribers.add(
-      fromEvent(this.button, "mousedown").subscribe(this.onPress)
-    );
-    this.subscribers.add(
-      fromEvent(this.button, "keydown").subscribe(this.onPress)
-    );
-    this.subscribers.add(
-      fromEvent(this.button, "mouseup").subscribe(this.onRelease)
-    );
-    this.subscribers.add(
-      fromEvent(this.button, "keyup").subscribe(this.onRelease)
-    );
-    this.subscribers.add(
-      fromEvent(this.button, "blur").subscribe(this.onRelease)
-    );
-    this.subscribers.add(
-      fromEvent(this.button, "click").subscribe(() => {
-        this.onClick();
-      })
-    );
+    this.subscribers
+      .add(fromEvent(this.button, "mousedown").subscribe(this.onPress))
+      .add(fromEvent(this.button, "keydown").subscribe(this.onPress))
+      .add(fromEvent(this.button, "mouseup").subscribe(this.onRelease))
+      .add(fromEvent(this.button, "keyup").subscribe(this.onRelease))
+      .add(fromEvent(this.button, "blur").subscribe(this.onRelease))
+      .add(
+        fromEvent(this.button, "click").subscribe(() => {
+          this.onClick();
+        })
+      );
   }
 
   disconnectedCallback() {
@@ -160,11 +151,7 @@ export class GofButton extends HTMLElement implements CustomElement {
     const button = (<HTMLButtonElement>event.target).closest("#button");
     if ((<KeyboardEvent>event).key != "Tab") {
       button.classList.add("pressed");
-      if (event.type == "keydown") {
-        button.classList.remove("no-focus");
-      } else {
-        button.classList.add("no-focus");
-      }
+      button.classList.toggle("no-focus", event.type != "keydown");
     } else {
       button.classList.remove("no-focus");
     }

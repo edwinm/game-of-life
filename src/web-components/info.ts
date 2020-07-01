@@ -160,7 +160,6 @@ export class GofInfo extends HTMLElement implements CustomElement {
     fromEvent(this, "click").subscribe((event) => {
       const section = (<HTMLElement>event.target).closest("[data-url]");
       if (section) {
-        // console.log('section', section, section.getAttribute('data-url'));
         router.push(section.getAttribute("data-url"));
       }
     });

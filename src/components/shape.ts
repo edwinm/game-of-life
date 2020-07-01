@@ -95,7 +95,6 @@ export class Shape {
         cell.y += dy;
       });
     }
-    this.last = [...this.current];
     this.redraw();
   }
 

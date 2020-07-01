@@ -95,11 +95,11 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     fromEvent(this.canvasDomElement, "mousemove").subscribe(
       (event: MouseEvent) => {
         if (this.isMouseDown) {
-          const dragX = event.x - this.dragStart.x;
-          const dragY = event.y - this.dragStart.y;
-          this.isDragging = Math.abs(dragX) > 5 || Math.abs(dragY) > 5;
+          const x = event.x - this.dragStart.x;
+          const y = event.y - this.dragStart.y;
+          this.isDragging = Math.abs(x) > 5 || Math.abs(y) > 5;
           if (this.isDragging) {
-            this.drag$.dispatch({ x: dragX, y: dragY });
+            this.drag$.dispatch({ x, y });
           }
         }
       }
@@ -111,7 +111,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
           x: event.touches[0].clientX,
           y: event.touches[0].clientY,
         };
-        this.dragStart = { x: this.lastTouch.x, y: this.lastTouch.y };
+        this.dragStart = { ...this.lastTouch };
       }
     );
 
@@ -152,7 +152,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
   setObservers(
     redraw$: Observable<Draw>,
-    resize$: Observable<[Event, Event]>,
+    resize$: Observable<Event>,
     size$: Observable<number>
   ) {
     let timer = null;
@@ -161,7 +161,9 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     combine(redraw$, this.drag$).subscribe(
       ([{ pattern, isNew }, drag = { x: 0, y: 0 }], oldDraw) => {
         clearInterval(timer);
-        if (isNew) {
+        if (drag.x || drag.y) {
+          this.draw(pattern, drag, 0.6);
+        } else if (isNew) {
           opacity = 0;
           timer = setInterval(() => {
             opacity += 40 / 250;

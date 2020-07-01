@@ -24,7 +24,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   private size$: Cuprum<number>;
   private nextShape$: Cuprum<Cell[]>;
   private nextGeneration$: Cuprum<void>;
-  private resize$: Observable<[Event, Event]>;
+  private resize$: Observable<Event>;
   private resetShape$ = new Cuprum<void>();
   private clearShape$ = new Cuprum<void>();
 
@@ -153,7 +153,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   connectedCallback() {
     this.started = false;
     this.generation = 0;
-    this.resize$ = combine(
+    this.resize$ = merge(
       fromEvent(window, "resize"),
       fromEvent(window, "orientationchange")
     );
