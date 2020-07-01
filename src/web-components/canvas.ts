@@ -155,9 +155,38 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     resize$: Observable<[Event, Event]>,
     size$: Observable<number>
   ) {
+    let timer = null;
+    let opacity = 0;
+
     combine(redraw$, this.drag$).subscribe(
-      ([{ pattern }, drag = { x: 0, y: 0 }]) => {
-        this.draw(pattern, drag);
+      ([{ pattern, isNew }, drag = { x: 0, y: 0 }], oldDraw) => {
+        clearInterval(timer);
+        if (isNew) {
+          opacity = 0;
+          timer = setInterval(() => {
+            opacity += 40 / 250;
+            if (opacity > 1) {
+              this.draw(pattern, drag, 1);
+              clearInterval(timer);
+            } else {
+              this.draw(pattern, drag, opacity);
+            }
+          }, 40);
+        } else if (pattern.length == 0 && oldDraw) {
+          opacity = 1;
+          const oldPattern = oldDraw[0].pattern;
+          timer = setInterval(() => {
+            opacity -= 40 / 250;
+            if (opacity < 0) {
+              this.draw(oldPattern, drag, 0);
+              clearInterval(timer);
+            } else {
+              this.draw(oldPattern, drag, opacity);
+            }
+          }, 40);
+        } else {
+          this.draw(pattern, drag);
+        }
       }
     );
 
@@ -172,7 +201,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     });
   }
 
-  private draw(cells: Cell[], drag: Offset) {
+  private draw(cells: Cell[], drag: Offset, opacity = 1) {
     const ctx = this.ctx;
     const size = this.cellSize;
 
@@ -208,7 +237,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     }
 
     // ctx.fillStyle = "rgba(255, 255, 0, 0.5)";
-    ctx.fillStyle = "rgba(255, 255, 0, 1)";
+    ctx.fillStyle = `rgba(255, 255, 0, ${opacity})`;
     ctx.lineWidth = 1;
     cells.forEach((cell) => {
       ctx.fillRect(
@@ -221,7 +250,9 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
     if (this.ctxOffscreen) {
       const bitmap = this.offscreen.transferToImageBitmap();
-      this.ctxOffscreen.transferFromImageBitmap(bitmap);
+      window.requestAnimationFrame(() => {
+        this.ctxOffscreen.transferFromImageBitmap(bitmap);
+      });
     }
   }
 
