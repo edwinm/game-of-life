@@ -39,8 +39,9 @@ export class GofButton extends HTMLElement implements CustomElement {
         }
         
         #button.disabled {
-          background-color: #777;
+          background-color: #999;
           color: #ccc;
+          box-shadow: none;
         }
         
         #button.disabled svg {
