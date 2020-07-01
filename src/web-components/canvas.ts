@@ -1,6 +1,7 @@
 import { $ } from "carbonium";
 import { Cuprum, fromEvent, Observable, combine } from "cuprum";
 import { CustomElement, define } from "../components/web-component-decorator";
+import { Draw } from "../models/draw";
 
 @define("gof-canvas")
 export class GofCanvas extends HTMLElement implements CustomElement {
@@ -150,13 +151,15 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   }
 
   setObservers(
-    redraw$: Observable<Cell[]>,
+    redraw$: Observable<Draw>,
     resize$: Observable<[Event, Event]>,
     size$: Observable<number>
   ) {
-    combine(redraw$, this.drag$).subscribe(([cells, drag = { x: 0, y: 0 }]) => {
-      this.draw(cells, drag);
-    });
+    combine(redraw$, this.drag$).subscribe(
+      ([{ pattern }, drag = { x: 0, y: 0 }]) => {
+        this.draw(pattern, drag);
+      }
+    );
 
     resize$.subscribe(() => {
       setTimeout(() => {
@@ -204,7 +207,8 @@ export class GofCanvas extends HTMLElement implements CustomElement {
       ctx.stroke();
     }
 
-    ctx.fillStyle = "yellow";
+    // ctx.fillStyle = "rgba(255, 255, 0, 0.5)";
+    ctx.fillStyle = "rgba(255, 255, 0, 1)";
     ctx.lineWidth = 1;
     cells.forEach((cell) => {
       ctx.fillRect(

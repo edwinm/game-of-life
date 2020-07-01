@@ -19,13 +19,16 @@ fromEvent(document, "DOMContentLoaded").subscribe(() => {
   let isLexiconLoaded = false;
 
   const { infoIsOpen$ } = info.getObservers();
+
   const {
     click$,
     dimension$,
     offset$,
     initialPattern$,
   } = canvas.getObservers();
+
   const { redraw$ } = shape.getObservers();
+
   const {
     nextShape$,
     resize$,
@@ -35,6 +38,7 @@ fromEvent(document, "DOMContentLoaded").subscribe(() => {
   } = controls.getObservers();
 
   canvas.setObservers(redraw$, resize$, size$);
+
   shape.setObservers(
     initialPattern$,
     newPattern$,
@@ -45,6 +49,7 @@ fromEvent(document, "DOMContentLoaded").subscribe(() => {
     reset$,
     clear$
   );
+
   controls.setObservers(redraw$, click$, infoIsOpen$);
 
   routeListener();
@@ -92,6 +97,7 @@ fromEvent(document, "DOMContentLoaded").subscribe(() => {
         if (enter && isNew) {
           const matchArray = url.match(/\/lexicon\/(.+)/);
           if (matchArray) {
+            newPattern$.dispatch("");
             const json = await (
               await fetch(`/lexicon/data/${matchArray[1]}.json`)
             ).json();

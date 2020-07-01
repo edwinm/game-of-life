@@ -11,6 +11,7 @@ import {
 import { gofNext } from "../components/gameoflife";
 import router from "../components/router";
 import { CustomElement, define } from "../components/web-component-decorator";
+import { Draw } from "../models/draw";
 
 @define("gof-controls")
 export class GofControls extends HTMLElement implements CustomElement {
@@ -18,7 +19,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   private timerSubscription: Subscription;
   private generation: number;
   private speed: number;
-  private redraw$: Observable<Cell[]>;
+  private redraw$: Observable<Draw>;
 
   private size$: Cuprum<number>;
   private nextShape$: Cuprum<Cell[]>;
@@ -175,7 +176,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   }
 
   setObservers(
-    redraw$: Observable<Cell[]>,
+    redraw$: Observable<Draw>,
     toggle$: Observable<Cell>,
     infoIsOpen$: Observable<boolean>
   ) {
@@ -192,10 +193,10 @@ export class GofControls extends HTMLElement implements CustomElement {
       ).disabled = isInfoOpen;
     });
 
-    redraw$.subscribe((cells: Cell[]) => {
+    redraw$.subscribe(({ pattern }) => {
       if (!this.started) {
         $<HTMLInputElement>("#start, #next, #reset", this.shadowRoot).disabled =
-          cells.length == 0;
+          pattern.length == 0;
       }
     });
   }
@@ -280,7 +281,7 @@ export class GofControls extends HTMLElement implements CustomElement {
     });
 
     this.nextShape$ = this.nextGeneration$.map(() =>
-      gofNext(this.redraw$.value())
+      gofNext(this.redraw$.value().pattern)
     );
   }
 

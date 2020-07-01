@@ -1,9 +1,10 @@
 import { Cuprum, merge, Observable } from "cuprum";
+import { Draw } from "../models/draw";
 
 export class Shape {
   private current = <Cell[]>[];
   private last = <Cell[]>[];
-  private redraw$ = new Cuprum<Cell[]>();
+  private redraw$ = new Cuprum<Draw>();
 
   getObservers() {
     return { redraw$: this.redraw$.observable() };
@@ -23,7 +24,7 @@ export class Shape {
       this.current = this.patternToShape(initialPattern);
       this.last = [...this.current];
       this.center(dimension$.value());
-      this.redraw();
+      this.redraw(true);
     });
 
     dimension$.subscribe((newDimension, oldDimension) => {
@@ -55,8 +56,8 @@ export class Shape {
     });
   }
 
-  private redraw() {
-    this.redraw$.dispatch(this.current);
+  private redraw(isNew = false) {
+    this.redraw$.dispatch({ pattern: this.current, isNew });
   }
 
   private center(dimension: Dimension) {
