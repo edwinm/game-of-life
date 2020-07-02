@@ -74,6 +74,9 @@ fromEvent(document, "DOMContentLoaded").subscribe(() => {
     // console.log('go', url, enter, isNew);
 
     switch (url) {
+      case "/":
+        setTitle();
+        break;
       case "/info":
         if (enter) {
           info.setAttribute("open", "");
