@@ -15,11 +15,14 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   private click$ = new Cuprum<Cell>();
   private drag$ = new Cuprum<Offset>();
   private initialPattern$ = new Cuprum<string>();
-  private dragStart: Offset;
+  private dragStart = <Offset>{ x: 0, y: 0 };
   private sizeStart: number;
+  private distStart: number;
+  private lastSize: number;
   private lastTouch: Offset;
   private isDragging = false;
   private isMouseDown = false;
+  private touches = 0;
 
   constructor() {
     super();
@@ -69,6 +72,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   setDragging() {
     fromEvent(this.canvasDomElement, "mousedown").subscribe(
       (event: MouseEvent) => {
+        console.log("mousedown");
         this.dragStart = { x: event.x, y: event.y };
         this.isMouseDown = true;
       }
@@ -76,6 +80,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
     fromEvent(this.canvasDomElement, "mouseup").subscribe(
       (event: MouseEvent) => {
+        console.log("mouseup");
         this.isMouseDown = false;
         this.drag$.dispatch({ x: 0, y: 0 });
         this.offset$.dispatch({
@@ -95,6 +100,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
     fromEvent(this.canvasDomElement, "mousemove").subscribe(
       (event: MouseEvent) => {
+        console.log("mousemove");
         if (this.isMouseDown) {
           const x = event.x - this.dragStart.x;
           const y = event.y - this.dragStart.y;
@@ -107,91 +113,137 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     );
 
     fromEvent(this.canvasDomElement, "touchstart").subscribe(
-      (event: TouchEvent, oldEvent: TouchEvent) => {
+      (event: TouchEvent) => {
+        console.log("touchstart", event.touches.length);
+        this.lastTouch = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY,
+        };
         if (event.touches.length == 2) {
+          if (this.touches == 0) {
+            this.dragStart = { ...this.lastTouch };
+          }
           this.dragStart.x +=
             (event.touches[0].clientX + event.touches[1].clientX) / 2 -
             event.touches[0].clientX;
           this.dragStart.y +=
             (event.touches[0].clientY + event.touches[1].clientY) / 2 -
             event.touches[0].clientY;
-          this.sizeStart =
-            this.cellSize /
-            Math.sqrt(
-              (event.touches[1].clientX - event.touches[0].clientX) *
-                (event.touches[1].clientX - event.touches[0].clientX) +
-                (event.touches[1].clientY - event.touches[0].clientY) *
-                  (event.touches[1].clientY - event.touches[0].clientY)
-            );
+
+          this.distStart = Math.sqrt(
+            (event.touches[1].clientX - event.touches[0].clientX) *
+              (event.touches[1].clientX - event.touches[0].clientX) +
+              (event.touches[1].clientY - event.touches[0].clientY) *
+                (event.touches[1].clientY - event.touches[0].clientY)
+          );
+          this.sizeStart = this.cellSize / this.distStart;
         } else {
-          this.lastTouch = {
-            x: event.touches[0].clientX,
-            y: event.touches[0].clientY,
-          };
+          // One touch
           this.dragStart = { ...this.lastTouch };
         }
+        this.touches = event.touches.length;
       }
     );
 
     fromEvent(this.canvasDomElement, "touchmove").subscribe(
       (event: TouchEvent) => {
+        console.log("touchmove", event.touches.length);
         if (event.touches.length == 1) {
           this.lastTouch = {
             x: event.touches[0].clientX,
             y: event.touches[0].clientY,
           };
+
+          this.drag$.dispatch({
+            x: this.lastTouch.x - this.dragStart.x,
+            y: this.lastTouch.y - this.dragStart.y,
+          });
         } else if (event.touches.length == 2) {
           this.lastTouch = {
             x: (event.touches[0].clientX + event.touches[1].clientX) / 2,
             y: (event.touches[0].clientY + event.touches[1].clientY) / 2,
           };
 
-          const size = Math.sqrt(
+          this.lastSize = Math.sqrt(
             (event.touches[1].clientX - event.touches[0].clientX) *
               (event.touches[1].clientX - event.touches[0].clientX) +
               (event.touches[1].clientY - event.touches[0].clientY) *
                 (event.touches[1].clientY - event.touches[0].clientY)
           );
-          const newCellSize = size * this.sizeStart;
+
+          const newCellSize = this.lastSize * this.sizeStart;
           if (newCellSize >= 2 && newCellSize <= 40) {
             this.setCellSize(newCellSize, false);
           }
+
+          this.drag$.dispatch({
+            x:
+              this.lastTouch.x -
+              (this.dragStart.x * this.lastSize) / this.distStart,
+            y:
+              this.lastTouch.y -
+              (this.dragStart.y * this.lastSize) / this.distStart,
+          });
         }
 
-        this.drag$.dispatch({
-          x: this.lastTouch.x - this.dragStart.x,
-          y: this.lastTouch.y - this.dragStart.y,
-        });
         event.preventDefault();
       }
     );
 
     fromEvent(this.canvasDomElement, "touchend").subscribe(
       (event: TouchEvent) => {
+        console.log("touchend", event.touches.length);
         if (event.touches.length == 1) {
-          this.dragStart.x -= this.lastTouch.x - event.touches[0].clientX;
-          this.dragStart.y -= this.lastTouch.y - event.touches[0].clientY;
+          this.dragStart.x =
+            (this.dragStart.x * this.lastSize) / this.distStart -
+            this.lastTouch.x +
+            event.touches[0].clientX;
+          this.dragStart.y =
+            (this.dragStart.y * this.lastSize) / this.distStart -
+            this.lastTouch.y +
+            event.touches[0].clientY;
+
           this.lastTouch = {
             x: event.touches[0].clientX,
             y: event.touches[0].clientY,
           };
-        } else {
+        } else if (event.touches.length == 0) {
           this.drag$.dispatch({ x: 0, y: 0 });
-          this.offset$.dispatch({
-            x: Math.round(
-              (this.lastTouch.x - this.dragStart.x) / this.cellSize
-            ),
-            y: Math.round(
-              (this.lastTouch.y - this.dragStart.y) / this.cellSize
-            ),
-          });
+          if (this.touches == 1) {
+            this.offset$.dispatch({
+              x: Math.round(
+                (this.lastTouch.x - this.dragStart.x) / this.cellSize
+              ),
+              y: Math.round(
+                (this.lastTouch.y - this.dragStart.y) / this.cellSize
+              ),
+            });
+          } else if (this.touches == 2) {
+            console.log("release 2!");
+            this.dragStart.x =
+              (this.dragStart.x * this.lastSize) / this.distStart;
+            this.dragStart.y =
+              (this.dragStart.y * this.lastSize) / this.distStart;
+
+            this.offset$.dispatch({
+              x: Math.round(
+                (this.lastTouch.x - this.dragStart.x) / this.cellSize
+              ),
+              y: Math.round(
+                (this.lastTouch.y - this.dragStart.y) / this.cellSize
+              ),
+            });
+          }
         }
+        this.touches = event.touches.length;
       }
     );
 
     fromEvent(this.canvasDomElement, "touchcancel").subscribe(() => {
+      console.log("touchcancel");
       this.drag$.dispatch({ x: 0, y: 0 });
       this.offset$.dispatch({ x: 0, y: 0 });
+      this.touches = 0;
     });
 
     this.drag$.subscribe(({ x, y }) => {
