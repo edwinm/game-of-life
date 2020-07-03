@@ -36,8 +36,7 @@ div.example {
   align-items: center;
 }
 
-div.example svg {
-  fill: #666;
+div.example .redo {
   margin: 10px;
 }
 
