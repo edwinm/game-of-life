@@ -18,7 +18,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   private dragStart = <Offset>{ x: 0, y: 0 };
   private sizeStart: number;
   private distStart: number;
-  private lastSize: number;
+  private lastSize = -1;
   private lastTouch: Offset;
   private isDragging = false;
   private isMouseDown = false;
@@ -72,7 +72,6 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   setDragging() {
     fromEvent(this.canvasDomElement, "mousedown").subscribe(
       (event: MouseEvent) => {
-        console.log("mousedown");
         this.dragStart = { x: event.x, y: event.y };
         this.isMouseDown = true;
       }
@@ -80,7 +79,6 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
     fromEvent(this.canvasDomElement, "mouseup").subscribe(
       (event: MouseEvent) => {
-        console.log("mouseup");
         this.isMouseDown = false;
         this.drag$.dispatch({ x: 0, y: 0 });
         this.offset$.dispatch({
@@ -100,7 +98,6 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
     fromEvent(this.canvasDomElement, "mousemove").subscribe(
       (event: MouseEvent) => {
-        console.log("mousemove");
         if (this.isMouseDown) {
           const x = event.x - this.dragStart.x;
           const y = event.y - this.dragStart.y;
@@ -114,7 +111,6 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
     fromEvent(this.canvasDomElement, "touchstart").subscribe(
       (event: TouchEvent) => {
-        console.log("touchstart", event.touches.length);
         this.lastTouch = {
           x: event.touches[0].clientX,
           y: event.touches[0].clientY,
@@ -136,7 +132,14 @@ export class GofCanvas extends HTMLElement implements CustomElement {
               (event.touches[1].clientY - event.touches[0].clientY) *
                 (event.touches[1].clientY - event.touches[0].clientY)
           );
+          if (this.lastSize == -1) {
+            this.lastSize = this.distStart;
+          }
           this.sizeStart = this.cellSize / this.distStart;
+          this.lastTouch = {
+            x: (event.touches[0].clientX + event.touches[1].clientX) / 2,
+            y: (event.touches[0].clientY + event.touches[1].clientY) / 2,
+          };
         } else {
           // One touch
           this.dragStart = { ...this.lastTouch };
@@ -147,7 +150,6 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
     fromEvent(this.canvasDomElement, "touchmove").subscribe(
       (event: TouchEvent) => {
-        console.log("touchmove", event.touches.length);
         if (event.touches.length == 1) {
           this.lastTouch = {
             x: event.touches[0].clientX,
@@ -192,7 +194,6 @@ export class GofCanvas extends HTMLElement implements CustomElement {
 
     fromEvent(this.canvasDomElement, "touchend").subscribe(
       (event: TouchEvent) => {
-        console.log("touchend", event.touches.length);
         if (event.touches.length == 1) {
           this.dragStart.x =
             (this.dragStart.x * this.lastSize) / this.distStart -
@@ -218,8 +219,8 @@ export class GofCanvas extends HTMLElement implements CustomElement {
                 (this.lastTouch.y - this.dragStart.y) / this.cellSize
               ),
             });
+            this.lastSize = -1;
           } else if (this.touches == 2) {
-            console.log("release 2!");
             this.dragStart.x =
               (this.dragStart.x * this.lastSize) / this.distStart;
             this.dragStart.y =
@@ -240,7 +241,6 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     );
 
     fromEvent(this.canvasDomElement, "touchcancel").subscribe(() => {
-      console.log("touchcancel");
       this.drag$.dispatch({ x: 0, y: 0 });
       this.offset$.dispatch({ x: 0, y: 0 });
       this.touches = 0;
