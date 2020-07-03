@@ -79,6 +79,12 @@ export class GofButton extends HTMLElement implements CustomElement {
         svg.visible {
           display: inline-block;
         }
+        
+      @media (max-width: 650px), (max-height: 650px) {
+        #button {
+          padding: 0 20px;
+        }
+      }
       </style>
       
       <button id="button">

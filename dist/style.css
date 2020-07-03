@@ -50,7 +50,6 @@ gof-canvas {
 gof-controls {
   position: absolute;
   bottom: 0;
-  min-height: 100px;
   background-color: #b3b3b3;
 }
 

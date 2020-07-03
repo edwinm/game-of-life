@@ -49,7 +49,7 @@ export class GofControls extends HTMLElement implements CustomElement {
         
         img {
           vertical-align: bottom;
-            margin-left: 30px;
+          margin-left: 30px;
         }
         
         form > * {
@@ -124,9 +124,22 @@ export class GofControls extends HTMLElement implements CustomElement {
           }
         }
 
+        @media (display-mode: standalone) {
+          form {
+            padding-bottom: 45px;
+          }
+          
+        }
+        
         @media (max-width: 650px) and (display-mode: standalone) {
           form {
             padding-bottom: 80px;
+          }
+        }
+        
+        @media (pointer: coarse) {
+          #controls, #next, .generation {
+            display: none;
           }
         }
       </style>
