@@ -20,6 +20,27 @@ dt {
   font-weight: bold;
 }
 
+dd {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+dd p {
+  margin: 0;
+}
+
+div.example {
+  display: flex;
+  align-items: center;
+}
+
+div.example svg {
+  fill: #666;
+  margin: 10px;
+}
+
 main {
   position: relative;
   height: 100vh;
