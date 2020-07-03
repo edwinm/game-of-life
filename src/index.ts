@@ -9,6 +9,8 @@ import { Cuprum, fromEvent } from "cuprum";
 
 import analytics from "./components/analytics";
 
+errorHandler();
+
 fromEvent(document, "DOMContentLoaded").subscribe(() => {
   const canvas = <GofCanvas>$("gof-canvas");
   const controls = <GofControls>$("gof-controls");
@@ -144,8 +146,6 @@ fromEvent(document, "DOMContentLoaded").subscribe(() => {
     $(`a[name='${document.location.hash.substr(1)}']`).scrollIntoView();
   });
 
-  errorHandler();
-
   analytics("UA-93616-2");
 
   // Prevent tree shaking of web components
@@ -166,7 +166,7 @@ function setTitle(title?: string) {
 }
 
 function errorHandler() {
-  fromEvent(window, "error").subscribe((event) => {
+  fromEvent(window, "error").subscribe(() => {
     if (
       confirm(
         "⚠️ An error occurred.\n\nAre you using an older browser? Do you want to visit the Game of Life for older browsers?"
