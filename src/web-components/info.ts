@@ -63,7 +63,7 @@ export class GofInfo extends HTMLElement implements CustomElement {
         .info-content {
           top: 0;
           max-height: 90vh;
-          overflow: scroll;
+          overflow-y: scroll;
           overflow-scrolling: touch;
           padding: 2em;
         }

@@ -86,6 +86,10 @@ gof-controls {
   margin-bottom: 20px;
 }
 
+.selection section pre {
+  overflow: scroll;
+}
+
 .selection b {
   font-size: 26px;
 }
@@ -119,6 +123,12 @@ gof-controls {
   flex-wrap: wrap;
 }
 
+@media (max-width: 650px), (max-height: 650px) {
+  .selection img {
+    max-width: 100%;
+    height: auto;
+  }
+}
 @media (max-width: 650px), (max-height: 650px) {
   main {
     height: 100%;
