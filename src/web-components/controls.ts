@@ -106,6 +106,7 @@ export class GofControls extends HTMLElement implements CustomElement {
         @media (max-width: 650px), (max-height: 650px) {
           form {
             margin: 0 5vw;
+            padding-bottom: 20px;
           }
           form > * {
             margin: 5px;
@@ -122,23 +123,14 @@ export class GofControls extends HTMLElement implements CustomElement {
           img {
             margin-left: 10px;
           }
+
+          #controls, #next, .generation {
+            display: none;
+          }
         }
 
-        @media (display-mode: standalone) {
-          form {
-            padding-bottom: 45px;
-          }
-          
-        }
-        
-        @media (max-width: 650px) and (display-mode: standalone) {
-          form {
-            padding-bottom: 80px;
-          }
-        }
-        
         @media (pointer: coarse) {
-          #controls, #next, .generation {
+          #controls {
             display: none;
           }
         }
@@ -215,6 +207,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   }
 
   private setGeneration(gen: number) {
+    // if (!window.matchMedia("(pointer: coarse)").matches) {
     this.generation = gen;
     $(".generation", this.shadowRoot).textContent = gen.toString(10);
 
@@ -226,6 +219,7 @@ export class GofControls extends HTMLElement implements CustomElement {
       resetButton.textContent = "Reset";
       resetButton.setAttribute("icon", "replay");
     }
+    // }
   }
 
   private setupSize() {

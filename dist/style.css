@@ -2,6 +2,7 @@ html {
   position: fixed;
   box-sizing: border-box;
   background-color: #b3b3b3;
+  overflow: hidden;
 }
 
 *,
@@ -41,13 +42,15 @@ div.example .redo {
 }
 
 main {
+  display: flex;
+  flex-direction: column;
   position: relative;
   height: 100vh;
 }
 
 header {
+  flex: 0 0 100px;
   width: 100vw;
-  height: 100px;
   border-bottom: 3px solid #2a4e97;
   background: url(/pix/header.png) no-repeat, url(/pix/header-bg.png) repeat-x;
   background-size: contain;
@@ -59,8 +62,8 @@ header {
 }
 
 gof-canvas {
+  flex: 1 1;
   display: block;
-  height: calc(100vh - 200px);
   width: 100vw;
   padding: 10px;
   background: #404040;
@@ -68,8 +71,7 @@ gof-canvas {
 }
 
 gof-controls {
-  position: absolute;
-  bottom: 0;
+  flex: 0 0 content;
   background-color: #b3b3b3;
 }
 
@@ -128,14 +130,9 @@ gof-controls {
     max-width: 100%;
     height: auto;
   }
-}
-@media (max-width: 650px), (max-height: 650px) {
-  main {
-    height: 100%;
-  }
 
   header {
-    height: 60px;
+    flex-basis: 60px;
   }
 
   .selection section {
@@ -143,8 +140,8 @@ gof-controls {
   }
 }
 
-@media (display-mode: standalone) {
-  main {
-    height: 100vh;
+@media (max-width: 650px) {
+  main.heightfix {
+    height: -webkit-fill-available;
   }
 }

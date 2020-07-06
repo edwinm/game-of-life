@@ -32,7 +32,8 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     this.shadowRoot.innerHTML = `
       <style>
         #canvas{
-          margin-left: var(--width-mod, 0);
+          position: absolute;
+          left: var(--width-mod, 0);
           cursor: var(--cursor, auto);
         }
       </style>
@@ -304,7 +305,9 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     );
 
     resize$.subscribe(() => {
+      $("main").classList.remove("heightfix");
       setTimeout(() => {
+        $("main").classList.add("heightfix");
         this.calculateDimensions();
       }, 10);
     });
@@ -370,29 +373,13 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   }
 
   private calculateDimensions(setDimension = true) {
-    let controlHeightFix = 20;
-    if (window.matchMedia("(display-mode: standalone)").matches) {
-      if (window.matchMedia("(max-width: 650px)").matches) {
-        controlHeightFix -= 40;
-      } else {
-        controlHeightFix += 40;
-      }
-    } else {
-      if (window.matchMedia("(max-width: 650px)").matches) {
-        controlHeightFix += 25;
-      } else if (window.matchMedia("(max-height: 650px)").matches) {
-        controlHeightFix += 50;
-      }
-    }
-    const pixelWidth = window.innerWidth - 20;
-    const pixelHeight =
-      window.innerHeight -
-      $("header").offsetHeight -
-      $("gof-controls").offsetHeight -
-      controlHeightFix;
-    const widthMod = (pixelWidth % this.cellSize) / 2;
+    const $gofCanvas = $("gof-canvas");
+    const pixelWidth = $gofCanvas.offsetWidth - 20;
+    const pixelHeight = $gofCanvas.offsetHeight - 20;
+
+    const widthMod = (pixelWidth % this.cellSize) / 2 + 9;
     this.canvasDomElement.style.setProperty("--width-mod", `${widthMod}px`);
-    this.canvasDomElement.width = pixelWidth - (pixelWidth % this.cellSize) + 1;
+    this.canvasDomElement.width = pixelWidth - (pixelWidth % this.cellSize);
     this.canvasDomElement.height =
       pixelHeight - (pixelHeight % this.cellSize) + 1;
     if (this.ctxOffscreen) {
