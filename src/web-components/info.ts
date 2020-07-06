@@ -47,11 +47,12 @@ export class GofInfo extends HTMLElement implements CustomElement {
         
         section {
           position: absolute;
+          top: 10vh;
           transform: translate(0, 100px);
           opacity: 0;
           max-width: 60em;
           width: 90vw;
-          max-height: 90vh;
+          max-height: 70vh;
           background: white;
           border: 1px solid #666;
           box-shadow: hsla(0, 0%, 0%, 0.3) 5px 5px 5px;
@@ -66,10 +67,11 @@ export class GofInfo extends HTMLElement implements CustomElement {
         
         .info-content {
           top: 0;
-          max-height: 90vh;
+          max-height: 70vh;
           overflow-y: scroll;
           overflow-scrolling: touch;
           padding: 2em;
+          border: 2px solid transparent; /*bugfix*/
         }
         
         .close-button {
