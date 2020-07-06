@@ -309,7 +309,7 @@ export class GofCanvas extends HTMLElement implements CustomElement {
       setTimeout(() => {
         $("main").classList.remove("heightfix");
         this.calculateDimensions();
-      }, 10);
+      }, 400);
     });
 
     size$.subscribe((newGridSize) => {

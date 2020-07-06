@@ -207,7 +207,6 @@ export class GofControls extends HTMLElement implements CustomElement {
   }
 
   private setGeneration(gen: number) {
-    // if (!window.matchMedia("(pointer: coarse)").matches) {
     this.generation = gen;
     $(".generation", this.shadowRoot).textContent = gen.toString(10);
 
@@ -219,7 +218,6 @@ export class GofControls extends HTMLElement implements CustomElement {
       resetButton.textContent = "Reset";
       resetButton.setAttribute("icon", "replay");
     }
-    // }
   }
 
   private setupSize() {
