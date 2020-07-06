@@ -1,7 +1,11 @@
 import { $ } from "carbonium";
 import { Cuprum, combine, fromEvent, Subscription } from "cuprum";
 import router from "../components/router";
-import { CustomElement, define } from "../components/web-component-decorator";
+import {
+  attribute,
+  CustomElement,
+  define,
+} from "../components/web-component-decorator";
 
 @define("gof-info")
 export class GofInfo extends HTMLElement implements CustomElement {
@@ -110,27 +114,22 @@ export class GofInfo extends HTMLElement implements CustomElement {
     `;
   }
 
-  static get observedAttributes() {
-    return ["open"];
-  }
-
-  attributeChangedCallback(attr, oldValue, newValue) {
-    if (attr == "open") {
-      const isOpen = this.hasAttribute("open");
-      if (isOpen) {
-        $("#whitebox", this.shadowRoot).classList.add("open");
-        setTimeout(() => {
-          $("#whitebox", this.shadowRoot).classList.add("anim");
-        }, 0);
-        $(".close-button", this.shadowRoot).focus();
-      } else {
-        $("#whitebox", this.shadowRoot).classList.remove("anim");
-        setTimeout(() => {
-          $("#whitebox", this.shadowRoot).classList.remove("open");
-        }, 250);
-      }
-      this.infoIsOpen$.dispatch(isOpen);
+  @attribute("open")
+  setOpenAttribute(newValue) {
+    const isOpen = newValue != null;
+    if (isOpen) {
+      $("#whitebox", this.shadowRoot).classList.add("open");
+      setTimeout(() => {
+        $("#whitebox", this.shadowRoot).classList.add("anim");
+      }, 0);
+      $(".close-button", this.shadowRoot).focus();
+    } else {
+      $("#whitebox", this.shadowRoot).classList.remove("anim");
+      setTimeout(() => {
+        $("#whitebox", this.shadowRoot).classList.remove("open");
+      }, 250);
     }
+    this.infoIsOpen$.dispatch(isOpen);
   }
 
   connectedCallback() {
