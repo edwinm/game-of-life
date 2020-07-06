@@ -106,7 +106,7 @@ export class GofControls extends HTMLElement implements CustomElement {
         @media (max-width: 650px), (max-height: 650px) {
           form {
             margin: 0 5vw;
-            padding-bottom: env(safe-area-inset-bottom);
+            padding-bottom: 20px;
           }
           form > * {
             margin: 5px;
