@@ -305,9 +305,9 @@ export class GofCanvas extends HTMLElement implements CustomElement {
     );
 
     resize$.subscribe(() => {
-      $("main").classList.remove("heightfix");
+      $("main").classList.add("heightfix");
       setTimeout(() => {
-        $("main").classList.add("heightfix");
+        $("main").classList.remove("heightfix");
         this.calculateDimensions();
       }, 10);
     });

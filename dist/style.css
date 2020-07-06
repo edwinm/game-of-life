@@ -46,6 +46,11 @@ main {
   flex-direction: column;
   position: relative;
   height: 100vh;
+  height: -webkit-fill-available;
+}
+
+main.heightfix {
+  height: 100vh;
 }
 
 header {
@@ -137,11 +142,5 @@ gof-controls {
 
   .selection section {
     padding: 8px;
-  }
-}
-
-@media (max-width: 650px) {
-  main.heightfix {
-    height: -webkit-fill-available;
   }
 }
