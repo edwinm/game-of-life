@@ -23,29 +23,53 @@ struct neighbours_struct* neighbours;
 int neighbours_count;
 
 void push(int x, int y) {
-	struct neighbours_struct* current = &neighbours[neighbours_count];
-	current->x = x;
-	current->y = y;
-	current->count = 1;
+	for(int n = 0; n < neighbours_count; n++) {
+		if (neighbours[n].x == x && neighbours[n].y == y) {
+			neighbours[n].count++;
+			return;
+		}
+	}
+
+	neighbours[neighbours_count].x = x;
+	neighbours[neighbours_count].y = y;
+	neighbours[neighbours_count].count = 1;
 	neighbours_count++;
 }
 
-int gof(struct cells_struct* input_ptr, struct neighbours_struct* output_ptr, int len) {
+int gof(struct cells_struct* cells, struct neighbours_struct* neighbours_in, int len) {
 	neighbours_count = 0;
-	neighbours = output_ptr;
-	int i;
-	for(i = 0; i < len; i++) {
-		push(input_ptr[i].x-1, input_ptr[i].y-1);
-		push(input_ptr[i].x, input_ptr[i].y-1);
-		push(input_ptr[i].x+1, input_ptr[i].y-1);
-		push(input_ptr[i].x-1, input_ptr[i].y);
-		push(input_ptr[i].x+1, input_ptr[i].y);
-		push(input_ptr[i].x-1, input_ptr[i].y+1);
-		push(input_ptr[i].x, input_ptr[i].y+1);
-		push(input_ptr[i].x+1, input_ptr[i].y+1);
+	neighbours = neighbours_in;
+
+	int out_count = 0;
+
+	for(int i = 0; i < len; i++) {
+		push(cells[i].x-1, cells[i].y-1);
+		push(cells[i].x, cells[i].y-1);
+		push(cells[i].x+1, cells[i].y-1);
+		push(cells[i].x-1, cells[i].y);
+		push(cells[i].x+1, cells[i].y);
+		push(cells[i].x-1, cells[i].y+1);
+		push(cells[i].x, cells[i].y+1);
+		push(cells[i].x+1, cells[i].y+1);
 	}
 
-	return neighbours_count * 3;
+	for(int i = 0; i < len; i++) {
+		for(int n = 0; n < neighbours_count; n++) {
+			if (neighbours[n].x == cells[i].x && neighbours[n].y == cells[i].y && neighbours[n].count == 2) {
+				neighbours[n].count = 3;
+			}
+		}
+	}
+
+	for(int n = 0; n < neighbours_count; n++) {
+		if (neighbours[n].count == 3) {
+			cells[out_count].x = neighbours[n].x;
+			cells[out_count].y = neighbours[n].y;
+			out_count++;
+		}
+	}
+
+	return out_count;
 }
 
 
