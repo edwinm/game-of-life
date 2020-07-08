@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <script src="gof.js"></script>
+</head>
+<body>
+
+<button class="mybutton">Run GOF</button>
+
+<script>
+  document.querySelector('.mybutton')
+    .addEventListener('click', function() {
+      var result = Module.ccall(
+        'gof',	// name of C function
+        null,	// return type
+        null,	// argument types
+        null	// arguments
+      );
+    });
+</script>
+
+
+</body>
+</html>
