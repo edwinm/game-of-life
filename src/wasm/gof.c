@@ -13,7 +13,12 @@ struct neighbours_struct {
 	int count;
 };
 
-int* input;
+struct cells_struct {
+	int x;
+	int y;
+};
+
+struct cells_struct* input;
 struct neighbours_struct* neighbours;
 int neighbours_count;
 
@@ -25,15 +30,22 @@ void push(int x, int y) {
 	neighbours_count++;
 }
 
-int gof(int* input_ptr, struct neighbours_struct* output_ptr, int len) {
+int gof(struct cells_struct* input_ptr, struct neighbours_struct* output_ptr, int len) {
 	neighbours_count = 0;
 	neighbours = output_ptr;
 	int i;
-	for(i = 0; i < len; i+=2) {
-		push(input_ptr[i], input_ptr[i+1]);
+	for(i = 0; i < len; i++) {
+		push(input_ptr[i].x-1, input_ptr[i].y-1);
+		push(input_ptr[i].x, input_ptr[i].y-1);
+		push(input_ptr[i].x+1, input_ptr[i].y-1);
+		push(input_ptr[i].x-1, input_ptr[i].y);
+		push(input_ptr[i].x+1, input_ptr[i].y);
+		push(input_ptr[i].x-1, input_ptr[i].y+1);
+		push(input_ptr[i].x, input_ptr[i].y+1);
+		push(input_ptr[i].x+1, input_ptr[i].y+1);
 	}
 
-	return len * 1.5;
+	return neighbours_count * 3;
 }
 
 

@@ -12,17 +12,17 @@
 
   const gof = Module.cwrap("gof", "number", ["number", "number", "number"]);
 
-  function callGof(cells){
+  function callGof(cells) {
     const inputArray = new Int32Array(cells);
     const len = inputArray.length;
     const bytesPerElement = inputArray.BYTES_PER_ELEMENT;
 
     const inputPtr = Module._malloc(len * bytesPerElement);
-    const outputPtr = Module._malloc(len * bytesPerElement * 8);
+    const outputPtr = Module._malloc(len * bytesPerElement * 12); // 8 neighbours / 2 * 3
 
     Module.HEAP32.set(inputArray, inputPtr / bytesPerElement);
 
-    const newSize = gof(inputPtr, outputPtr, len);
+    const newSize = gof(inputPtr, outputPtr, len / 2);
     const outputArray = new Int32Array(Module.HEAP32.buffer, outputPtr, newSize);
 
     console.log('newSize', newSize);
@@ -34,7 +34,7 @@
   }
 
   function test() {
-    const glider =  [1, 0, 2, 1, 2, 2, 1, 2, 0, 2];
+    const glider = [1, 0, 2, 1, 2, 2, 1, 2, 0, 2];
 
     callGof(glider);
   }
