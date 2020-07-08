@@ -666,14 +666,11 @@ var asmLibraryArg = {
   table: wasmTable,
 };
 var asm = Module["asm"](asmGlobalArg, asmLibraryArg, buffer);
-var _addOne = (Module["_addOne"] = function () {
-  return (_addOne = Module["_addOne"] = Module["asm"]["c"]).apply(
-    null,
-    arguments
-  );
-});
 var _free = (Module["_free"] = function () {
-  return (_free = Module["_free"] = Module["asm"]["d"]).apply(null, arguments);
+  return (_free = Module["_free"] = Module["asm"]["c"]).apply(null, arguments);
+});
+var _gof = (Module["_gof"] = function () {
+  return (_gof = Module["_gof"] = Module["asm"]["d"]).apply(null, arguments);
 });
 var _malloc = (Module["_malloc"] = function () {
   return (_malloc = Module["_malloc"] = Module["asm"]["e"]).apply(
