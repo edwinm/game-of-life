@@ -10,33 +10,33 @@
 
 <script>
 
-  var gof = Module.cwrap("gof", "number", ["number", "number", "number"]);
+  const gof = Module.cwrap("gof", "number", ["number", "number", "number"]);
 
   function callGof(cells){
-    var input_array = new Int32Array(cells);
-    var len = input_array.length;
-    var bytes_per_element = input_array.BYTES_PER_ELEMENT;
+    const inputArray = new Int32Array(cells);
+    const len = inputArray.length;
+    const bytesPerElement = inputArray.BYTES_PER_ELEMENT;
 
-    // alloc memory, in this case 5*4 bytes
-    var input_ptr = Module._malloc(len * bytes_per_element);
-    var output_ptr = Module._malloc(len * bytes_per_element);
+    const inputPtr = Module._malloc(len * bytesPerElement);
+    const outputPtr = Module._malloc(len * bytesPerElement * 8);
 
-    Module.HEAP32.set(input_array, input_ptr / bytes_per_element);
-    const newSize = gof(input_ptr, output_ptr, len);
-    var output_array = new Int32Array(Module.HEAP32.buffer, output_ptr, len);
+    Module.HEAP32.set(inputArray, inputPtr / bytesPerElement);
+
+    const newSize = gof(inputPtr, outputPtr, len);
+    const outputArray = new Int32Array(Module.HEAP32.buffer, outputPtr, newSize);
+
     console.log('newSize', newSize);
-    console.log("The starting array was:", input_array);
-    console.log("The result read is:	", output_array);
+    console.log("inputArray", inputArray);
+    console.log("outputArray", outputArray);
 
-    // dealloc memory
-    Module._free(input_ptr);
-    Module._free(output_ptr);
+    Module._free(inputPtr);
+    Module._free(outputPtr);
   }
 
   function test() {
-    const arr = [1,2,3,4,5];
+    const glider =  [1, 0, 2, 1, 2, 2, 1, 2, 0, 2];
 
-    callGof(arr);
+    callGof(glider);
   }
 
 </script>

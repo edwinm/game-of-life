@@ -6,5 +6,8 @@ int gof(int* input_ptr, int* output_ptr, int len){
 	for(i = 0; i < len; i++) {
     output_ptr[i] = input_ptr[i] + 1;
 	}
-  return 7;
+	output_ptr[i++] = 99;
+	output_ptr[i++] = 99;
+	output_ptr[i++] = 99;
+  return i;
 }
