@@ -178,10 +178,76 @@ if (Module["noExitRuntime"]) noExitRuntime = Module["noExitRuntime"];
 if (typeof WebAssembly !== "object") {
   err("no native wasm support detected");
 }
+function setValue(ptr, value, type, noSafe) {
+  type = type || "i8";
+  if (type.charAt(type.length - 1) === "*") type = "i32";
+  switch (type) {
+    case "i1":
+      HEAP8[ptr >> 0] = value;
+      break;
+    case "i8":
+      HEAP8[ptr >> 0] = value;
+      break;
+    case "i16":
+      HEAP16[ptr >> 1] = value;
+      break;
+    case "i32":
+      HEAP32[ptr >> 2] = value;
+      break;
+    case "i64":
+      (tempI64 = [
+        value >>> 0,
+        ((tempDouble = value),
+        +Math_abs(tempDouble) >= 1
+          ? tempDouble > 0
+            ? (Math_min(+Math_floor(tempDouble / 4294967296), 4294967295) |
+                0) >>>
+              0
+            : ~~+Math_ceil(
+                (tempDouble - +(~~tempDouble >>> 0)) / 4294967296
+              ) >>> 0
+          : 0),
+      ]),
+        (HEAP32[ptr >> 2] = tempI64[0]),
+        (HEAP32[(ptr + 4) >> 2] = tempI64[1]);
+      break;
+    case "float":
+      HEAPF32[ptr >> 2] = value;
+      break;
+    case "double":
+      HEAPF64[ptr >> 3] = value;
+      break;
+    default:
+      abort("invalid type for setValue: " + type);
+  }
+}
+function getValue(ptr, type, noSafe) {
+  type = type || "i8";
+  if (type.charAt(type.length - 1) === "*") type = "i32";
+  switch (type) {
+    case "i1":
+      return HEAP8[ptr >> 0];
+    case "i8":
+      return HEAP8[ptr >> 0];
+    case "i16":
+      return HEAP16[ptr >> 1];
+    case "i32":
+      return HEAP32[ptr >> 2];
+    case "i64":
+      return HEAP32[ptr >> 2];
+    case "float":
+      return HEAPF32[ptr >> 2];
+    case "double":
+      return HEAPF64[ptr >> 3];
+    default:
+      abort("invalid type for getValue: " + type);
+  }
+  return null;
+}
 var wasmMemory;
 var wasmTable = new WebAssembly.Table({
-  initial: 6,
-  maximum: 6,
+  initial: 0,
+  maximum: 0,
   element: "anyfunc",
 });
 var ABORT = false;
@@ -239,6 +305,19 @@ function ccall(ident, returnType, argTypes, args, opts) {
   ret = convertReturnValue(ret);
   if (stack !== 0) stackRestore(stack);
   return ret;
+}
+function cwrap(ident, returnType, argTypes, opts) {
+  argTypes = argTypes || [];
+  var numericArgs = argTypes.every(function (type) {
+    return type === "number";
+  });
+  var numericRet = returnType !== "string";
+  if (numericRet && numericArgs && !opts) {
+    return getCFunc(ident);
+  }
+  return function () {
+    return ccall(ident, returnType, argTypes, arguments, opts);
+  };
 }
 var UTF8Decoder =
   typeof TextDecoder !== "undefined" ? new TextDecoder("utf8") : undefined;
@@ -316,25 +395,6 @@ function stringToUTF8Array(str, heap, outIdx, maxBytesToWrite) {
 function stringToUTF8(str, outPtr, maxBytesToWrite) {
   return stringToUTF8Array(str, HEAPU8, outPtr, maxBytesToWrite);
 }
-function lengthBytesUTF8(str) {
-  var len = 0;
-  for (var i = 0; i < str.length; ++i) {
-    var u = str.charCodeAt(i);
-    if (u >= 55296 && u <= 57343)
-      u = (65536 + ((u & 1023) << 10)) | (str.charCodeAt(++i) & 1023);
-    if (u <= 127) ++len;
-    else if (u <= 2047) len += 2;
-    else if (u <= 65535) len += 3;
-    else len += 4;
-  }
-  return len;
-}
-function allocateUTF8OnStack(str) {
-  var size = lengthBytesUTF8(str) + 1;
-  var ret = stackAlloc(size);
-  stringToUTF8Array(str, HEAP8, ret, size);
-  return ret;
-}
 function writeArrayToMemory(array, buffer) {
   HEAP8.set(array, buffer);
 }
@@ -351,8 +411,8 @@ function updateGlobalBufferAndViews(buf) {
   Module["HEAPF32"] = HEAPF32 = new Float32Array(buf);
   Module["HEAPF64"] = HEAPF64 = new Float64Array(buf);
 }
-var DYNAMIC_BASE = 5246848,
-  DYNAMICTOP_PTR = 3776;
+var DYNAMIC_BASE = 5245632,
+  DYNAMICTOP_PTR = 2560;
 var INITIAL_INITIAL_MEMORY = Module["INITIAL_MEMORY"] || 16777216;
 if (Module["wasmMemory"]) {
   wasmMemory = Module["wasmMemory"];
@@ -392,7 +452,6 @@ var __ATINIT__ = [];
 var __ATMAIN__ = [];
 var __ATPOSTRUN__ = [];
 var runtimeInitialized = false;
-var runtimeExited = false;
 function preRun() {
   if (Module["preRun"]) {
     if (typeof Module["preRun"] == "function")
@@ -410,9 +469,6 @@ function initRuntime() {
 function preMain() {
   callRuntimeCallbacks(__ATMAIN__);
 }
-function exitRuntime() {
-  runtimeExited = true;
-}
 function postRun() {
   if (Module["postRun"]) {
     if (typeof Module["postRun"] == "function")
@@ -429,6 +485,10 @@ function addOnPreRun(cb) {
 function addOnPostRun(cb) {
   __ATPOSTRUN__.unshift(cb);
 }
+var Math_abs = Math.abs;
+var Math_ceil = Math.ceil;
+var Math_floor = Math.floor;
+var Math_min = Math.min;
 var runDependencies = 0;
 var runDependencyWatcher = null;
 var dependenciesFulfilled = null;
@@ -584,139 +644,42 @@ function createWasm() {
   return {};
 }
 Module["asm"] = createWasm;
-var PATH = {
-  splitPath: function (filename) {
-    var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-    return splitPathRe.exec(filename).slice(1);
-  },
-  normalizeArray: function (parts, allowAboveRoot) {
-    var up = 0;
-    for (var i = parts.length - 1; i >= 0; i--) {
-      var last = parts[i];
-      if (last === ".") {
-        parts.splice(i, 1);
-      } else if (last === "..") {
-        parts.splice(i, 1);
-        up++;
-      } else if (up) {
-        parts.splice(i, 1);
-        up--;
-      }
-    }
-    if (allowAboveRoot) {
-      for (; up; up--) {
-        parts.unshift("..");
-      }
-    }
-    return parts;
-  },
-  normalize: function (path) {
-    var isAbsolute = path.charAt(0) === "/",
-      trailingSlash = path.substr(-1) === "/";
-    path = PATH.normalizeArray(
-      path.split("/").filter(function (p) {
-        return !!p;
-      }),
-      !isAbsolute
-    ).join("/");
-    if (!path && !isAbsolute) {
-      path = ".";
-    }
-    if (path && trailingSlash) {
-      path += "/";
-    }
-    return (isAbsolute ? "/" : "") + path;
-  },
-  dirname: function (path) {
-    var result = PATH.splitPath(path),
-      root = result[0],
-      dir = result[1];
-    if (!root && !dir) {
-      return ".";
-    }
-    if (dir) {
-      dir = dir.substr(0, dir.length - 1);
-    }
-    return root + dir;
-  },
-  basename: function (path) {
-    if (path === "/") return "/";
-    var lastSlash = path.lastIndexOf("/");
-    if (lastSlash === -1) return path;
-    return path.substr(lastSlash + 1);
-  },
-  extname: function (path) {
-    return PATH.splitPath(path)[3];
-  },
-  join: function () {
-    var paths = Array.prototype.slice.call(arguments, 0);
-    return PATH.normalize(paths.join("/"));
-  },
-  join2: function (l, r) {
-    return PATH.normalize(l + "/" + r);
-  },
-};
-var SYSCALLS = {
-  mappings: {},
-  buffers: [null, [], []],
-  printChar: function (stream, curr) {
-    var buffer = SYSCALLS.buffers[stream];
-    if (curr === 0 || curr === 10) {
-      (stream === 1 ? out : err)(UTF8ArrayToString(buffer, 0));
-      buffer.length = 0;
-    } else {
-      buffer.push(curr);
-    }
-  },
-  varargs: undefined,
-  get: function () {
-    SYSCALLS.varargs += 4;
-    var ret = HEAP32[(SYSCALLS.varargs - 4) >> 2];
-    return ret;
-  },
-  getStr: function (ptr) {
-    var ret = UTF8ToString(ptr);
-    return ret;
-  },
-  get64: function (low, high) {
-    return low;
-  },
-};
-function _fd_write(fd, iov, iovcnt, pnum) {
-  var num = 0;
-  for (var i = 0; i < iovcnt; i++) {
-    var ptr = HEAP32[(iov + i * 8) >> 2];
-    var len = HEAP32[(iov + (i * 8 + 4)) >> 2];
-    for (var j = 0; j < len; j++) {
-      SYSCALLS.printChar(fd, HEAPU8[ptr + j]);
-    }
-    num += len;
-  }
-  HEAP32[pnum >> 2] = num;
-  return 0;
+var tempDouble;
+var tempI64;
+function _emscripten_get_heap_size() {
+  return HEAPU8.length;
 }
-function ___wasi_fd_write(a0, a1, a2, a3) {
-  return _fd_write(a0, a1, a2, a3);
+function abortOnCannotGrowMemory(requestedSize) {
+  abort("OOM");
 }
-function _emscripten_memcpy_big(dest, src, num) {
-  HEAPU8.copyWithin(dest, src, src + num);
+function _emscripten_resize_heap(requestedSize) {
+  requestedSize = requestedSize >>> 0;
+  abortOnCannotGrowMemory(requestedSize);
 }
 var asmGlobalArg = {};
 var asmLibraryArg = {
-  c: ___wasi_fd_write,
   __memory_base: 1024,
   __table_base: 0,
-  b: _emscripten_memcpy_big,
-  a: abort,
+  b: _emscripten_get_heap_size,
+  a: _emscripten_resize_heap,
   memory: wasmMemory,
   table: wasmTable,
 };
 var asm = Module["asm"](asmGlobalArg, asmLibraryArg, buffer);
-var _gof = (Module["_gof"] = function () {
-  return (_gof = Module["_gof"] = Module["asm"]["d"]).apply(null, arguments);
+var _addOne = (Module["_addOne"] = function () {
+  return (_addOne = Module["_addOne"] = Module["asm"]["c"]).apply(
+    null,
+    arguments
+  );
 });
-var _main = (Module["_main"] = function () {
-  return (_main = Module["_main"] = Module["asm"]["e"]).apply(null, arguments);
+var _free = (Module["_free"] = function () {
+  return (_free = Module["_free"] = Module["asm"]["d"]).apply(null, arguments);
+});
+var _malloc = (Module["_malloc"] = function () {
+  return (_malloc = Module["_malloc"] = Module["asm"]["e"]).apply(
+    null,
+    arguments
+  );
 });
 var stackAlloc = (Module["stackAlloc"] = function () {
   return (stackAlloc = Module["stackAlloc"] = Module["asm"]["f"]).apply(
@@ -736,50 +699,19 @@ var stackSave = (Module["stackSave"] = function () {
     arguments
   );
 });
-Module["_str"] = 1172;
-Module["ccall"] = ccall;
+Module["cwrap"] = cwrap;
+Module["setValue"] = setValue;
+Module["getValue"] = getValue;
 var calledRun;
 function ExitStatus(status) {
   this.name = "ExitStatus";
   this.message = "Program terminated with exit(" + status + ")";
   this.status = status;
 }
-var calledMain = false;
 dependenciesFulfilled = function runCaller() {
   if (!calledRun) run();
   if (!calledRun) dependenciesFulfilled = runCaller;
 };
-function callMain(args) {
-  var entryFunction = Module["_main"];
-  args = args || [];
-  var argc = args.length + 1;
-  var argv = stackAlloc((argc + 1) * 4);
-  HEAP32[argv >> 2] = allocateUTF8OnStack(thisProgram);
-  for (var i = 1; i < argc; i++) {
-    HEAP32[(argv >> 2) + i] = allocateUTF8OnStack(args[i - 1]);
-  }
-  HEAP32[(argv >> 2) + argc] = 0;
-  try {
-    var ret = entryFunction(argc, argv);
-    exit(ret, true);
-  } catch (e) {
-    if (e instanceof ExitStatus) {
-      return;
-    } else if (e == "unwind") {
-      noExitRuntime = true;
-      return;
-    } else {
-      var toLog = e;
-      if (e && typeof e === "object" && e.stack) {
-        toLog = [e, e.stack];
-      }
-      err("exception thrown: " + toLog);
-      quit_(1, e);
-    }
-  } finally {
-    calledMain = true;
-  }
-}
 function run(args) {
   args = args || arguments_;
   if (runDependencies > 0) {
@@ -795,7 +727,6 @@ function run(args) {
     initRuntime();
     preMain();
     if (Module["onRuntimeInitialized"]) Module["onRuntimeInitialized"]();
-    if (shouldRunNow) callMain(args);
     postRun();
   }
   if (Module["setStatus"]) {
@@ -811,19 +742,6 @@ function run(args) {
   }
 }
 Module["run"] = run;
-function exit(status, implicit) {
-  if (implicit && noExitRuntime && status === 0) {
-    return;
-  }
-  if (noExitRuntime) {
-  } else {
-    ABORT = true;
-    EXITSTATUS = status;
-    exitRuntime();
-    if (Module["onExit"]) Module["onExit"](status);
-  }
-  quit_(status, new ExitStatus(status));
-}
 if (Module["preInit"]) {
   if (typeof Module["preInit"] == "function")
     Module["preInit"] = [Module["preInit"]];
@@ -831,7 +749,5 @@ if (Module["preInit"]) {
     Module["preInit"].pop()();
   }
 }
-var shouldRunNow = true;
-if (Module["noInitialRun"]) shouldRunNow = false;
 noExitRuntime = true;
 run();

@@ -6,18 +6,28 @@
 </head>
 <body>
 
-<button class="mybutton">Run GOF</button>
+<button onclick="pressBtn()">Run GOF</button>
 
 <script>
-  document.querySelector('.mybutton')
-    .addEventListener('click', function() {
-      var result = Module.ccall(
-        'gof',	// name of C function
-        null,	// return type
-        null,	// argument types
-        null	// arguments
-      );
-    });
+
+  var addOne = Module.cwrap("addOne", null, ["number", "number"]); // void function
+
+  function pressBtn(){
+    // alloc 4 bytes of memory for the input and 4 for the output (32-bit integers)
+    var input_ptr = Module._malloc(4);
+    var output_ptr = Module._malloc(4);
+
+    var value = 6;                                   // value to increment by one
+    Module.setValue(input_ptr, value, "i32");        // set the value in WASM memory
+    addOne(input_ptr, output_ptr);                   // call the WASM function
+    var result = Module.getValue(output_ptr, "i32"); // extract the result from WASM memory
+    console.log("The result read is", result, "at position", output_ptr);
+
+    // dealloc memory to avoid memory leaks
+    Module._free(input_ptr);
+    Module._free(output_ptr);
+  }
+
 </script>
 
 
