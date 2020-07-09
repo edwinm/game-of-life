@@ -21,7 +21,7 @@ function callGof(cells) {
   return inputArray2;
 }
 
-function doGof(shape) {
+export function doGof(shape) {
   const ret = [];
   const arr = callGof(shape.flat());
   for (let i = 0; i < arr.length; i += 2) {
@@ -29,3 +29,16 @@ function doGof(shape) {
   }
   return ret;
 }
+
+setTimeout(() => {
+  const glider = [
+    [1, 0],
+    [2, 1],
+    [2, 2],
+    [1, 2],
+    [0, 2],
+  ];
+
+  const nextGen = doGof(glider);
+  console.log("nextGen", nextGen);
+}, 1000);
