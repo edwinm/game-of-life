@@ -11,7 +11,7 @@
     "deploy": "npm run build && ./deploy.sh",
     "generate": "node src/lexgen/generate.js",
     "wasm": "emcc src/wasm/gof.c -o src/wasm/gof.js -O3 -s WASM=1 -s EXPORTED_FUNCTIONS='[\"_gof\", \"_malloc\", \"_free\"]' -s \"EXTRA_EXPORTED_RUNTIME_METHODS=[\"cwrap\", \"getValue\", \"setValue\"]\"",
-    "wasm-compile": "google-closure-compiler --js=src/wasm/gof.js --js=src/wasm/callgof.js --js_output_file=src/wasm/out.js",
+    "hello": "emcc src/wasm/hello.c -O1 -g4 -s WASM=1 -s SIDE_MODULE=1 -o src/wasm/hello.wasm --source-map-base http://localhost:8080/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
