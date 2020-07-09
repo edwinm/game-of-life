@@ -8,17 +8,17 @@ function callGof(cells) {
   var inputPtr = Module["_malloc"](len * bytesPerElement * 8); // 8 neighbours
   var outputPtr = Module["_malloc"](len * bytesPerElement * 12); // 8 neighbours / 2 * 3
 
-  Module["HEAP32"]["set"](inputArray, inputPtr / bytesPerElement);
+  Module["HEAP32"].set(inputArray, inputPtr / bytesPerElement);
 
   var newSize = gof(inputPtr, outputPtr, len / 2) * 2;
-  // var inputArray2 = [
-  //   ...new Int32Array(Module.HEAP32.buffer, inputPtr, newSize),
-  // ];
+  var inputArray2 = [
+    ...new Int32Array(Module["HEAP32"].buffer, inputPtr, newSize),
+  ];
 
-  // Module._free(inputPtr);
+  Module["_free"](inputPtr);
   Module["_free"](outputPtr);
 
-  return new Int32Array(Module["HEAP32"].buffer, inputPtr, newSize);
+  return inputArray2;
 }
 
 function doGof(shape) {

@@ -10,7 +10,7 @@
     "watch": "npm-run-all --parallel start livereload",
     "deploy": "npm run build && ./deploy.sh",
     "generate": "node src/lexgen/generate.js",
-    "wasm": "emcc src/wasm/gof.c -o src/wasm/gof.js -O3 -s WASM=1 -s EXPORTED_FUNCTIONS='[\"_gof\", \"_malloc\", \"_free\"]' -s \"EXTRA_EXPORTED_RUNTIME_METHODS=[\"cwrap\", \"getValue\", \"setValue\"]\" --post-js src/wasm/callgof.js --closure 1",
+    "wasm": "EMCC_CLOSURE_ARGS=\"--language_in ECMASCRIPT_2015 --language_out ECMASCRIPT_2015\" emcc src/wasm/gof.c -o src/wasm/gof.js -O3 -s WASM=1 -s EXPORTED_FUNCTIONS='[\"_gof\", \"_malloc\", \"_free\"]' -s \"EXTRA_EXPORTED_RUNTIME_METHODS=[\"cwrap\", \"getValue\", \"setValue\"]\" --post-js src/wasm/callgof.js --closure 1",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
