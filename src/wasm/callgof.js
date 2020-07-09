@@ -30,15 +30,8 @@ function doGof(shape) {
   return ret;
 }
 
-setTimeout(function () {
-  var glider = [
-    [1, 0],
-    [2, 1],
-    [2, 2],
-    [1, 2],
-    [0, 2],
-  ];
+onmessage = function (event) {
+  var nextGen = doGof(event.data);
 
-  var nextGen = doGof(glider);
-  console.log("nextGen", nextGen);
-}, 1000);
+  postMessage(nextGen);
+};

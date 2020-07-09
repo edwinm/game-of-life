@@ -2,11 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <script src="gof.js"></script>
 </head>
 <body>
 
 <p>See console</p>
+
+<script>
+  const myWorker = new Worker('gof.js');
+
+    var glider = [
+      [1, 0],
+      [2, 1],
+      [2, 2],
+      [1, 2],
+      [0, 2],
+    ];
+
+  myWorker.onmessage = function(event) {
+    console.log('onchange', event.data);
+  }
+
+  setTimeout(() => {
+    myWorker.postMessage(glider);
+  }, 3000);
+
+</script>
 
 </body>
 </html>

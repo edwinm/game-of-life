@@ -1,8 +1,8 @@
-var a;
-a || (a = typeof Module !== "undefined" ? Module : {});
+var b;
+b || (b = typeof Module !== "undefined" ? Module : {});
 var q = {},
   r;
-for (r in a) a.hasOwnProperty(r) && (q[r] = a[r]);
+for (r in b) b.hasOwnProperty(r) && (q[r] = b[r]);
 var t = !1,
   v = !1,
   w = !1,
@@ -21,39 +21,39 @@ var y = "",
   C;
 if (w)
   (y = v ? require("path").dirname(y) + "/" : __dirname + "/"),
-    (z = function (b, c) {
+    (z = function (a, c) {
       B || (B = require("fs"));
       C || (C = require("path"));
-      b = C.normalize(b);
-      return B.readFileSync(b, c ? null : "utf8");
+      a = C.normalize(a);
+      return B.readFileSync(a, c ? null : "utf8");
     }),
-    (A = function (b) {
-      b = z(b, !0);
-      b.buffer || (b = new Uint8Array(b));
-      assert(b.buffer);
-      return b;
+    (A = function (a) {
+      a = z(a, !0);
+      a.buffer || (a = new Uint8Array(a));
+      assert(a.buffer);
+      return a;
     }),
     1 < process.argv.length && process.argv[1].replace(/\\/g, "/"),
     process.argv.slice(2),
-    "undefined" !== typeof module && (module.exports = a),
-    process.on("uncaughtException", function (b) {
-      throw b;
+    "undefined" !== typeof module && (module.exports = b),
+    process.on("uncaughtException", function (a) {
+      throw a;
     }),
     process.on("unhandledRejection", D),
-    (a.inspect = function () {
+    (b.inspect = function () {
       return "[Emscripten Module object]";
     });
 else if (aa)
   "undefined" != typeof read &&
-    (z = function (b) {
-      return read(b);
+    (z = function (a) {
+      return read(a);
     }),
-    (A = function (b) {
+    (A = function (a) {
       if ("function" === typeof readbuffer)
-        return new Uint8Array(readbuffer(b));
-      b = read(b, "binary");
-      assert("object" === typeof b);
-      return b;
+        return new Uint8Array(readbuffer(a));
+      a = read(a, "binary");
+      assert("object" === typeof a);
+      return a;
     }),
     "undefined" !== typeof print &&
       ("undefined" === typeof console && (console = {}),
@@ -65,47 +65,47 @@ else if (t || v)
     ? (y = self.location.href)
     : document.currentScript && (y = document.currentScript.src),
     (y = 0 !== y.indexOf("blob:") ? y.substr(0, y.lastIndexOf("/") + 1) : ""),
-    (z = function (b) {
+    (z = function (a) {
       var c = new XMLHttpRequest();
-      c.open("GET", b, !1);
+      c.open("GET", a, !1);
       c.send(null);
       return c.responseText;
     }),
     v &&
-      (A = function (b) {
+      (A = function (a) {
         var c = new XMLHttpRequest();
-        c.open("GET", b, !1);
+        c.open("GET", a, !1);
         c.responseType = "arraybuffer";
         c.send(null);
         return new Uint8Array(c.response);
       });
-var ba = a.print || console.log.bind(console),
-  E = a.printErr || console.warn.bind(console);
-for (r in q) q.hasOwnProperty(r) && (a[r] = q[r]);
+var ba = b.print || console.log.bind(console),
+  E = b.printErr || console.warn.bind(console);
+for (r in q) q.hasOwnProperty(r) && (b[r] = q[r]);
 q = null;
 var ca = {
-    "f64-rem": function (b, c) {
-      return b % c;
+    "f64-rem": function (a, c) {
+      return a % c;
     },
     debugger: function () {},
   },
   F;
-a.wasmBinary && (F = a.wasmBinary);
+b.wasmBinary && (F = b.wasmBinary);
 var noExitRuntime;
-a.noExitRuntime && (noExitRuntime = a.noExitRuntime);
+b.noExitRuntime && (noExitRuntime = b.noExitRuntime);
 "object" !== typeof WebAssembly && E("no native wasm support detected");
 var G,
   da = new WebAssembly.Table({ initial: 0, maximum: 0, element: "anyfunc" }),
   ea = !1;
-function assert(b, c) {
-  b || D("Assertion failed: " + c);
+function assert(a, c) {
+  a || D("Assertion failed: " + c);
 }
-function fa(b) {
-  var c = a["_" + b];
-  assert(c, "Cannot call unknown function " + b + ", make sure it is exported");
+function fa(a) {
+  var c = b["_" + a];
+  assert(c, "Cannot call unknown function " + a + ", make sure it is exported");
   return c;
 }
-function ia(b, c, d, n) {
+function ia(a, c, d, n) {
   var h = {
       string: function (e) {
         var p = 0;
@@ -154,13 +154,13 @@ function ia(b, c, d, n) {
         return p;
       },
     },
-    k = fa(b),
+    k = fa(a),
     T = [];
-  b = 0;
+  a = 0;
   if (n)
     for (var x = 0; x < n.length; x++) {
       var ha = h[d[x]];
-      ha ? (0 === b && (b = ja()), (T[x] = ha(n[x]))) : (T[x] = n[x]);
+      ha ? (0 === a && (a = ja()), (T[x] = ha(n[x]))) : (T[x] = n[x]);
     }
   d = k.apply(null, T);
   d = (function (e) {
@@ -197,7 +197,7 @@ function ia(b, c, d, n) {
     else e = "boolean" === c ? !!e : e;
     return e;
   })(d);
-  0 !== b && la(b);
+  0 !== a && la(a);
   return d;
 }
 var ka = "undefined" !== typeof TextDecoder ? new TextDecoder("utf8") : void 0,
@@ -208,33 +208,33 @@ var ka = "undefined" !== typeof TextDecoder ? new TextDecoder("utf8") : void 0,
   M,
   N,
   O,
-  P = a.INITIAL_MEMORY || 16777216;
-a.wasmMemory
-  ? (G = a.wasmMemory)
+  P = b.INITIAL_MEMORY || 16777216;
+b.wasmMemory
+  ? (G = b.wasmMemory)
   : (G = new WebAssembly.Memory({ initial: P / 65536, maximum: P / 65536 }));
 G && (K = G.buffer);
 P = K.byteLength;
 var Q = K;
 K = Q;
-a.HEAP8 = J = new Int8Array(Q);
-a.HEAP16 = L = new Int16Array(Q);
-a.HEAP32 = M = new Int32Array(Q);
-a.HEAPU8 = I = new Uint8Array(Q);
-a.HEAPU16 = new Uint16Array(Q);
-a.HEAPU32 = new Uint32Array(Q);
-a.HEAPF32 = N = new Float32Array(Q);
-a.HEAPF64 = O = new Float64Array(Q);
+b.HEAP8 = J = new Int8Array(Q);
+b.HEAP16 = L = new Int16Array(Q);
+b.HEAP32 = M = new Int32Array(Q);
+b.HEAPU8 = I = new Uint8Array(Q);
+b.HEAPU16 = new Uint16Array(Q);
+b.HEAPU32 = new Uint32Array(Q);
+b.HEAPF32 = N = new Float32Array(Q);
+b.HEAPF64 = O = new Float64Array(Q);
 M[640] = 5245632;
-function R(b) {
-  for (; 0 < b.length; ) {
-    var c = b.shift();
-    if ("function" == typeof c) c(a);
+function R(a) {
+  for (; 0 < a.length; ) {
+    var c = a.shift();
+    if ("function" == typeof c) c(b);
     else {
       var d = c.j;
       "number" === typeof d
         ? void 0 === c.i
-          ? a.dynCall_v(d)
-          : a.dynCall_vi(d, c.i)
+          ? b.dynCall_v(d)
+          : b.dynCall_vi(d, c.i)
         : d(void 0 === c.i ? null : c.i);
     }
   }
@@ -244,8 +244,8 @@ var ma = [],
   oa = [],
   pa = [];
 function qa() {
-  var b = a.preRun.shift();
-  ma.unshift(b);
+  var a = b.preRun.shift();
+  ma.unshift(a);
 }
 var ra = Math.abs,
   sa = Math.ceil,
@@ -254,20 +254,20 @@ var ra = Math.abs,
   S = 0,
   U = null,
   V = null;
-a.preloadedImages = {};
-a.preloadedAudios = {};
-function D(b) {
-  if (a.onAbort) a.onAbort(b);
-  ba(b);
-  E(b);
+b.preloadedImages = {};
+b.preloadedAudios = {};
+function D(a) {
+  if (b.onAbort) b.onAbort(a);
+  ba(a);
+  E(a);
   ea = !0;
   throw new WebAssembly.RuntimeError(
-    "abort(" + b + "). Build with -s ASSERTIONS=1 for more info."
+    "abort(" + a + "). Build with -s ASSERTIONS=1 for more info."
   );
 }
-function W(b) {
+function W(a) {
   var c = X;
-  return String.prototype.startsWith ? c.startsWith(b) : 0 === c.indexOf(b);
+  return String.prototype.startsWith ? c.startsWith(a) : 0 === c.indexOf(a);
 }
 function wa() {
   return W("data:application/octet-stream;base64,");
@@ -275,42 +275,42 @@ function wa() {
 var X = "gof.wasm";
 if (!wa()) {
   var xa = X;
-  X = a.locateFile ? a.locateFile(xa, y) : y + xa;
+  X = b.locateFile ? b.locateFile(xa, y) : y + xa;
 }
 function ya() {
   try {
     if (F) return new Uint8Array(F);
     if (A) return A(X);
     throw "both async and sync fetching of the wasm failed";
-  } catch (b) {
-    D(b);
+  } catch (a) {
+    D(a);
   }
 }
 function za() {
   return F || (!t && !v) || "function" !== typeof fetch || W("file://")
-    ? new Promise(function (b) {
-        b(ya());
+    ? new Promise(function (a) {
+        a(ya());
       })
     : fetch(X, { credentials: "same-origin" })
-        .then(function (b) {
-          if (!b.ok) throw "failed to load wasm binary file at '" + X + "'";
-          return b.arrayBuffer();
+        .then(function (a) {
+          if (!a.ok) throw "failed to load wasm binary file at '" + X + "'";
+          return a.arrayBuffer();
         })
         .catch(function () {
           return ya();
         });
 }
-a.asm = function () {
-  function b(h) {
-    a.asm = h.exports;
+b.asm = function () {
+  function a(h) {
+    b.asm = h.exports;
     S--;
-    a.monitorRunDependencies && a.monitorRunDependencies(S);
+    b.monitorRunDependencies && b.monitorRunDependencies(S);
     0 == S &&
       (null !== U && (clearInterval(U), (U = null)),
       V && ((h = V), (V = null), h()));
   }
   function c(h) {
-    b(h.instance);
+    a(h.instance);
   }
   function d(h) {
     return za()
@@ -330,10 +330,10 @@ a.asm = function () {
     asm2wasm: ca,
   };
   S++;
-  a.monitorRunDependencies && a.monitorRunDependencies(S);
-  if (a.instantiateWasm)
+  b.monitorRunDependencies && b.monitorRunDependencies(S);
+  if (b.instantiateWasm)
     try {
-      return a.instantiateWasm(n, b);
+      return b.instantiateWasm(n, a);
     } catch (h) {
       return E("Module.instantiateWasm callback failed with error: " + h), !1;
     }
@@ -370,51 +370,51 @@ var Y,
     memory: G,
     table: da,
   };
-a.asm({}, Aa, K);
-a._free = function () {
-  return (a._free = a.asm.c).apply(null, arguments);
+b.asm({}, Aa, K);
+b._free = function () {
+  return (b._free = b.asm.c).apply(null, arguments);
 };
-a._gof = function () {
-  return (a._gof = a.asm.d).apply(null, arguments);
+b._gof = function () {
+  return (b._gof = b.asm.d).apply(null, arguments);
 };
-a._malloc = function () {
-  return (a._malloc = a.asm.e).apply(null, arguments);
+b._malloc = function () {
+  return (b._malloc = b.asm.e).apply(null, arguments);
 };
-var H = (a.stackAlloc = function () {
-    return (H = a.stackAlloc = a.asm.f).apply(null, arguments);
+var H = (b.stackAlloc = function () {
+    return (H = b.stackAlloc = b.asm.f).apply(null, arguments);
   }),
-  la = (a.stackRestore = function () {
-    return (la = a.stackRestore = a.asm.g).apply(null, arguments);
+  la = (b.stackRestore = function () {
+    return (la = b.stackRestore = b.asm.g).apply(null, arguments);
   }),
-  ja = (a.stackSave = function () {
-    return (ja = a.stackSave = a.asm.h).apply(null, arguments);
+  ja = (b.stackSave = function () {
+    return (ja = b.stackSave = b.asm.h).apply(null, arguments);
   });
-a.cwrap = function (b, c, d, n) {
+b.cwrap = function (a, c, d, n) {
   d = d || [];
   var h = d.every(function (k) {
     return "number" === k;
   });
   return "string" !== c && h && !n
-    ? fa(b)
+    ? fa(a)
     : function () {
-        return ia(b, c, d, arguments);
+        return ia(a, c, d, arguments);
       };
 };
-a.setValue = function (b, c, d) {
+b.setValue = function (a, c, d) {
   d = d || "i8";
   "*" === d.charAt(d.length - 1) && (d = "i32");
   switch (d) {
     case "i1":
-      J[b >> 0] = c;
+      J[a >> 0] = c;
       break;
     case "i8":
-      J[b >> 0] = c;
+      J[a >> 0] = c;
       break;
     case "i16":
-      L[b >> 1] = c;
+      L[a >> 1] = c;
       break;
     case "i32":
-      M[b >> 2] = c;
+      M[a >> 2] = c;
       break;
     case "i64":
       Ba = [
@@ -426,37 +426,37 @@ a.setValue = function (b, c, d) {
             : ~~+sa((Y - +(~~Y >>> 0)) / 4294967296) >>> 0
           : 0),
       ];
-      M[b >> 2] = Ba[0];
-      M[(b + 4) >> 2] = Ba[1];
+      M[a >> 2] = Ba[0];
+      M[(a + 4) >> 2] = Ba[1];
       break;
     case "float":
-      N[b >> 2] = c;
+      N[a >> 2] = c;
       break;
     case "double":
-      O[b >> 3] = c;
+      O[a >> 3] = c;
       break;
     default:
       D("invalid type for setValue: " + d);
   }
 };
-a.getValue = function (b, c) {
+b.getValue = function (a, c) {
   c = c || "i8";
   "*" === c.charAt(c.length - 1) && (c = "i32");
   switch (c) {
     case "i1":
-      return J[b >> 0];
+      return J[a >> 0];
     case "i8":
-      return J[b >> 0];
+      return J[a >> 0];
     case "i16":
-      return L[b >> 1];
+      return L[a >> 1];
     case "i32":
-      return M[b >> 2];
+      return M[a >> 2];
     case "i64":
-      return M[b >> 2];
+      return M[a >> 2];
     case "float":
-      return N[b >> 2];
+      return N[a >> 2];
     case "double":
-      return O[b >> 3];
+      return O[a >> 3];
     default:
       D("invalid type for getValue: " + c);
   }
@@ -468,73 +468,67 @@ V = function Ca() {
   Z || (V = Ca);
 };
 function Da() {
-  function b() {
-    if (!Z && ((Z = !0), (a.calledRun = !0), !ea)) {
+  function a() {
+    if (!Z && ((Z = !0), (b.calledRun = !0), !ea)) {
       R(na);
       R(oa);
-      if (a.onRuntimeInitialized) a.onRuntimeInitialized();
-      if (a.postRun)
+      if (b.onRuntimeInitialized) b.onRuntimeInitialized();
+      if (b.postRun)
         for (
-          "function" == typeof a.postRun && (a.postRun = [a.postRun]);
-          a.postRun.length;
+          "function" == typeof b.postRun && (b.postRun = [b.postRun]);
+          b.postRun.length;
 
         ) {
-          var c = a.postRun.shift();
+          var c = b.postRun.shift();
           pa.unshift(c);
         }
       R(pa);
     }
   }
   if (!(0 < S)) {
-    if (a.preRun)
+    if (b.preRun)
       for (
-        "function" == typeof a.preRun && (a.preRun = [a.preRun]);
-        a.preRun.length;
+        "function" == typeof b.preRun && (b.preRun = [b.preRun]);
+        b.preRun.length;
 
       )
         qa();
     R(ma);
     0 < S ||
-      (a.setStatus
-        ? (a.setStatus("Running..."),
+      (b.setStatus
+        ? (b.setStatus("Running..."),
           setTimeout(function () {
             setTimeout(function () {
-              a.setStatus("");
+              b.setStatus("");
             }, 1);
-            b();
+            a();
           }, 1))
-        : b());
+        : a());
   }
 }
-a.run = Da;
-if (a.preInit)
+b.run = Da;
+if (b.preInit)
   for (
-    "function" == typeof a.preInit && (a.preInit = [a.preInit]);
-    0 < a.preInit.length;
+    "function" == typeof b.preInit && (b.preInit = [b.preInit]);
+    0 < b.preInit.length;
 
   )
-    a.preInit.pop()();
+    b.preInit.pop()();
 noExitRuntime = !0;
 Da();
-var Ea = a.cwrap("gof", "number", ["number", "number", "number"]);
-setTimeout(function () {
-  var b = [];
-  var c = [
-    [1, 0],
-    [2, 1],
-    [2, 2],
-    [1, 2],
-    [0, 2],
-  ].flat();
-  var d = new Int32Array(c),
+var Ea = b.cwrap("gof", "number", ["number", "number", "number"]);
+onmessage = function (a) {
+  var c = [];
+  a = a.data.flat();
+  var d = new Int32Array(a),
     n = d.length,
     h = d.BYTES_PER_ELEMENT;
-  c = a._malloc(n * h * 8);
-  var k = a._malloc(n * h * 12);
-  a.HEAP32.set(d, c / h);
-  d = 2 * Ea(c, k, n / 2);
-  a._free(k);
-  c = new Int32Array(a.HEAP32.buffer, c, d);
-  for (k = 0; k < c.length; k += 2) b.push([c[k], c[k + 1]]);
-  console.log("nextGen", b);
-}, 1e3);
+  a = b._malloc(n * h * 8);
+  var k = b._malloc(n * h * 12);
+  b.HEAP32.set(d, a / h);
+  d = 2 * Ea(a, k, n / 2);
+  b._free(k);
+  a = new Int32Array(b.HEAP32.buffer, a, d);
+  for (k = 0; k < a.length; k += 2) c.push([a[k], a[k + 1]]);
+  postMessage(c);
+};
