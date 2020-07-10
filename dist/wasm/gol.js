@@ -1,27 +1,27 @@
 "use strict";
 var Module;
 Module || (Module = typeof Module !== "undefined" ? Module : {});
-var p = {},
-  r;
-for (r in Module) Module.hasOwnProperty(r) && (p[r] = Module[r]);
-var t = !1,
+var n = {},
+  q;
+for (q in Module) Module.hasOwnProperty(q) && (n[q] = Module[q]);
+var r = !1,
+  u = !1,
   v = !1,
-  w = !1,
   aa = !1;
-t = "object" === typeof window;
-v = "function" === typeof importScripts;
-w =
+r = "object" === typeof window;
+u = "function" === typeof importScripts;
+v =
   "object" === typeof process &&
   "object" === typeof process.versions &&
   "string" === typeof process.versions.node;
-aa = !t && !w && !v;
+aa = !r && !v && !u;
 var x = "",
   y,
   z,
   A,
   B;
-if (w)
-  (x = v ? require("path").dirname(x) + "/" : __dirname + "/"),
+if (v)
+  (x = u ? require("path").dirname(x) + "/" : __dirname + "/"),
     (y = function (a, b) {
       A || (A = require("fs"));
       B || (B = require("path"));
@@ -40,7 +40,7 @@ if (w)
     process.on("uncaughtException", function (a) {
       throw a;
     }),
-    process.on("unhandledRejection", D),
+    process.on("unhandledRejection", C),
     (Module.inspect = function () {
       return "[Emscripten Module object]";
     });
@@ -61,8 +61,8 @@ else if (aa)
       (console.log = print),
       (console.warn = console.error =
         "undefined" !== typeof printErr ? printErr : print));
-else if (t || v)
-  v
+else if (r || u)
+  u
     ? (x = self.location.href)
     : document.currentScript && (x = document.currentScript.src),
     (x = 0 !== x.indexOf("blob:") ? x.substr(0, x.lastIndexOf("/") + 1) : ""),
@@ -72,7 +72,7 @@ else if (t || v)
       b.send(null);
       return b.responseText;
     }),
-    v &&
+    u &&
       (z = function (a) {
         var b = new XMLHttpRequest();
         b.open("GET", a, !1);
@@ -81,118 +81,118 @@ else if (t || v)
         return new Uint8Array(b.response);
       });
 var ba = Module.print || console.log.bind(console),
-  E = Module.printErr || console.warn.bind(console);
-for (r in p) p.hasOwnProperty(r) && (Module[r] = p[r]);
-p = null;
+  D = Module.printErr || console.warn.bind(console);
+for (q in n) n.hasOwnProperty(q) && (Module[q] = n[q]);
+n = null;
 var ca = {
     "f64-rem": function (a, b) {
       return a % b;
     },
     debugger: function () {},
   },
-  F;
-Module.wasmBinary && (F = Module.wasmBinary);
+  E;
+Module.wasmBinary && (E = Module.wasmBinary);
 var noExitRuntime;
 Module.noExitRuntime && (noExitRuntime = Module.noExitRuntime);
-"object" !== typeof WebAssembly && E("no native wasm support detected");
-var G,
+"object" !== typeof WebAssembly && D("no native wasm support detected");
+var F,
   da = new WebAssembly.Table({ initial: 0, maximum: 0, element: "anyfunc" }),
   ea = !1;
 function assert(a, b) {
-  a || D("Assertion failed: " + b);
+  a || C("Assertion failed: " + b);
 }
-function ha(a) {
+function fa(a) {
   var b = Module["_" + a];
   assert(b, "Cannot call unknown function " + a + ", make sure it is exported");
   return b;
 }
-function ia(a, b, c, f) {
-  var h = {
+function ia(a, b, c, g) {
+  var l = {
       string: function (d) {
         var m = 0;
         if (null !== d && void 0 !== d && 0 !== d) {
-          var l = (d.length << 2) + 1;
-          m = H(l);
-          var g = m,
-            e = I;
-          if (0 < l) {
-            l = g + l - 1;
-            for (var u = 0; u < d.length; ++u) {
-              var k = d.charCodeAt(u);
-              if (55296 <= k && 57343 >= k) {
-                var ta = d.charCodeAt(++u);
-                k = (65536 + ((k & 1023) << 10)) | (ta & 1023);
+          var k = (d.length << 2) + 1;
+          m = G(k);
+          var f = m,
+            e = H;
+          if (0 < k) {
+            k = f + k - 1;
+            for (var t = 0; t < d.length; ++t) {
+              var h = d.charCodeAt(t);
+              if (55296 <= h && 57343 >= h) {
+                var va = d.charCodeAt(++t);
+                h = (65536 + ((h & 1023) << 10)) | (va & 1023);
               }
-              if (127 >= k) {
-                if (g >= l) break;
-                e[g++] = k;
+              if (127 >= h) {
+                if (f >= k) break;
+                e[f++] = h;
               } else {
-                if (2047 >= k) {
-                  if (g + 1 >= l) break;
-                  e[g++] = 192 | (k >> 6);
+                if (2047 >= h) {
+                  if (f + 1 >= k) break;
+                  e[f++] = 192 | (h >> 6);
                 } else {
-                  if (65535 >= k) {
-                    if (g + 2 >= l) break;
-                    e[g++] = 224 | (k >> 12);
+                  if (65535 >= h) {
+                    if (f + 2 >= k) break;
+                    e[f++] = 224 | (h >> 12);
                   } else {
-                    if (g + 3 >= l) break;
-                    e[g++] = 240 | (k >> 18);
-                    e[g++] = 128 | ((k >> 12) & 63);
+                    if (f + 3 >= k) break;
+                    e[f++] = 240 | (h >> 18);
+                    e[f++] = 128 | ((h >> 12) & 63);
                   }
-                  e[g++] = 128 | ((k >> 6) & 63);
+                  e[f++] = 128 | ((h >> 6) & 63);
                 }
-                e[g++] = 128 | (k & 63);
+                e[f++] = 128 | (h & 63);
               }
             }
-            e[g] = 0;
+            e[f] = 0;
           }
         }
         return m;
       },
       array: function (d) {
-        var m = H(d.length);
-        J.set(d, m);
+        var m = G(d.length);
+        I.set(d, m);
         return m;
       },
     },
-    n = ha(a),
-    C = [];
+    p = fa(a),
+    T = [];
   a = 0;
-  if (f)
-    for (var q = 0; q < f.length; q++) {
-      var fa = h[c[q]];
-      fa ? (0 === a && (a = ja()), (C[q] = fa(f[q]))) : (C[q] = f[q]);
+  if (g)
+    for (var w = 0; w < g.length; w++) {
+      var ha = l[c[w]];
+      ha ? (0 === a && (a = ja()), (T[w] = ha(g[w]))) : (T[w] = g[w]);
     }
-  c = n.apply(null, C);
+  c = p.apply(null, T);
   c = (function (d) {
     if ("string" === b)
       if (d) {
-        for (var m = I, l = d + NaN, g = d; m[g] && !(g >= l); ) ++g;
-        if (16 < g - d && m.subarray && ka) d = ka.decode(m.subarray(d, g));
+        for (var m = H, k = d + NaN, f = d; m[f] && !(f >= k); ) ++f;
+        if (16 < f - d && m.subarray && ka) d = ka.decode(m.subarray(d, f));
         else {
-          for (l = ""; d < g; ) {
+          for (k = ""; d < f; ) {
             var e = m[d++];
             if (e & 128) {
-              var u = m[d++] & 63;
+              var t = m[d++] & 63;
               if (192 == (e & 224))
-                l += String.fromCharCode(((e & 31) << 6) | u);
+                k += String.fromCharCode(((e & 31) << 6) | t);
               else {
-                var k = m[d++] & 63;
+                var h = m[d++] & 63;
                 e =
                   224 == (e & 240)
-                    ? ((e & 15) << 12) | (u << 6) | k
-                    : ((e & 7) << 18) | (u << 12) | (k << 6) | (m[d++] & 63);
+                    ? ((e & 15) << 12) | (t << 6) | h
+                    : ((e & 7) << 18) | (t << 12) | (h << 6) | (m[d++] & 63);
                 65536 > e
-                  ? (l += String.fromCharCode(e))
+                  ? (k += String.fromCharCode(e))
                   : ((e -= 65536),
-                    (l += String.fromCharCode(
+                    (k += String.fromCharCode(
                       55296 | (e >> 10),
                       56320 | (e & 1023)
                     )));
               }
-            } else l += String.fromCharCode(e);
+            } else k += String.fromCharCode(e);
           }
-          d = l;
+          d = k;
         }
       } else d = "";
     else d = "boolean" === b ? !!d : d;
@@ -202,31 +202,31 @@ function ia(a, b, c, f) {
   return c;
 }
 var ka = "undefined" !== typeof TextDecoder ? new TextDecoder("utf8") : void 0,
-  K,
   J,
   I,
+  H,
+  K,
   L,
   M,
   N,
-  O,
-  P = Module.INITIAL_MEMORY || 16777216;
+  O = Module.INITIAL_MEMORY || 16777216;
 Module.wasmMemory
-  ? (G = Module.wasmMemory)
-  : (G = new WebAssembly.Memory({ initial: P / 65536, maximum: P / 65536 }));
-G && (K = G.buffer);
-P = K.byteLength;
-var Q = K;
-K = Q;
-Module.HEAP8 = J = new Int8Array(Q);
-Module.HEAP16 = L = new Int16Array(Q);
-Module.HEAP32 = M = new Int32Array(Q);
-Module.HEAPU8 = I = new Uint8Array(Q);
-Module.HEAPU16 = new Uint16Array(Q);
-Module.HEAPU32 = new Uint32Array(Q);
-Module.HEAPF32 = N = new Float32Array(Q);
-Module.HEAPF64 = O = new Float64Array(Q);
-M[640] = 5245632;
-function R(a) {
+  ? (F = Module.wasmMemory)
+  : (F = new WebAssembly.Memory({ initial: O / 65536, maximum: O / 65536 }));
+F && (J = F.buffer);
+O = J.byteLength;
+var P = J;
+J = P;
+Module.HEAP8 = I = new Int8Array(P);
+Module.HEAP16 = K = new Int16Array(P);
+Module.HEAP32 = L = new Int32Array(P);
+Module.HEAPU8 = H = new Uint8Array(P);
+Module.HEAPU16 = new Uint16Array(P);
+Module.HEAPU32 = new Uint32Array(P);
+Module.HEAPF32 = M = new Float32Array(P);
+Module.HEAPF64 = N = new Float64Array(P);
+L[640] = 5245632;
+function Q(a) {
   for (; 0 < a.length; ) {
     var b = a.shift();
     if ("function" == typeof b) b(Module);
@@ -250,17 +250,17 @@ function qa() {
 }
 var ra = Math.abs,
   sa = Math.ceil,
-  ua = Math.floor,
-  va = Math.min,
-  S = 0,
-  T = null,
+  ta = Math.floor,
+  ua = Math.min,
+  R = 0,
+  S = null,
   U = null;
 Module.preloadedImages = {};
 Module.preloadedAudios = {};
-function D(a) {
+function C(a) {
   if (Module.onAbort) Module.onAbort(a);
   ba(a);
-  E(a);
+  D(a);
   ea = !0;
   throw new WebAssembly.RuntimeError(
     "abort(" + a + "). Build with -s ASSERTIONS=1 for more info."
@@ -280,15 +280,15 @@ if (!wa()) {
 }
 function ya() {
   try {
-    if (F) return new Uint8Array(F);
+    if (E) return new Uint8Array(E);
     if (z) return z(W);
     throw "both async and sync fetching of the wasm failed";
   } catch (a) {
-    D(a);
+    C(a);
   }
 }
 function za() {
-  return F || (!t && !v) || "function" !== typeof fetch || V("file://")
+  return E || (!r && !u) || "function" !== typeof fetch || V("file://")
     ? new Promise(function (a) {
         a(ya());
       })
@@ -302,76 +302,76 @@ function za() {
         });
 }
 Module.asm = function () {
-  function a(h) {
-    Module.asm = h.exports;
-    S--;
-    Module.monitorRunDependencies && Module.monitorRunDependencies(S);
-    0 == S &&
-      (null !== T && (clearInterval(T), (T = null)),
-      U && ((h = U), (U = null), h()));
+  function a(l) {
+    Module.asm = l.exports;
+    R--;
+    Module.monitorRunDependencies && Module.monitorRunDependencies(R);
+    0 == R &&
+      (null !== S && (clearInterval(S), (S = null)),
+      U && ((l = U), (U = null), l()));
   }
-  function b(h) {
-    a(h.instance);
+  function b(l) {
+    a(l.instance);
   }
-  function c(h) {
+  function c(l) {
     return za()
-      .then(function (n) {
-        return WebAssembly.instantiate(n, f);
+      .then(function (p) {
+        return WebAssembly.instantiate(p, g);
       })
-      .then(h, function (n) {
-        E("failed to asynchronously prepare wasm: " + n);
-        D(n);
+      .then(l, function (p) {
+        D("failed to asynchronously prepare wasm: " + p);
+        C(p);
       });
   }
-  var f = {
-    env: X,
-    wasi_snapshot_preview1: X,
+  var g = {
+    env: Aa,
+    wasi_snapshot_preview1: Aa,
     global: { NaN, Infinity },
     "global.Math": Math,
     asm2wasm: ca,
   };
-  S++;
-  Module.monitorRunDependencies && Module.monitorRunDependencies(S);
+  R++;
+  Module.monitorRunDependencies && Module.monitorRunDependencies(R);
   if (Module.instantiateWasm)
     try {
-      return Module.instantiateWasm(f, a);
-    } catch (h) {
-      return E("Module.instantiateWasm callback failed with error: " + h), !1;
+      return Module.instantiateWasm(g, a);
+    } catch (l) {
+      return D("Module.instantiateWasm callback failed with error: " + l), !1;
     }
   (function () {
     if (
-      F ||
+      E ||
       "function" !== typeof WebAssembly.instantiateStreaming ||
       wa() ||
       V("file://") ||
       "function" !== typeof fetch
     )
       return c(b);
-    fetch(W, { credentials: "same-origin" }).then(function (h) {
-      return WebAssembly.instantiateStreaming(h, f).then(b, function (n) {
-        E("wasm streaming compile failed: " + n);
-        E("falling back to ArrayBuffer instantiation");
+    fetch(W, { credentials: "same-origin" }).then(function (l) {
+      return WebAssembly.instantiateStreaming(l, g).then(b, function (p) {
+        D("wasm streaming compile failed: " + p);
+        D("falling back to ArrayBuffer instantiation");
         return c(b);
       });
     });
   })();
   return {};
 };
-var Y,
-  Aa,
-  X = {
+var X,
+  Ba,
+  Aa = {
     __memory_base: 1024,
     __table_base: 0,
     b: function () {
-      return I.length;
+      return H.length;
     },
     a: function () {
-      D("OOM");
+      C("OOM");
     },
-    memory: G,
+    memory: F,
     table: da,
   };
-Module.asm({}, X, K);
+Module.asm({}, Aa, J);
 Module._free = function () {
   return (Module._free = Module.asm.c).apply(null, arguments);
 };
@@ -381,8 +381,8 @@ Module._gol = function () {
 Module._malloc = function () {
   return (Module._malloc = Module.asm.e).apply(null, arguments);
 };
-var H = (Module.stackAlloc = function () {
-    return (H = Module.stackAlloc = Module.asm.f).apply(null, arguments);
+var G = (Module.stackAlloc = function () {
+    return (G = Module.stackAlloc = Module.asm.f).apply(null, arguments);
   }),
   la = (Module.stackRestore = function () {
     return (la = Module.stackRestore = Module.asm.g).apply(null, arguments);
@@ -390,13 +390,13 @@ var H = (Module.stackAlloc = function () {
   ja = (Module.stackSave = function () {
     return (ja = Module.stackSave = Module.asm.h).apply(null, arguments);
   });
-Module.cwrap = function (a, b, c, f) {
+Module.cwrap = function (a, b, c, g) {
   c = c || [];
-  var h = c.every(function (n) {
-    return "number" === n;
+  var l = c.every(function (p) {
+    return "number" === p;
   });
-  return "string" !== b && h && !f
-    ? ha(a)
+  return "string" !== b && l && !g
+    ? fa(a)
     : function () {
         return ia(a, b, c, arguments);
       };
@@ -406,38 +406,38 @@ Module.setValue = function (a, b, c) {
   "*" === c.charAt(c.length - 1) && (c = "i32");
   switch (c) {
     case "i1":
-      J[a >> 0] = b;
+      I[a >> 0] = b;
       break;
     case "i8":
-      J[a >> 0] = b;
+      I[a >> 0] = b;
       break;
     case "i16":
-      L[a >> 1] = b;
+      K[a >> 1] = b;
       break;
     case "i32":
-      M[a >> 2] = b;
+      L[a >> 2] = b;
       break;
     case "i64":
-      Aa = [
+      Ba = [
         b >>> 0,
-        ((Y = b),
-        1 <= +ra(Y)
-          ? 0 < Y
-            ? (va(+ua(Y / 4294967296), 4294967295) | 0) >>> 0
-            : ~~+sa((Y - +(~~Y >>> 0)) / 4294967296) >>> 0
+        ((X = b),
+        1 <= +ra(X)
+          ? 0 < X
+            ? (ua(+ta(X / 4294967296), 4294967295) | 0) >>> 0
+            : ~~+sa((X - +(~~X >>> 0)) / 4294967296) >>> 0
           : 0),
       ];
-      M[a >> 2] = Aa[0];
-      M[(a + 4) >> 2] = Aa[1];
+      L[a >> 2] = Ba[0];
+      L[(a + 4) >> 2] = Ba[1];
       break;
     case "float":
-      N[a >> 2] = b;
+      M[a >> 2] = b;
       break;
     case "double":
-      O[a >> 3] = b;
+      N[a >> 3] = b;
       break;
     default:
-      D("invalid type for setValue: " + c);
+      C("invalid type for setValue: " + c);
   }
 };
 Module.getValue = function (a, b) {
@@ -445,34 +445,34 @@ Module.getValue = function (a, b) {
   "*" === b.charAt(b.length - 1) && (b = "i32");
   switch (b) {
     case "i1":
-      return J[a >> 0];
+      return I[a >> 0];
     case "i8":
-      return J[a >> 0];
+      return I[a >> 0];
     case "i16":
-      return L[a >> 1];
+      return K[a >> 1];
     case "i32":
-      return M[a >> 2];
+      return L[a >> 2];
     case "i64":
-      return M[a >> 2];
+      return L[a >> 2];
     case "float":
-      return N[a >> 2];
+      return M[a >> 2];
     case "double":
-      return O[a >> 3];
+      return N[a >> 3];
     default:
-      D("invalid type for getValue: " + b);
+      C("invalid type for getValue: " + b);
   }
   return null;
 };
-var Z;
-U = function Ba() {
-  Z || Ca();
-  Z || (U = Ba);
+var Y;
+U = function Ca() {
+  Y || Da();
+  Y || (U = Ca);
 };
-function Ca() {
+function Da() {
   function a() {
-    if (!Z && ((Z = !0), (Module.calledRun = !0), !ea)) {
-      R(na);
-      R(oa);
+    if (!Y && ((Y = !0), (Module.calledRun = !0), !ea)) {
+      Q(na);
+      Q(oa);
       if (Module.onRuntimeInitialized) Module.onRuntimeInitialized();
       if (Module.postRun)
         for (
@@ -484,10 +484,10 @@ function Ca() {
           var b = Module.postRun.shift();
           pa.unshift(b);
         }
-      R(pa);
+      Q(pa);
     }
   }
-  if (!(0 < S)) {
+  if (!(0 < R)) {
     if (Module.preRun)
       for (
         "function" == typeof Module.preRun && (Module.preRun = [Module.preRun]);
@@ -495,8 +495,8 @@ function Ca() {
 
       )
         qa();
-    R(ma);
-    0 < S ||
+    Q(ma);
+    0 < R ||
       (Module.setStatus
         ? (Module.setStatus("Running..."),
           setTimeout(function () {
@@ -508,7 +508,7 @@ function Ca() {
         : a());
   }
 }
-Module.run = Ca;
+Module.run = Da;
 if (Module.preInit)
   for (
     "function" == typeof Module.preInit && (Module.preInit = [Module.preInit]);
@@ -517,28 +517,21 @@ if (Module.preInit)
   )
     Module.preInit.pop()();
 noExitRuntime = !0;
-Ca();
-const Da = Module.cwrap("gol", "number", ["number", "number", "number"]);
-function Ea(a) {
+Da();
+const Ea = Module.cwrap("gol", "number", ["number", "number", "number"]);
+let Z = null,
+  Fa = null;
+onmessage = (a) => {
   const b = [],
     c = [];
-  a.forEach((q) => {
-    c.push(q.x);
-    c.push(q.y);
+  null == Z && ((Z = Module._malloc(32e4)), (Fa = Module._malloc(48e4)));
+  a.data.forEach((g) => {
+    c.push(g.x, g.y);
   });
-  var f = new Int32Array(c);
-  const h = f.length,
-    n = f.BYTES_PER_ELEMENT;
-  a = Module._malloc(h * n * 8);
-  const C = Module._malloc(h * n * 12);
-  Module.HEAP32.set(f, a / n);
-  f = 2 * Da(a, C, h / 2);
-  f = [...new Int32Array(Module.HEAP32.buffer, a, f)];
-  Module._free(a);
-  Module._free(C);
-  for (a = 0; a < f.length; a += 2) b.push({ x: f[a], y: f[a + 1] });
-  return b;
-}
-onmessage = (a) => {
-  postMessage(Ea(a.data));
+  a = new Int32Array(c);
+  Module.HEAP32.set(a, Z / a.BYTES_PER_ELEMENT);
+  a = 2 * Ea(Z, Fa, a.length / 2);
+  a = new Int32Array(Module.HEAP32.buffer, Z, a);
+  for (let g = 0; g < a.length; g += 2) b.push({ x: a[g], y: a[g + 1] });
+  postMessage(b);
 };

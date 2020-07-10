@@ -1,37 +1,43 @@
 const gol = Module.cwrap("gol", "number", ["number", "number", "number"]);
 
-function doGol(inShape) {
+const MAX_CELLS = 10000;
+
+let shapePtr = null;
+let neighbourPtr = null;
+
+onmessage = (event) => {
   const outShape = [];
   const inArr = [];
+  const int32perCell = 2;
 
-  inShape.forEach((cell) => {
-    inArr.push(cell.x);
-    inArr.push(cell.y);
+  if (shapePtr == null) {
+    // Allocate memory once
+    shapePtr = Module._malloc(MAX_CELLS * 4 * 8); // 4 bytes in 32 bits, 8 neighbours
+    neighbourPtr = Module._malloc(MAX_CELLS * 4 * 12); // 4 bytes in 32 bits, 8 neighbours / 2 * 3
+  }
+
+  // Convert shape to linear array
+  event.data.forEach((cell) => {
+    inArr.push(cell.x, cell.y);
   });
 
   const inputArray = new Int32Array(inArr);
-  const len = inputArray.length;
-  const bytesPerElement = inputArray.BYTES_PER_ELEMENT;
-  // const MAX_CELLS = 10000;
 
-  const inputPtr = Module._malloc(len * bytesPerElement * 8); // 8 neighbours
-  const outputPtr = Module._malloc(len * bytesPerElement * 12); // 8 neighbours / 2 * 3
+  // Fill memory
+  Module.HEAP32.set(inputArray, shapePtr / inputArray.BYTES_PER_ELEMENT);
 
-  Module.HEAP32.set(inputArray, inputPtr / bytesPerElement);
+  // Call wasm function
+  const newSize =
+    gol(shapePtr, neighbourPtr, inputArray.length / int32perCell) *
+    int32perCell;
 
-  const newSize = gol(inputPtr, outputPtr, len / 2) * 2;
+  // Read memory
+  const outArr = new Int32Array(Module.HEAP32.buffer, shapePtr, newSize);
 
-  const outArr = [...new Int32Array(Module.HEAP32.buffer, inputPtr, newSize)];
-
-  Module._free(inputPtr);
-  Module._free(outputPtr);
-
-  for (let i = 0; i < outArr.length; i += 2) {
+  // Convert linear array to shape
+  for (let i = 0; i < outArr.length; i += int32perCell) {
     outShape.push({ x: outArr[i], y: outArr[i + 1] });
   }
-  return outShape;
-}
 
-onmessage = (event) => {
-  postMessage(doGol(event.data));
+  postMessage(outShape);
 };
