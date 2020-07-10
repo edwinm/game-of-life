@@ -1,7 +1,15 @@
 const gol = Module.cwrap("gol", "number", ["number", "number", "number"]);
 
-function callGol(cells) {
-  const inputArray = new Int32Array(cells);
+function doGol(inShape) {
+  const outShape = [];
+  const inArr = [];
+
+  inShape.forEach((cell) => {
+    inArr.push(cell.x);
+    inArr.push(cell.y);
+  });
+
+  const inputArray = new Int32Array(inArr);
   const len = inputArray.length;
   const bytesPerElement = inputArray.BYTES_PER_ELEMENT;
   // const MAX_CELLS = 10000;
@@ -13,26 +21,10 @@ function callGol(cells) {
 
   const newSize = gol(inputPtr, outputPtr, len / 2) * 2;
 
-  const inputArray2 = [
-    ...new Int32Array(Module.HEAP32.buffer, inputPtr, newSize),
-  ];
+  const outArr = [...new Int32Array(Module.HEAP32.buffer, inputPtr, newSize)];
 
   Module._free(inputPtr);
   Module._free(outputPtr);
-
-  return inputArray2;
-}
-
-function doGol(inShape) {
-  const outShape = [];
-  const inArr = [];
-
-  inShape.forEach((cell) => {
-    inArr.push(cell.x);
-    inArr.push(cell.y);
-  });
-
-  const outArr = callGol(inArr);
 
   for (let i = 0; i < outArr.length; i += 2) {
     outShape.push({ x: outArr[i], y: outArr[i + 1] });
@@ -40,6 +32,6 @@ function doGol(inShape) {
   return outShape;
 }
 
-onmessage = function (event) {
+onmessage = (event) => {
   postMessage(doGol(event.data));
 };
