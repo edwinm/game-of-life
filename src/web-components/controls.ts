@@ -23,7 +23,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   constructor() {
     super();
 
-    this.worker = new Worker("../wasm/gol.js");
+    this.worker = new Worker("../wasm/gol-worker.js");
 
     this.attachShadow({ mode: "open" });
 
