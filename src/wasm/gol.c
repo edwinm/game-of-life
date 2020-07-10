@@ -36,7 +36,7 @@ void push(int x, int y) {
 	neighbours_count++;
 }
 
-int gof(struct cells_struct* cells, struct neighbours_struct* neighbours_in, int len) {
+int gol(struct cells_struct* cells, struct neighbours_struct* neighbours_in, int len) {
 	neighbours_count = 0;
 	neighbours = neighbours_in;
 

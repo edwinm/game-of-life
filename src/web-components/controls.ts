@@ -1,35 +1,29 @@
 import { $ } from "carbonium";
-import {
-  fromEvent,
-  Cuprum,
-  merge,
-  Observable,
-  Subscription,
-  interval,
-  combine,
-} from "cuprum";
-import { gofNext } from "../components/gameoflife";
+import { fromEvent, Cuprum, merge, Observable } from "cuprum";
 import router from "../components/router";
 import { CustomElement, define } from "../components/web-component-decorator";
 import { Draw } from "../models/draw";
 
 @define("gof-controls")
 export class GofControls extends HTMLElement implements CustomElement {
-  private started: boolean;
-  private timerSubscription: Subscription;
+  private isPlaying: boolean;
   private generation: number;
   private speed: number;
   private redraw$: Observable<Draw>;
 
   private size$: Cuprum<number>;
-  private nextShape$: Cuprum<Cell[]>;
   private nextGeneration$: Cuprum<void>;
   private resize$: Observable<Event>;
+  private nextShape$ = new Cuprum<Cell[]>();
   private resetShape$ = new Cuprum<void>();
   private clearShape$ = new Cuprum<void>();
+  private worker: Worker;
+  private timer = null;
 
   constructor() {
     super();
+
+    this.worker = new Worker("../wasm/gol.js");
 
     this.attachShadow({ mode: "open" });
 
@@ -156,7 +150,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   }
 
   connectedCallback() {
-    this.started = false;
+    this.isPlaying = false;
     this.generation = 0;
     this.resize$ = merge(
       fromEvent(window, "resize"),
@@ -199,7 +193,7 @@ export class GofControls extends HTMLElement implements CustomElement {
     });
 
     redraw$.subscribe(({ pattern }) => {
-      if (!this.started) {
+      if (!this.isPlaying) {
         $<HTMLInputElement>("#start, #next, #reset", this.shadowRoot).disabled =
           pattern.length == 0;
       }
@@ -231,31 +225,26 @@ export class GofControls extends HTMLElement implements CustomElement {
   }
 
   private play() {
-    this.stop();
-    this.timerSubscription = interval(this.speed).subscribe(() => {
-      this.nextGeneration$.dispatch();
-    });
+    this.isPlaying = true;
+    clearTimeout(this.timer);
+    this.nextGeneration$.dispatch();
   }
 
   private stop() {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-    }
+    this.isPlaying = false;
+    clearTimeout(this.timer);
   }
 
   private setupStart() {
     fromEvent($("#start", this.shadowRoot), "click").subscribe((event) => {
-      this.started = !this.started;
-      if (this.started) {
+      if (this.isPlaying) {
+        (<HTMLInputElement>event.target).textContent = "Start";
+        (<HTMLInputElement>event.target).setAttribute("icon", "play");
+        this.stop();
+      } else {
         (<HTMLInputElement>event.target).textContent = "Stop";
         (<HTMLInputElement>event.target).setAttribute("icon", "stop");
         this.play();
-      } else {
-        (<HTMLInputElement>event.target).textContent = "Start";
-        (<HTMLInputElement>event.target).setAttribute("icon", "play");
-        if (this.timerSubscription) {
-          this.timerSubscription.unsubscribe();
-        }
       }
     });
   }
@@ -268,10 +257,7 @@ export class GofControls extends HTMLElement implements CustomElement {
       ),
       new Cuprum<number>().dispatch(Number(speed.value))
     ).subscribe((value) => {
-      this.speed = 1000 - Math.sqrt(value) * 99;
-      if (this.started) {
-        this.play();
-      }
+      this.speed = 1000 - Math.sqrt(value) * 100;
     });
   }
 
@@ -283,11 +269,17 @@ export class GofControls extends HTMLElement implements CustomElement {
 
     this.nextGeneration$.subscribe(() => {
       this.setGeneration(this.generation + 1);
+      this.worker.postMessage(this.redraw$.value().pattern);
     });
 
-    this.nextShape$ = this.nextGeneration$.map(() =>
-      gofNext(this.redraw$.value().pattern)
-    );
+    this.worker.onmessage = (event) => {
+      this.nextShape$.dispatch(event.data);
+      if (this.isPlaying) {
+        this.timer = setTimeout(() => {
+          this.nextGeneration$.dispatch();
+        }, this.speed);
+      }
+    };
   }
 
   private setupReset() {

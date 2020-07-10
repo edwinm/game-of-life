@@ -8,15 +8,13 @@
 <p>See console</p>
 
 <script>
-  const myWorker = new Worker('gof.js');
+  a = "[{\"x\":32,\"y\":47},{\"x\":33,\"y\":48},{\"x\":31,\"y\":49},{\"x\":32,\"y\":49},{\"x\":33,\"y\":49}]";
 
-    var glider = [
-      [1, 0],
-      [2, 1],
-      [2, 2],
-      [1, 2],
-      [0, 2],
-    ];
+  [{ "x": 32, "y": 47 }, { "x": 33, "y": 48 }, { "x": 31, "y": 49 }, { "x": 32, "y": 49 }, { "x": 33, "y": 49 }]
+
+  const myWorker = new Worker('../../dist/wasm/gof.js');
+
+  var glider = [{ "x": 32, "y": 47 }, { "x": 33, "y": 48 }, { "x": 31, "y": 49 }, { "x": 32, "y": 49 }, { "x": 33, "y": 49 }];
 
   myWorker.onmessage = function(event) {
     console.log('onchange', event.data);

@@ -5,6 +5,9 @@ interface Neighbours {
 }
 
 export function gofNext(shape: Cell[]) {
+  console.log("obsolete");
+  return;
+
   let neighbourCells = <Neighbours[]>[];
   let newShape = <Cell[]>[];
 

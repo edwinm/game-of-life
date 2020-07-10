@@ -1,17 +1,19 @@
-var gof = Module.cwrap("gof", "number", ["number", "number", "number"]);
+const gol = Module.cwrap("gol", "number", ["number", "number", "number"]);
 
-function callGof(cells) {
-  var inputArray = new Int32Array(cells);
-  var len = inputArray.length;
-  var bytesPerElement = inputArray.BYTES_PER_ELEMENT;
+function callGol(cells) {
+  const inputArray = new Int32Array(cells);
+  const len = inputArray.length;
+  const bytesPerElement = inputArray.BYTES_PER_ELEMENT;
+  // const MAX_CELLS = 10000;
 
-  var inputPtr = Module._malloc(len * bytesPerElement * 8); // 8 neighbours
-  var outputPtr = Module._malloc(len * bytesPerElement * 12); // 8 neighbours / 2 * 3
+  const inputPtr = Module._malloc(len * bytesPerElement * 8); // 8 neighbours
+  const outputPtr = Module._malloc(len * bytesPerElement * 12); // 8 neighbours / 2 * 3
 
   Module.HEAP32.set(inputArray, inputPtr / bytesPerElement);
 
-  var newSize = gof(inputPtr, outputPtr, len / 2) * 2;
-  var inputArray2 = [
+  const newSize = gol(inputPtr, outputPtr, len / 2) * 2;
+
+  const inputArray2 = [
     ...new Int32Array(Module.HEAP32.buffer, inputPtr, newSize),
   ];
 
@@ -21,17 +23,23 @@ function callGof(cells) {
   return inputArray2;
 }
 
-function doGof(shape) {
-  var ret = [];
-  var arr = callGof(shape.flat());
-  for (var i = 0; i < arr.length; i += 2) {
-    ret.push([arr[i], arr[i + 1]]);
+function doGol(inShape) {
+  const outShape = [];
+  const inArr = [];
+
+  inShape.forEach((cell) => {
+    inArr.push(cell.x);
+    inArr.push(cell.y);
+  });
+
+  const outArr = callGol(inArr);
+
+  for (let i = 0; i < outArr.length; i += 2) {
+    outShape.push({ x: outArr[i], y: outArr[i + 1] });
   }
-  return ret;
+  return outShape;
 }
 
 onmessage = function (event) {
-  var nextGen = doGof(event.data);
-
-  postMessage(nextGen);
+  postMessage(doGol(event.data));
 };
