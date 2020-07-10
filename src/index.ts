@@ -50,7 +50,7 @@ fromEvent(document, "DOMContentLoaded").subscribe(() => {
     clear$
   );
 
-  controls.setObservers(redraw$, click$, infoIsOpen$);
+  controls.setObservers(redraw$, click$, infoIsOpen$, newPattern$);
 
   routeListener(newPattern$);
 });

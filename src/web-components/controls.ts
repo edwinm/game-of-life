@@ -177,7 +177,8 @@ export class GofControls extends HTMLElement implements CustomElement {
   setObservers(
     redraw$: Observable<Draw>,
     toggle$: Observable<Cell>,
-    infoIsOpen$: Observable<boolean>
+    infoIsOpen$: Observable<boolean>,
+    newPattern$: Observable<string>
   ) {
     this.redraw$ = redraw$;
 
@@ -197,6 +198,10 @@ export class GofControls extends HTMLElement implements CustomElement {
         $<HTMLInputElement>("#start, #next, #reset", this.shadowRoot).disabled =
           pattern.length == 0;
       }
+    });
+
+    newPattern$.subscribe(() => {
+      this.setGeneration(0);
     });
   }
 
