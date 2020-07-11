@@ -6,10 +6,7 @@ import { GofInfo } from "./web-components/info";
 import { GofControls } from "./web-components/controls";
 import { Shape } from "./components/shape";
 import { routeListener } from "./components/routelistener";
-import { errorHandler } from "./components/errorhandler";
 import { GofButton } from "./web-components/button";
-
-errorHandler();
 
 fromEvent(document, "DOMContentLoaded").subscribe(() => {
   const canvas = <GofCanvas>$("gof-canvas");
