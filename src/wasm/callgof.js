@@ -12,8 +12,10 @@ onmessage = (event) => {
 
   if (shapePtr == null) {
     // Allocate memory once
-    shapePtr = Module._malloc(MAX_CELLS * 4 * 8); // 4 bytes in 32 bits, 8 neighbours
-    neighbourPtr = Module._malloc(MAX_CELLS * 4 * 12); // 4 bytes in 32 bits, 8 neighbours / 2 * 3
+    shapePtr = Module._malloc(MAX_CELLS * Int32Array.BYTES_PER_ELEMENT * 8); // 8 neighbours
+    neighbourPtr = Module._malloc(
+      MAX_CELLS * Int32Array.BYTES_PER_ELEMENT * 12
+    ); // 8 neighbours / 2 * 3
   }
 
   // Convert shape to linear array
@@ -23,7 +25,7 @@ onmessage = (event) => {
 
   const inputArray = new Int32Array(inArr);
 
-  // Fill memory
+  // Copy array to allocated memory address
   Module.HEAP32.set(inputArray, shapePtr / inputArray.BYTES_PER_ELEMENT);
 
   // Call wasm function
