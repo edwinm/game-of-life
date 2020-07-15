@@ -9,11 +9,14 @@
 
 <script>
 
-  // emcc -Os reverse.c -o reverse.wasm -s EXPORTED_FUNCTIONS='["_reverse"]'
+  // emcc -Os reverse.c -o reverse.wasm -s EXPORTED_FUNCTIONS='["_reverse"]' -s TOTAL_MEMORY=4MB -s TOTAL_STACK=2MB
 
+  // 64kB * 256 = 16MB
+  // 64kB * 64 = 4MB
+  // 4MB / 32 = 131.072
   const memory = new WebAssembly.Memory({
-    initial: 256,
-    maximum: 256,
+    initial: 64,
+    maximum: 64,
   });
   const heap = new Int32Array(memory.buffer);
   const importObject = {
