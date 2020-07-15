@@ -11,6 +11,8 @@
 
   // emcc plain.c -Os -s WASM=1 -s -o hello.wasm
 
+  const memory = new WebAssembly.Memory({initial: 256, maximum: 256});
+
   var glider = [[1, 0], [2, 1], [2, 2], [1, 2], [0, 2]].flat();
 
   // console.log('glider', glider);
@@ -18,7 +20,7 @@
   (async () => {
     const config = {
       env: {
-        memory: new WebAssembly.Memory({initial: 256, maximum: 256}),
+        memory,
         table: new WebAssembly.Table({initial: 6, element: 'anyfunc', maximum: 6}),
         memoryBase: 0,
         tableBase: 0,
@@ -26,7 +28,8 @@
     }
     const fetchPromise = fetch('hello.wasm');
     const {instance} = await WebAssembly.instantiateStreaming(fetchPromise, config);
-    const result = instance.exports._fib();
+    console.log('instance.exports', instance.exports);
+    const result = instance.exports._fib(10);
     console.log(result);
   })();
 

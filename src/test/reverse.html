@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+</head>
+<body>
+
+<p>See console</p>
+
+<script>
+
+  // emcc -Os reverse.c -o reverse.wasm -s EXPORTED_FUNCTIONS='["_reverse"]'
+
+  const memory = new WebAssembly.Memory({
+    initial: 256,
+    maximum: 256,
+  });
+  const heap = new Int32Array(memory.buffer);
+  const importObject = {
+    env: {
+      memory,
+    },
+  };
+
+  (async () => {
+    const { instance } = await WebAssembly.instantiateStreaming(fetch('reverse.wasm'), importObject);
+
+    function reverse(arr) {
+      for (let i = 0; i < arr.length; ++i) {
+        heap[i] = arr[i];
+      }
+
+      instance.exports._reverse(0, arr.length);
+
+      const result = [...new Int32Array(memory.buffer, 0, arr.length)];
+
+      return result;
+    }
+
+    const numbers = [14, 3, 77, 34, 92, 67, 12];
+    console.log(numbers, 'becomes', reverse(numbers));
+  })();
+
+</script>
+
+</body>
+</html>
