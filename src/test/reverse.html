@@ -9,7 +9,7 @@
 
 <script>
 
-  // emcc -Os reverse.c -o reverse.wasm -s EXPORTED_FUNCTIONS='["_reverse"]' -s TOTAL_MEMORY=4MB -s TOTAL_STACK=2MB
+  // emcc -Os reverse.c -o reverse.wasm -s EXPORTED_FUNCTIONS='["_reverse"]' -s INITIAL_MEMORY=4MB -s TOTAL_MEMORY=4MB -s TOTAL_STACK=1MB
 
   // 64kB * 256 = 16MB
   // 64kB * 64 = 4MB
