@@ -33,6 +33,7 @@ export class Shape {
 
     offset$.subscribe((offset) => {
       this.setOffset(offset);
+      this.redraw();
     });
 
     nextShape$.subscribe((shape) => {
@@ -87,12 +88,9 @@ export class Shape {
       dimension.width != oldDimension.width &&
       dimension.height != oldDimension.height
     ) {
-      const dx = Math.round((dimension.width - oldDimension.width) / 2.001);
-      const dy = Math.round((dimension.height - oldDimension.height) / 2.001);
-
-      this.current.forEach((cell: Cell) => {
-        cell.x += dx;
-        cell.y += dy;
+      this.setOffset({
+        x: Math.round((dimension.width - oldDimension.width) / 2.001),
+        y: Math.round((dimension.height - oldDimension.height) / 2.001),
       });
     }
     this.redraw();
@@ -103,12 +101,11 @@ export class Shape {
       cell.x += offset.x;
       cell.y += offset.y;
     });
-    this.redraw();
   }
 
   private toggle(toggleCell: Cell) {
     const index = this.current.findIndex(
-      (cell, index) => cell.x == toggleCell.x && cell.y == toggleCell.y
+      (cell) => cell.x == toggleCell.x && cell.y == toggleCell.y
     );
     if (index == -1) {
       this.current.push(toggleCell);
