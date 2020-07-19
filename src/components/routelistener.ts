@@ -1,7 +1,7 @@
 import router from "./router";
 import { $ } from "carbonium";
 import { Cuprum, fromEvent } from "cuprum";
-import analytics from "./analytics";
+import { analyticsInit, analyticsPageview } from "./analytics";
 import { GofInfo } from "../web-components/info";
 
 let isLexiconLoaded = false;
@@ -20,12 +20,12 @@ export function routeListener(newPattern$: Cuprum<string>) {
     go(path, true, isNew);
   });
 
-  async function go(url: string, enter: boolean, isNew: boolean) {
-    if (!url) {
+  async function go(path: string, enter: boolean, isNew: boolean) {
+    if (!path) {
       return;
     }
 
-    switch (url) {
+    switch (path) {
       case "/":
         setTitle();
         break;
@@ -50,7 +50,7 @@ export function routeListener(newPattern$: Cuprum<string>) {
         break;
       default:
         if (enter && isNew) {
-          const matchArray = url.match(/\/lexicon\/(.+)/);
+          const matchArray = path.match(/\/lexicon\/(.+)/);
           if (matchArray) {
             newPattern$.dispatch("");
             const json = await (
@@ -61,6 +61,7 @@ export function routeListener(newPattern$: Cuprum<string>) {
           }
         }
     }
+    analyticsPageview(path);
   }
 }
 
@@ -109,4 +110,4 @@ fromEvent(window, "hashchange").subscribe(() => {
   $(`a[name='${document.location.hash.substr(1)}']`).scrollIntoView();
 });
 
-analytics("UA-93616-2");
+analyticsInit("UA-93616-2");

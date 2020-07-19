@@ -1,4 +1,4 @@
-export default (id: string) => {
+export function analyticsInit(id: string) {
   // @ts-ignore
   window.ga =
     window.ga ||
@@ -11,4 +11,8 @@ export default (id: string) => {
   ga("set", "forceSSL", true);
   ga("set", "anonymizeIp", true);
   ga("send", "pageview");
-};
+}
+
+export function analyticsPageview(path: string) {
+  ga("send", "pageview", path);
+}
