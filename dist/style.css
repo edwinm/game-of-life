@@ -46,7 +46,12 @@ main {
   flex-direction: column;
   position: relative;
   height: 100vh;
-  height: -webkit-fill-available;
+}
+/* Apply to iPhone, not Chrome */
+@media (pointer: coarse) {
+  main {
+    height: -webkit-fill-available;
+  }
 }
 
 main.heightfix {
