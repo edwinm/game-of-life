@@ -32,10 +32,21 @@ export async function init() {
     },
   };
 
-  instance = <customInstance>(
-    (await WebAssembly.instantiateStreaming(fetch("/gol.wasm"), importObject))
-      .instance
-  );
+  const responsePromise = fetch("/gol.wasm");
+
+  if ("instantiateStreaming" in WebAssembly) {
+    instance = <customInstance>(
+      (await WebAssembly.instantiateStreaming(responsePromise, importObject))
+        .instance
+    );
+  } else {
+    const response = await responsePromise;
+    const buffer = await response.arrayBuffer();
+    const module = await WebAssembly.compile(buffer);
+    instance = <customInstance>(
+      await WebAssembly.instantiate(module, importObject)
+    );
+  }
 }
 
 export function next(cells: Cell[]): Cell[] {
