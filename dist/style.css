@@ -122,6 +122,7 @@ gof-controls {
 
 .selection img {
   display: block;
+  background-color: #7e7e7e;
 }
 
 .cc-icon {
