@@ -15,7 +15,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   private size$: Cuprum<number>;
   private nextGeneration$: Cuprum<void>;
   private resize$: Observable<Event>;
-  private nextShape$ = new Cuprum<Cell[]>();
+  private nextShape$: Cuprum<Cell[]>;
   private resetShape$ = new Cuprum<void>();
   private clearShape$ = new Cuprum<void>();
   private worker: Worker;
@@ -273,15 +273,15 @@ export class GofControls extends HTMLElement implements CustomElement {
       "click"
     ).map(() => {});
 
-    this.nextGeneration$.subscribe(() => {
+    this.nextShape$ = this.nextGeneration$.map(() => {
       this.setGeneration(this.generation + 1);
       const newShape = wasm.next(this.redraw$.value().pattern);
-      this.nextShape$.dispatch(newShape);
       if (this.isPlaying) {
         this.timer = setTimeout(() => {
           this.nextGeneration$.dispatch();
         }, this.speed);
       }
+      return newShape;
     });
   }
 
