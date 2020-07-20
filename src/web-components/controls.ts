@@ -3,6 +3,7 @@ import { fromEvent, Cuprum, merge, Observable } from "cuprum";
 import router from "../components/router";
 import { CustomElement, define } from "../components/web-component-decorator";
 import { Draw } from "../models/draw";
+import * as wasm from "../components/wasm";
 
 @define("gof-controls")
 export class GofControls extends HTMLElement implements CustomElement {
@@ -23,7 +24,7 @@ export class GofControls extends HTMLElement implements CustomElement {
   constructor() {
     super();
 
-    this.worker = new Worker("../wasm/gol-worker.js");
+    wasm.init();
 
     this.attachShadow({ mode: "open" });
 
@@ -274,17 +275,14 @@ export class GofControls extends HTMLElement implements CustomElement {
 
     this.nextGeneration$.subscribe(() => {
       this.setGeneration(this.generation + 1);
-      this.worker.postMessage(this.redraw$.value().pattern);
-    });
-
-    this.worker.onmessage = (event) => {
-      this.nextShape$.dispatch(event.data);
+      const newShape = wasm.next(this.redraw$.value().pattern);
+      this.nextShape$.dispatch(newShape);
       if (this.isPlaying) {
         this.timer = setTimeout(() => {
           this.nextGeneration$.dispatch();
         }, this.speed);
       }
-    };
+    });
   }
 
   private setupReset() {
