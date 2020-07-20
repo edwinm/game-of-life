@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+</head>
+<body>
+
+<p>See console</p>
+
+<script>
+
+  // emcc -Os ../wasm/gol.c -o gol.wasm -s EXPORTED_FUNCTIONS='["_gol"]' -s INITIAL_MEMORY=4MB -s TOTAL_MEMORY=4MB -s TOTAL_STACK=1MB
+
+  let instance;
+
+  (async () => {
+    // shape cell size = 2 * 4 = 8 bytes
+    // neighbour cell size = 3 * 4 = 12 bytes
+    // 4MB shared for shape and neighbour cells:
+    // 4 * 1024 * 1024 / (8 + 12) * 8
+    const MAX_CELLS = 1700000; // Max 212.500 cells; MAX_CELLS % 32 == 0
+
+    const memory = new WebAssembly.Memory({
+      initial: 64, // 4MB (page is 64kB)
+      maximum: 64,
+    });
+    const importObject = {
+      env: {
+        memory,
+      },
+    };
+
+    ({ instance } = await WebAssembly.instantiateStreaming(fetch('gol.wasm'), importObject));
+
+
+    /* ---------------- */
+
+    var glider = [[1, 0], [2, 1], [2, 2], [1, 2], [0, 2]].flat();
+
+    console.log('glider', glider);
+
+    const shapeHeap = new Int32Array(memory.buffer, 0, glider.length);
+
+    for (let i = 0; i < glider.length; ++i) {
+      shapeHeap[i] = glider[i];
+    }
+
+    const newLength = instance.exports._gol(0, MAX_CELLS, glider.length / 2) * 2;
+
+    const result = [...new Int32Array(memory.buffer, 0, newLength)];
+
+    console.log('result', result);
+  })();
+
+
+
+
+</script>
+
+</body>
+</html>
