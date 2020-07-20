@@ -4,9 +4,6 @@
 	Published under MIT license
 */
 
-#include <stdio.h>
-#include <emscripten/emscripten.h>
-
 struct neighbours_struct {
 	int x;
 	int y;
