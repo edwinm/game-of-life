@@ -47,11 +47,9 @@ main {
   position: relative;
   height: 100vh;
 }
-/* Apply to iPhone, not Chrome */
-@media (pointer: coarse) {
-  main {
-    height: -webkit-fill-available;
-  }
+
+main.safari {
+  height: -webkit-fill-available;
 }
 
 main.heightfix {
