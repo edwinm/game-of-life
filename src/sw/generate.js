@@ -9,6 +9,8 @@ workboxBuild
       "./gol.wasm",
       "./manifest.json",
       "./bundle.min.js",
+      "./pix/header.png",
+      "./pix/header-bg.png",
     ],
     swDest: "dist/service-worker.js",
     runtimeCaching: [
