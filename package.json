@@ -8,9 +8,10 @@
     "build": "rollup --config --sourcemap",
     "livereload": "rollup --config rollup-livereload.config.js --sourcemap --watch",
     "watch": "npm-run-all --parallel start livereload",
-    "deploy": "npm run build && ./deploy.sh",
+    "deploy": "npm run build && npm run sw && ./deploy.sh",
     "generate": "node src/lexgen/generate.js",
     "wasm": "emcc -Os src/wasm/gol.c -o dist/gol.wasm -s EXPORTED_FUNCTIONS='[\"_gol\"]' -s INITIAL_MEMORY=4MB -s TOTAL_MEMORY=4MB -s TOTAL_STACK=1MB",
+    "sw": "node src/sw/generate.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -48,7 +49,8 @@
     "serve": "^11.3.2",
     "string-strip-html": "^4.5.0",
     "tslib": "^2.0.0",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "workbox-build": "^5.1.3"
   },
   "husky": {
     "hooks": {

@@ -50,6 +50,8 @@ fromEvent(document, "DOMContentLoaded").subscribe(() => {
   controls.setObservers(redraw$, click$, infoIsOpen$, newPattern$);
 
   routeListener(newPattern$);
+
+  navigator.serviceWorker.register("/service-worker.js");
 });
 
 // Prevent tree shaking of web components
