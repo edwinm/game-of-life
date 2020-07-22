@@ -279,10 +279,9 @@ export class GolControls extends HTMLElement implements CustomElement {
   }
 
   private setupGeneration() {
-    this.nextGeneration$ = fromEvent(
-      $("#next", this.shadowRoot),
-      "click"
-    ).map(() => {});
+    this.nextGeneration$ = fromEvent($("#next", this.shadowRoot), "click")
+      .filter(() => !this.isPlaying)
+      .map(() => {});
 
     this.nextShape$ = this.nextGeneration$.map(() => {
       this.setGeneration(this.generation + 1);
