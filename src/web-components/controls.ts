@@ -18,7 +18,6 @@ export class GofControls extends HTMLElement implements CustomElement {
   private nextShape$: Cuprum<Cell[]>;
   private resetShape$ = new Cuprum<void>();
   private clearShape$ = new Cuprum<void>();
-  private worker: Worker;
   private timer = null;
 
   constructor() {
@@ -90,12 +89,24 @@ export class GofControls extends HTMLElement implements CustomElement {
           --background: #2A4E97;
           --color: white;
         }
-        
+
+        @media (prefers-color-scheme: dark) {
+          gof-button {
+            --background: #29457D;
+          }
+        }
+                
         #controls {
           white-space: nowrap;
           border: 1px solid #999;
           padding: 20px;
           border-radius: 10px;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+          #controls {
+            background-color: #828080;
+          }
         }
                
         @media (max-width: 650px), (max-height: 650px) {

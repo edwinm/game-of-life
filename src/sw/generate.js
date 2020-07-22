@@ -11,6 +11,7 @@ workboxBuild
       "./bundle.min.js",
       "./pix/header.png",
       "./pix/header-bg.png",
+      "./pix/header-bg-dark.png",
     ],
     swDest: "dist/service-worker.js",
     runtimeCaching: [

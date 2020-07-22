@@ -5,6 +5,12 @@ html {
   overflow: hidden;
 }
 
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: #6f6f6f;
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -19,6 +25,7 @@ body {
 
 dt {
   font-weight: bold;
+  margin: 1em 0;
 }
 
 dd {
@@ -62,6 +69,13 @@ header {
   border-bottom: 3px solid #2a4e97;
   background: url(/pix/header.png) no-repeat, url(/pix/header-bg.png) repeat-x;
   background-size: contain;
+  background-position: 60px 6px, 0 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  header {
+    background-image: url(/pix/header.png), url(/pix/header-bg-dark.png);
+  }
 }
 
 .invisible {
@@ -80,7 +94,6 @@ gof-canvas {
 
 gof-controls {
   flex: 0 0 content;
-  background-color: #b3b3b3;
 }
 
 .header-img {
@@ -112,6 +125,12 @@ gof-controls {
   align-items: center;
   border-radius: 3px;
   background-color: #ccc;
+}
+
+@media (prefers-color-scheme: dark) {
+  .selection .image a {
+    background-color: #535353;
+  }
 }
 
 .selection .image a:focus {
@@ -157,4 +176,14 @@ gof-controls {
   padding: 40px;
   border: 4px solid red;
   background-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  a {
+    color: #b1b2ea;
+  }
+
+  a:visited {
+    color: #a963d0;
+  }
 }

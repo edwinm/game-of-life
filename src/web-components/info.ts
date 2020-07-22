@@ -74,6 +74,13 @@ export class GofInfo extends HTMLElement implements CustomElement {
           border: 2px solid transparent; /*bugfix*/
         }
         
+        @media (prefers-color-scheme: dark) {
+          .info-content {
+            background-color: #38393c;
+            color: #f4f3e6;
+          }
+        }
+        
         .close-button {
           position: absolute;
           right: 1em;
@@ -89,6 +96,12 @@ export class GofInfo extends HTMLElement implements CustomElement {
         gof-button {
           --background: #2A4E97;
           --color: white;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+          gof-button {
+            --background: #29457D;
+          }
         }
 
         @media (max-width: 650px) {
