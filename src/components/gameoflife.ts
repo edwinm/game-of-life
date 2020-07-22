@@ -4,7 +4,7 @@ interface Neighbours {
   populated: boolean;
 }
 
-export function gofNext(shape: Cell[]) {
+export function golNext(shape: Cell[]) {
   console.log("obsolete");
   return;
 

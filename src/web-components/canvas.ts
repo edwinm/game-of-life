@@ -3,8 +3,8 @@ import { Cuprum, fromEvent, Observable, combine } from "cuprum";
 import { CustomElement, define } from "../components/web-component-decorator";
 import { Draw } from "../models/draw";
 
-@define("gof-canvas")
-export class GofCanvas extends HTMLElement implements CustomElement {
+@define("gol-canvas")
+export class GolCanvas extends HTMLElement implements CustomElement {
   private canvasDomElement: HTMLCanvasElement;
   private offscreen: OffscreenCanvas;
   private ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
@@ -373,9 +373,9 @@ export class GofCanvas extends HTMLElement implements CustomElement {
   }
 
   private calculateDimensions(setDimension = true) {
-    const $gofCanvas = $("gof-canvas");
-    const pixelWidth = $gofCanvas.offsetWidth - 20;
-    const pixelHeight = $gofCanvas.offsetHeight - 20;
+    const $golCanvas = $("gol-canvas");
+    const pixelWidth = $golCanvas.offsetWidth - 20;
+    const pixelHeight = $golCanvas.offsetHeight - 20;
 
     const widthMod = (pixelWidth % this.cellSize) / 2 + 9;
     this.canvasDomElement.style.setProperty("--width-mod", `${widthMod}px`);

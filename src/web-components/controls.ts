@@ -5,8 +5,8 @@ import { CustomElement, define } from "../components/web-component-decorator";
 import { Draw } from "../models/draw";
 import * as wasm from "../components/wasm";
 
-@define("gof-controls")
-export class GofControls extends HTMLElement implements CustomElement {
+@define("gol-controls")
+export class GolControls extends HTMLElement implements CustomElement {
   private isPlaying: boolean;
   private generation: number;
   private speed: number;
@@ -85,13 +85,13 @@ export class GofControls extends HTMLElement implements CustomElement {
           --min-width: 220px;
         }
         
-        gof-button {
+        gol-button {
           --background: #2A4E97;
           --color: white;
         }
 
         @media (prefers-color-scheme: dark) {
-          gof-button {
+          gol-button {
             --background: #29457D;
           }
         }
@@ -117,7 +117,7 @@ export class GofControls extends HTMLElement implements CustomElement {
           form > * {
             margin: 5px;
           }
-          gof-button {
+          gol-button {
             --size: 30px;
           }
         
@@ -143,11 +143,11 @@ export class GofControls extends HTMLElement implements CustomElement {
       </style>
       
       <form>
-        <gof-button icon="info" href="/info">Explanation</gof-button>
-        <gof-button icon="book" href="/lexicon">Lexicon</gof-button>
-        <gof-button id="start" icon="play">Start</gof-button>
-        <gof-button id="next" icon="redo">Next</gof-button>
-        <gof-button id="reset" icon="close">Clear</gof-button>
+        <gol-button icon="info" href="/info">Explanation</gol-button>
+        <gol-button icon="book" href="/lexicon">Lexicon</gol-button>
+        <gol-button id="start" icon="play">Start</gol-button>
+        <gol-button id="next" icon="redo">Next</gol-button>
+        <gol-button id="reset" icon="close">Clear</gol-button>
         <div class="generation" title="Generations" aria-label="Generations">0</div>
 
         <div id="controls">
@@ -200,7 +200,7 @@ export class GofControls extends HTMLElement implements CustomElement {
 
     infoIsOpen$.subscribe((isInfoOpen) => {
       $<HTMLInputElement>(
-        "input, select, gof-button",
+        "input, select, gol-button",
         this.shadowRoot
       ).disabled = isInfoOpen;
     });

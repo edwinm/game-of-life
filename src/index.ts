@@ -1,17 +1,17 @@
 import { $ } from "carbonium";
 import { Cuprum, fromEvent } from "cuprum";
 
-import { GofCanvas } from "./web-components/canvas";
-import { GofInfo } from "./web-components/info";
-import { GofControls } from "./web-components/controls";
+import { GolCanvas } from "./web-components/canvas";
+import { GolInfo } from "./web-components/info";
+import { GolControls } from "./web-components/controls";
 import { Shape } from "./components/shape";
 import { routeListener } from "./components/routelistener";
-import { GofButton } from "./web-components/button";
+import { GolButton } from "./web-components/button";
 
 fromEvent(document, "DOMContentLoaded").subscribe(() => {
-  const canvas = <GofCanvas>$("gof-canvas");
-  const controls = <GofControls>$("gof-controls");
-  const info = <GofInfo>$("#info");
+  const canvas = <GolCanvas>$("gol-canvas");
+  const controls = <GolControls>$("gol-controls");
+  const info = <GolInfo>$("#info");
   const shape = new Shape();
   const newPattern$ = new Cuprum<string>();
 
@@ -60,5 +60,5 @@ fromEvent(document, "DOMContentLoaded").subscribe(() => {
 });
 
 // Prevent tree shaking of web components
-if (GofCanvas && GofInfo && GofControls && GofButton) {
+if (GolCanvas && GolInfo && GolControls && GolButton) {
 }

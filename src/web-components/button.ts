@@ -7,8 +7,8 @@ import {
 } from "../components/web-component-decorator";
 import { fromEvent, Subscription } from "cuprum";
 
-@define("gof-button")
-export class GofButton extends HTMLElement implements CustomElement {
+@define("gol-button")
+export class GolButton extends HTMLElement implements CustomElement {
   private button: HTMLButtonElement;
   private subscribers = new Set<Subscription>();
 

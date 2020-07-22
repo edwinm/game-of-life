@@ -7,8 +7,8 @@ import {
   define,
 } from "../components/web-component-decorator";
 
-@define("gof-info")
-export class GofInfo extends HTMLElement implements CustomElement {
+@define("gol-info")
+export class GolInfo extends HTMLElement implements CustomElement {
   private subscribers = new Set<Subscription>();
   private infoIsOpen$: Cuprum<boolean>;
 
@@ -93,13 +93,13 @@ export class GofInfo extends HTMLElement implements CustomElement {
           padding-top: 2em;
         }
         
-        gof-button {
+        gol-button {
           --background: #2A4E97;
           --color: white;
         }
         
         @media (prefers-color-scheme: dark) {
-          gof-button {
+          gol-button {
             --background: #29457D;
           }
         }
@@ -120,11 +120,11 @@ export class GofInfo extends HTMLElement implements CustomElement {
       
       <div id="whitebox">
         <section>
-          <gof-button class="close-button" icon="close" data-close></gof-button>
+          <gol-button class="close-button" icon="close" data-close></gol-button>
           <div class="info-content">
             <slot></slot>
             <p class="close-button-container">
-              <gof-button data-close icon="close">Close</gof-button>
+              <gol-button data-close icon="close">Close</gol-button>
             </p>
           </div>
         </section>

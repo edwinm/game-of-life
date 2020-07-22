@@ -2,13 +2,13 @@ import router from "./router";
 import { $ } from "carbonium";
 import { Cuprum, fromEvent } from "cuprum";
 import { analyticsInit, analyticsPageview } from "./analytics";
-import { GofInfo } from "../web-components/info";
+import { GolInfo } from "../web-components/info";
 
 let isLexiconLoaded = false;
 
 export function routeListener(newPattern$: Cuprum<string>) {
-  const lexicon = <GofInfo>$("#lexicon");
-  const info = <GofInfo>$("#info");
+  const lexicon = <GolInfo>$("#lexicon");
+  const info = <GolInfo>$("#info");
 
   router.observable$.subscribe(({ path, isNew }, oldState) => {
     if (oldState) {

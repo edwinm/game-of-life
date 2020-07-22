@@ -83,7 +83,7 @@ header {
   text-indent: -999em;
 }
 
-gof-canvas {
+gol-canvas {
   flex: 1 1;
   display: block;
   width: 100vw;
@@ -92,7 +92,7 @@ gof-canvas {
   font-family: monospace;
 }
 
-gof-controls {
+gol-controls {
   flex: 0 0 content;
 }
 
