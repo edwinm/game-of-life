@@ -106,6 +106,7 @@ export class GolControls extends HTMLElement implements CustomElement {
         @media (prefers-color-scheme: dark) {
           #controls {
             background-color: #828080;
+            border-color: #626262;
           }
         }
                
