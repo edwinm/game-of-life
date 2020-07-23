@@ -8,7 +8,7 @@ import { Shape } from "./components/shape";
 import { routeListener } from "./components/routelistener";
 import { GolButton } from "./web-components/button";
 
-fromEvent(document, "DOMContentLoaded").subscribe(() => {
+document.addEventListener("DOMContentLoaded", (event) => {
   const canvas = <GolCanvas>$("gol-canvas");
   const controls = <GolControls>$("gol-controls");
   const info = <GolInfo>$("#info");

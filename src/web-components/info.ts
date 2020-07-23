@@ -159,8 +159,7 @@ export class GolInfo extends HTMLElement implements CustomElement {
     );
 
     const escKey = fromEvent(document.documentElement, "keyup").filter(
-      (event: KeyboardEvent) =>
-        event.key == "Escape" && this.hasAttribute("open")
+      (event) => event.key == "Escape" && this.hasAttribute("open")
     );
 
     const outsideClick = fromEvent(
