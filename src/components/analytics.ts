@@ -14,5 +14,5 @@ export function analyticsInit(id: string) {
 }
 
 export function analyticsPageview(path: string) {
-  ga("send", "pageview", path);
+  //ga("send", "pageview", path);
 }
