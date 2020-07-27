@@ -1,5 +1,5 @@
 import { $ } from "carbonium";
-import { Cuprum, fromEvent } from "cuprum";
+import { Cuprum } from "cuprum";
 
 import { GolCanvas } from "./web-components/canvas";
 import { GolInfo } from "./web-components/info";

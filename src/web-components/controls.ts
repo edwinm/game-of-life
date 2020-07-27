@@ -14,10 +14,10 @@ export class GolControls extends HTMLElement implements CustomElement {
 
   private size$: Cuprum<number>;
   private nextGeneration$: Cuprum<void>;
-  private resize$: Observable<Event>;
   private nextShape$: Cuprum<Cell[]>;
   private resetShape$ = new Cuprum<void>();
   private clearShape$ = new Cuprum<void>();
+  private documentReady$ = new Cuprum<Event>();
   private timer = null;
 
   constructor() {
@@ -165,10 +165,6 @@ export class GolControls extends HTMLElement implements CustomElement {
   connectedCallback() {
     this.isPlaying = false;
     this.generation = 0;
-    this.resize$ = merge(
-      fromEvent(window, "resize"),
-      fromEvent(window, "orientationchange")
-    );
 
     this.setupSpeed();
     this.setupSize();
@@ -178,9 +174,15 @@ export class GolControls extends HTMLElement implements CustomElement {
   }
 
   getObservers() {
+    const resize$ = merge(
+      fromEvent(window, "resize"),
+      fromEvent(window, "orientationchange"),
+      this.documentReady$
+    );
+
     return {
       nextShape$: this.nextShape$.observable(),
-      resize$: this.resize$.observable(),
+      resize$: resize$.observable(),
       size$: this.size$.observable(),
       reset$: this.resetShape$.observable(),
       clear$: this.clearShape$.observable(),
@@ -194,6 +196,8 @@ export class GolControls extends HTMLElement implements CustomElement {
     newPattern$: Observable<string>
   ) {
     this.redraw$ = redraw$;
+
+    this.documentReady$.dispatch(null);
 
     toggle$.subscribe(() => {
       this.setGeneration(0);
