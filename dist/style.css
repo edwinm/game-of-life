@@ -170,10 +170,10 @@ gol-controls {
 
 .oldbrowser {
   position: absolute;
-  width: 500px;
+  width: 300px;
   left: 50%;
   top: 150px;
-  margin-left: -250px;
+  margin-left: -150px;
   padding: 40px;
   border: 4px solid red;
   background-color: white;
