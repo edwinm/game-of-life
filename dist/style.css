@@ -180,10 +180,10 @@ gol-controls {
 
 @media (prefers-color-scheme: dark) {
   a {
-    color: #b1b2ea;
+    color: #b5c7e7;
   }
 
   a:visited {
-    color: #a963d0;
+    color: #9c91ff;
   }
 }
