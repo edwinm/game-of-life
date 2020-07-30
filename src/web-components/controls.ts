@@ -85,9 +85,10 @@ export class GolControls extends HTMLElement implements CustomElement {
           --min-width: 220px;
         }
         
-        gol-button {
+        form > gol-button {
           --background: #2A4E97;
           --color: white;
+          margin-top: 15px;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -119,7 +120,7 @@ export class GolControls extends HTMLElement implements CustomElement {
             margin: 5px;
           }
           gol-button {
-            --size: 30px;
+            --size: 31px;
           }
         
           #start {
