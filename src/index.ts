@@ -56,9 +56,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     $("main").classList.add("safari");
   }
 
-  if ("serviceWorker" in navigator) {
+  try {
     navigator.serviceWorker.register("/service-worker.js");
-  }
+  } catch (e) {}
 });
 
 // Prevent tree shaking of web components
