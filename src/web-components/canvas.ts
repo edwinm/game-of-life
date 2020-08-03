@@ -104,95 +104,91 @@ export class GolCanvas extends HTMLElement implements CustomElement {
       }
     });
 
-    fromEvent(this.canvasDomElement, "touchstart", { passive: true }).subscribe(
-      (event) => {
+    fromEvent(this.canvasDomElement, "touchstart").subscribe((event) => {
+      this.lastTouch = {
+        x: event.touches[0].clientX,
+        y: event.touches[0].clientY,
+      };
+
+      if (event.touches.length == 2) {
+        if (this.lastTouchCount == 0) {
+          this.dragStart = { ...this.lastTouch };
+        }
+        this.dragStart.x +=
+          (event.touches[0].clientX + event.touches[1].clientX) / 2 -
+          event.touches[0].clientX;
+        this.dragStart.y +=
+          (event.touches[0].clientY + event.touches[1].clientY) / 2 -
+          event.touches[0].clientY;
+
+        this.distStart = Math.sqrt(
+          (event.touches[1].clientX - event.touches[0].clientX) *
+            (event.touches[1].clientX - event.touches[0].clientX) +
+            (event.touches[1].clientY - event.touches[0].clientY) *
+              (event.touches[1].clientY - event.touches[0].clientY)
+        );
+        if (this.lastSize == -1) {
+          this.lastSize = this.distStart;
+        }
+        this.sizeStart = this.cellSize / this.distStart;
+        this.lastTouch = {
+          x: (event.touches[0].clientX + event.touches[1].clientX) / 2,
+          y: (event.touches[0].clientY + event.touches[1].clientY) / 2,
+        };
+      } else {
+        // One touch
+        this.dragStart = { ...this.lastTouch };
+      }
+      this.lastTouchCount = event.touches.length;
+    });
+
+    fromEvent(this.canvasDomElement, "touchmove").subscribe((event) => {
+      if (event.touches.length == 1) {
         this.lastTouch = {
           x: event.touches[0].clientX,
           y: event.touches[0].clientY,
         };
 
-        if (event.touches.length == 2) {
-          if (this.lastTouchCount == 0) {
-            this.dragStart = { ...this.lastTouch };
-          }
-          this.dragStart.x +=
-            (event.touches[0].clientX + event.touches[1].clientX) / 2 -
-            event.touches[0].clientX;
-          this.dragStart.y +=
-            (event.touches[0].clientY + event.touches[1].clientY) / 2 -
-            event.touches[0].clientY;
+        this.drag$.dispatch({
+          x: this.lastTouch.x - this.dragStart.x,
+          y: this.lastTouch.y - this.dragStart.y,
+        });
+      } else if (event.touches.length == 2) {
+        this.lastTouch = {
+          x: (event.touches[0].clientX + event.touches[1].clientX) / 2,
+          y: (event.touches[0].clientY + event.touches[1].clientY) / 2,
+        };
 
-          this.distStart = Math.sqrt(
-            (event.touches[1].clientX - event.touches[0].clientX) *
-              (event.touches[1].clientX - event.touches[0].clientX) +
-              (event.touches[1].clientY - event.touches[0].clientY) *
-                (event.touches[1].clientY - event.touches[0].clientY)
-          );
-          if (this.lastSize == -1) {
-            this.lastSize = this.distStart;
-          }
-          this.sizeStart = this.cellSize / this.distStart;
-          this.lastTouch = {
-            x: (event.touches[0].clientX + event.touches[1].clientX) / 2,
-            y: (event.touches[0].clientY + event.touches[1].clientY) / 2,
-          };
-        } else {
-          // One touch
-          this.dragStart = { ...this.lastTouch };
+        this.lastSize = Math.sqrt(
+          (event.touches[1].clientX - event.touches[0].clientX) *
+            (event.touches[1].clientX - event.touches[0].clientX) +
+            (event.touches[1].clientY - event.touches[0].clientY) *
+              (event.touches[1].clientY - event.touches[0].clientY)
+        );
+
+        let newCellSize = this.lastSize * this.sizeStart;
+        if (newCellSize < 2) {
+          newCellSize = 2;
+          this.lastSize = newCellSize / this.sizeStart;
         }
-        this.lastTouchCount = event.touches.length;
-      }
-    );
-
-    fromEvent(this.canvasDomElement, "touchmove", { passive: true }).subscribe(
-      (event) => {
-        if (event.touches.length == 1) {
-          this.lastTouch = {
-            x: event.touches[0].clientX,
-            y: event.touches[0].clientY,
-          };
-
-          this.drag$.dispatch({
-            x: this.lastTouch.x - this.dragStart.x,
-            y: this.lastTouch.y - this.dragStart.y,
-          });
-        } else if (event.touches.length == 2) {
-          this.lastTouch = {
-            x: (event.touches[0].clientX + event.touches[1].clientX) / 2,
-            y: (event.touches[0].clientY + event.touches[1].clientY) / 2,
-          };
-
-          this.lastSize = Math.sqrt(
-            (event.touches[1].clientX - event.touches[0].clientX) *
-              (event.touches[1].clientX - event.touches[0].clientX) +
-              (event.touches[1].clientY - event.touches[0].clientY) *
-                (event.touches[1].clientY - event.touches[0].clientY)
-          );
-
-          let newCellSize = this.lastSize * this.sizeStart;
-          if (newCellSize < 2) {
-            newCellSize = 2;
-            this.lastSize = newCellSize / this.sizeStart;
-          }
-          if (newCellSize > 40) {
-            newCellSize = 40;
-            this.lastSize = newCellSize / this.sizeStart;
-          }
-          this.setCellSize(newCellSize, false);
-
-          this.drag$.dispatch({
-            x:
-              this.lastTouch.x -
-              (this.dragStart.x * this.lastSize) / this.distStart,
-            y:
-              this.lastTouch.y -
-              (this.dragStart.y * this.lastSize) / this.distStart,
-          });
+        if (newCellSize > 40) {
+          newCellSize = 40;
+          this.lastSize = newCellSize / this.sizeStart;
         }
+        this.setCellSize(newCellSize, false);
 
-        event.preventDefault();
+        this.drag$.dispatch({
+          x:
+            this.lastTouch.x -
+            (this.dragStart.x * this.lastSize) / this.distStart,
+          y:
+            this.lastTouch.y -
+            (this.dragStart.y * this.lastSize) / this.distStart,
+        });
       }
-    );
+
+      event.preventDefault();
+    });
 
     fromEvent(this.canvasDomElement, "touchend").subscribe((event) => {
       if (event.touches.length == 1) {
