@@ -11,7 +11,9 @@ const srcFile = "src/lexgen/lexicon/lexicon.htm";
 const lexiconDir = "dist/lexicon/";
 const distFile = "dist/list.html";
 
-const date = new Date().toISOString();
+const now = new Date();
+const date = now.toISOString();
+const date822 = now.toUTCString();
 
 const patternPlaceholder = "<!-- pattern -->";
 const termState = 2;
@@ -38,17 +40,19 @@ fs.readFile("src/lexgen/template.html", "utf8", (err, template) => {
     image: "https://playgameoflife.com/pix/gol-share.jpg",
   });
 
-  parse(template, 3);
+  parse(template, 7);
 });
 
 async function parse(template, count) {
   const fileInStream = fs.createReadStream(srcFile);
   const indexOutStream = fs.createWriteStream(distFile, { flags: "w" });
+  const rss = new Rss("dist/list.rss");
+  rss.writeRssHeader();
   let pattern = "";
 
   const rl = readline.createInterface({ input: fileInStream });
 
-  for await (let line of rl) {
+  forall: for await (let line of rl) {
     switch (state) {
       case termState:
         // Possible lines to match:
@@ -61,9 +65,9 @@ async function parse(template, count) {
 
         if (newPatternMatches) {
           // save current data
-          saveAll(indexOutStream, template, data);
+          await saveAll(indexOutStream, template, data, rss);
           // if (count-- <= 0) {
-          //   return;
+          //   break forall;
           // }
 
           const nameMatches = line.match(/<b>([^<]+)<\/b>/);
@@ -104,11 +108,12 @@ async function parse(template, count) {
     }
   }
 
+  rss.writeRssFooter();
   fileInStream.close();
   indexOutStream.end();
 }
 
-function saveAll(outStream, template, data) {
+async function saveAll(outStream, template, data, rss) {
   if (!data.name) {
     return;
   }
@@ -117,16 +122,12 @@ function saveAll(outStream, template, data) {
     for (patternIndex in data.patterns) {
       const filename = saveFileName(data, patternIndex);
 
-      const imageData = writeImage(filename, data.patterns[patternIndex]);
+      const imageData = await writeImage(filename, data.patterns[patternIndex]);
 
       data.description = data.description.replace(
         patternPlaceholder,
         `<p class="image"><a data-internal href='/lexicon/${filename}'><img src='/lexicon/${imageData.filePath}' width='${imageData.width}' height='${imageData.height}' loading='lazy'></a></p>\n`
       );
-    }
-
-    for (patternIndex in data.patterns) {
-      const filename = saveFileName(data, patternIndex);
 
       writeData(filename, data, patternIndex);
 
@@ -143,6 +144,8 @@ function saveAll(outStream, template, data) {
         pattern: data.patterns[patternIndex],
         image: `https://playgameoflife.com/lexicon/pix/${filename}.png`,
       });
+
+      rss.writeRssItem(data, imageData, filename);
     }
   }
 
@@ -176,7 +179,7 @@ function writeData(fileName, data, pattern) {
   patternOutStream.close();
 }
 
-function writeImage(fileName, pattern) {
+async function writeImage(fileName, pattern) {
   const lines = pattern.split(/\n/);
 
   const cellSize = 11;
@@ -229,9 +232,24 @@ function writeImage(fileName, pattern) {
   const localPath = `pix/${fileName}.png`;
   const filePath = `${lexiconDir}${localPath}`;
   const imageOutStream = fs.createWriteStream(filePath, { flags: "w" });
-  canvas.createPNGStream().pipe(imageOutStream);
+  const pngStream = canvas.createPNGStream();
+  let size = 0;
+  pngStream
+    .on("data", function (chunk) {
+      size += chunk.length;
+    })
+    .pipe(imageOutStream);
 
-  return { filePath: localPath, width: canvas.width, height: canvas.height };
+  await new Promise((resolve) => {
+    pngStream.on("end", resolve);
+  });
+
+  return {
+    filePath: localPath,
+    width: canvas.width,
+    height: canvas.height,
+    size,
+  };
 }
 
 function saveFileName(data, i) {
@@ -246,4 +264,48 @@ function saveString(str) {
 
 function titleCase(str) {
   return `${str[0].toUpperCase()}${str.substr(1)}`;
+}
+
+class Rss {
+  constructor(path) {
+    this.stream = fs.createWriteStream(path, { flags: "w" });
+  }
+
+  writeRssHeader() {
+    this.stream.write(
+      `<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel> 
+    <title>John Conway’s Game of Life</title>
+    <description>Play John Conway’s Game of Life in your browser</description>
+    <link>https://playgameoflife.com/</link>
+    <language>en-us</language>
+    <webMaster>edwin@bitstorm.org (Edwin Martin)</webMaster>
+    <atom:link href="https://playgameoflife.com/list.rss" rel="self" type="application/rss+xml" />
+`,
+      "utf8"
+    );
+  }
+
+  writeRssItem(data, imageData, filename) {
+    this.stream.write(
+      `
+    <item>
+      <title>${titleCase(data.name)} - John Conway’s Game of Life</title>
+      <link>https://playgameoflife.com/lexicon/${filename}</link>
+      <description>${entities.encode(stripHtml(data.description))}</description>
+      <enclosure url="https://playgameoflife.com/lexicon/pix/${filename}.png" length="${
+        imageData.size
+      }" type="image/png" />
+      <pubDate>${date822}</pubDate>
+      <guid isPermaLink="true">https://playgameoflife.com/lexicon/${filename}</guid>
+    </item>
+`,
+      "utf8"
+    );
+  }
+
+  writeRssFooter() {
+    this.stream.write("\t</channel>\n</rss>\n");
+  }
 }
