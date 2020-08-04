@@ -33,8 +33,15 @@ dt {
 dd {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  align-items: flex-start;
   margin-bottom: 20px;
+}
+
+@media (max-width: 650px) {
+  dd {
+    margin-left: 0;
+  }
 }
 
 dd p {
@@ -44,6 +51,7 @@ dd p {
 div.example {
   display: flex;
   align-items: center;
+  margin-left: 10px;
 }
 
 div.example .redo {
@@ -153,6 +161,10 @@ gol-controls {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+}
+
+.videos img {
+  box-shadow: hsla(0, 0%, 0%, 0.3) 5px 5px 5px;
 }
 
 @media (max-width: 650px), (max-height: 650px) {
