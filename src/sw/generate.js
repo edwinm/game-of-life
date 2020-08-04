@@ -1,5 +1,7 @@
 const workboxBuild = require("workbox-build");
 
+// Documentation: https://developers.google.com/web/tools/workbox/modules/workbox-build
+
 workboxBuild
   .generateSW({
     globDirectory: "dist",
@@ -21,6 +23,8 @@ workboxBuild
       },
     ],
     navigateFallback: "/index.html",
+    directoryIndex: "index.html",
+    globStrict: true,
   })
   .then((args) => {
     console.log(`Generated new service worker.`, args);
