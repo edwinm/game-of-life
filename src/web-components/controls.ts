@@ -113,19 +113,15 @@ export class GolControls extends HTMLElement implements CustomElement {
                
         @media (max-width: 650px), (max-height: 650px) {
           form {
-            margin: 0 5vw;
+            margin: 0;
             padding-bottom: 20px;
           }
           form > * {
             margin: 5px;
           }
-          gol-button {
-            --size: 31px;
-          }
-        
+
           #start {
-            --size: 40px;
-            --min-width: 170px;
+            --min-width: 200px;
           }
 
           img {
