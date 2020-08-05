@@ -293,7 +293,9 @@ class Rss {
     <item>
       <title>${titleCase(data.name)} - John Conway’s Game of Life</title>
       <link>https://playgameoflife.com/lexicon/${filename}</link>
-      <description>${entities.encode(stripHtml(data.description))}</description>
+      <description>${stripHtml(data.description)
+        .replace(/&apos;/g, "'")
+        .replace(/&quot;/g, '"')}</description>
       <enclosure url="https://playgameoflife.com/lexicon/pix/${filename}.png" length="${
         imageData.size
       }" type="image/png" />
