@@ -73,7 +73,10 @@ export class GolButton extends HTMLElement implements CustomElement {
           width: calc(var(--size, 40px) * 0.7);
           height: calc(var(--size, 40px) * 0.7);
           fill: var(--color, white);
-          margin-right: calc(var(--size, 40px) * 0.2);;
+        }
+        
+        .container.with-text svg {
+          margin-right: calc(var(--size, 40px) * 0.2);
         }
 
         svg.visible {
@@ -119,6 +122,9 @@ export class GolButton extends HTMLElement implements CustomElement {
           this.onClick();
         })
       );
+    if (this.textContent) {
+      $(".container", this.shadowRoot).classList.add("with-text");
+    }
   }
 
   disconnectedCallback() {
