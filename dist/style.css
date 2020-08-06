@@ -161,9 +161,11 @@ gol-controls {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  gap: 10px;
 }
 
 .videos img {
+  display: block;
   box-shadow: hsla(0, 0%, 0%, 0.3) 5px 5px 5px;
 }
 
