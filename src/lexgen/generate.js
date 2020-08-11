@@ -126,7 +126,7 @@ async function saveAll(outStream, template, data, rss) {
 
       data.description = data.description.replace(
         patternPlaceholder,
-        `<p class="image"><a data-internal href='/lexicon/${filename}'><img src='/lexicon/${imageData.filePath}' width='${imageData.width}' height='${imageData.height}' loading='lazy'></a></p>\n`
+        `<p class="image"><a data-internal href='/lexicon/${filename}'><img src='/lexicon/${imageData.filePath}' width='${imageData.width}' height='${imageData.height}' loading='lazy' alt="Game of Life pattern ’${filename}’"></a></p>\n`
       );
 
       writeData(filename, data, patternIndex);
