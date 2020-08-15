@@ -1,7 +1,7 @@
 import { $ } from "carbonium";
 import { fromEvent, Cuprum, merge, Observable } from "cuprum";
 import router from "../components/router";
-import { CustomElement, define } from "../components/web-component-decorator";
+import { CustomElement, define } from "web-component-decorator";
 import { Draw } from "../models/draw";
 import * as wasm from "../components/wasm";
 

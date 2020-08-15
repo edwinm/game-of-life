@@ -1,11 +1,7 @@
 import { $ } from "carbonium";
 import { Cuprum, combine, fromEvent, Subscription } from "cuprum";
 import router from "../components/router";
-import {
-  attribute,
-  CustomElement,
-  define,
-} from "../components/web-component-decorator";
+import { attribute, CustomElement, define } from "web-component-decorator";
 
 @define("gol-info")
 export class GolInfo extends HTMLElement implements CustomElement {

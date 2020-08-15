@@ -1,10 +1,6 @@
 import { $ } from "carbonium";
 import router from "../components/router";
-import {
-  attribute,
-  CustomElement,
-  define,
-} from "../components/web-component-decorator";
+import { attribute, CustomElement, define } from "web-component-decorator";
 import { fromEvent, Subscription } from "cuprum";
 
 @define("gol-button")

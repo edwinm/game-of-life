@@ -1,6 +1,6 @@
 import { $ } from "carbonium";
 import { Cuprum, fromEvent, Observable, combine } from "cuprum";
-import { CustomElement, define } from "../components/web-component-decorator";
+import { CustomElement, define } from "web-component-decorator";
 import { Draw } from "../models/draw";
 
 @define("gol-canvas")

@@ -1,60 +1,61 @@
 {
-  "name": "game-of-life",
-  "version": "1.0.0",
-  "description": "Game of Life",
-  "main": "gameoflife.js",
-  "scripts": {
-    "start": "serve dist",
-    "build": "rollup --config --sourcemap",
-    "livereload": "rollup --config rollup-livereload.config.js --sourcemap --watch",
-    "watch": "npm-run-all --parallel start livereload",
-    "deploy": "npm run build && npm run sw && ./deploy.sh",
-    "generate": "node src/lexgen/generate.js",
-    "wasm": "emcc -Os src/wasm/gol.c -o dist/gol.wasm -s EXPORTED_FUNCTIONS='[\"_gol\"]' -s INITIAL_MEMORY=4MB -s TOTAL_MEMORY=4MB -s TOTAL_STACK=1MB",
-    "sw": "node src/sw/generate.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/edwinm/game-of-life.git"
-  },
-  "author": {
-    "name": "Edwin Martin",
-    "email": "edwin@bitstorm.org",
-    "url": "https://bitstorm.org/"
-  },
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/edwinm/game-of-life/issues"
-  },
-  "homepage": "https://github.com/edwinm/game-of-life#readme",
-  "dependencies": {},
-  "devDependencies": {
-    "@rollup/plugin-typescript": "^5.0.2",
-    "@types/google.analytics": "0.0.40",
-    "canvas": "^2.6.1",
-    "carbonium": "^0.1.7",
-    "cuprum": "^0.1.14",
-    "google-closure-compiler": "^20200719.0.0",
-    "html-entities": "^1.3.1",
-    "husky": "^4.2.5",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.0.5",
-    "pretty-quick": "^2.0.1",
-    "rollup": "^2.23.0",
-    "rollup-plugin-livereload": "^1.3.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-terser": "^6.1.0",
-    "sanitize-filename": "^1.6.3",
-    "serve": "^11.3.2",
-    "string-strip-html": "^4.5.0",
-    "tslib": "^2.0.0",
-    "typescript": "^3.9.7",
-    "workbox-build": "^5.1.3"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
+    "name": "game-of-life",
+    "version": "1.0.0",
+    "description": "Game of Life",
+    "main": "gameoflife.js",
+    "scripts": {
+        "start": "serve dist",
+        "build": "rollup --config --sourcemap",
+        "livereload": "rollup --config rollup-livereload.config.js --sourcemap --watch",
+        "watch": "npm-run-all --parallel start livereload",
+        "deploy": "npm run build && npm run sw && ./deploy.sh",
+        "generate": "node src/lexgen/generate.js",
+        "wasm": "emcc -Os src/wasm/gol.c -o dist/gol.wasm -s EXPORTED_FUNCTIONS='[\"_gol\"]' -s INITIAL_MEMORY=4MB -s TOTAL_MEMORY=4MB -s TOTAL_STACK=1MB",
+        "sw": "node src/sw/generate.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/edwinm/game-of-life.git"
+    },
+    "author": {
+        "name": "Edwin Martin",
+        "email": "edwin@bitstorm.org",
+        "url": "https://bitstorm.org/"
+    },
+    "license": "UNLICENSED",
+    "bugs": {
+        "url": "https://github.com/edwinm/game-of-life/issues"
+    },
+    "homepage": "https://github.com/edwinm/game-of-life#readme",
+    "dependencies": {},
+    "devDependencies": {
+        "@rollup/plugin-typescript": "^5.0.2",
+        "@types/google.analytics": "0.0.40",
+        "canvas": "^2.6.1",
+        "carbonium": "^0.1.7",
+        "cuprum": "^0.1.14",
+        "google-closure-compiler": "^20200719.0.0",
+        "html-entities": "^1.3.1",
+        "husky": "^4.2.5",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.0.5",
+        "pretty-quick": "^2.0.1",
+        "rollup": "^2.23.0",
+        "rollup-plugin-livereload": "^1.3.0",
+        "rollup-plugin-node-resolve": "^5.2.0",
+        "rollup-plugin-terser": "^6.1.0",
+        "sanitize-filename": "^1.6.3",
+        "serve": "^11.3.2",
+        "string-strip-html": "^4.5.0",
+        "tslib": "^2.0.0",
+        "typescript": "^3.9.7",
+        "web-component-decorator": "^1.0.0",
+        "workbox-build": "^5.1.3"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged"
+        }
     }
-  }
 }
