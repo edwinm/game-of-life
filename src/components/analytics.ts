@@ -16,3 +16,12 @@ export function analyticsInit(id: string) {
 export function analyticsPageview(path: string) {
   ga("send", "pageview", path);
 }
+
+window.addEventListener("error", function (e) {
+  ga("send", {
+    hitType: "event",
+    eventCategory: "Website",
+    eventAction: "JavaScript Error",
+    eventLabel: `${e.message} at ${e.filename}:${e.lineno}`,
+  });
+});
