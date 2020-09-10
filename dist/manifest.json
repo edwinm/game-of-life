@@ -1,28 +1,28 @@
 {
-  "short_name": "Game of Life",
-  "name": "Play John Conway’s Game of Life",
-  "start_url": "https://playgameoflife.com/",
-  "description": "Play John Conway’s Game of Life in your browser.",
-  "icons": [
-    {
-      "src": "/pix/gol-share.png",
-      "sizes": "1200x630",
-      "type": "image/jpg"
-    },
-    {
-      "src": "/apple-touch-icon.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/pix/gol-icon-large.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "display": "standalone",
-  "background_color": "#bddeff",
-  "theme_color": "#3663a8"
+    "short_name": "Game of Life",
+    "name": "Play John Conway’s Game of Life",
+    "start_url": "https://playgameoflife.com/",
+    "description": "Play John Conway’s Game of Life in your browser.",
+    "icons": [
+        {
+            "src": "/pix/screen.png",
+            "sizes": "1200x630",
+            "type": "image/jpg"
+        },
+        {
+            "src": "/apple-touch-icon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/pix/gol-icon-large.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "display": "standalone",
+    "background_color": "#bddeff",
+    "theme_color": "#3663a8"
 }
