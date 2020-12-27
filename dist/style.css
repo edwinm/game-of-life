@@ -117,6 +117,7 @@ gol-controls {
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 20px;
+  content-visibility: auto;
 }
 
 .selection section pre {
