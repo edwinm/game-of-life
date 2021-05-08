@@ -1,0 +1,16 @@
+[[redirects]]
+  from = "/info"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/lexicon"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/lexicon/:name"
+  to = "/lexicon/html/:name.html"
+  status = 200
+
+
