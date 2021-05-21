@@ -30,6 +30,7 @@ export class GolInfo extends HTMLElement implements CustomElement {
           align-items: center;
           background-color: rgba(60, 60, 60, 0);
           transition: background-color 250ms ease;
+          backdrop-filter: blur(2px);
           z-index: 1000;
         }
 
