@@ -2,9 +2,8 @@ node_modules
 built
 .idea
 deploy.sh
-dist/bundle.min.js
-dist/bundle.min.js.map
-backlog.txt
+dist/bundle.min.js*
 dist/lexicon
 dist/service-worker.*
 dist/workbox-*
+backlog.txt
