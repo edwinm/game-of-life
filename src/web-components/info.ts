@@ -82,6 +82,7 @@ export class GolInfo extends HTMLElement implements CustomElement {
           position: absolute;
           right: 1em;
           top: 0.5em;
+          z-index: 100;
         }
         
         .close-button-container {
