@@ -5,17 +5,14 @@
   <title>Play John Conway’s Game of Life</title>
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover"/>
-  <meta name="description"
-        content="Play John Conway’s Game of Life in your browser."/>
+  <meta name="description" content="Play John Conway’s Game of Life in your browser."/>
   <meta
       name="keywords"
       content="John Conway Conways Game of Life cellular automaton math mathematica"
   />
   <meta property="og:title" content="Play John Conway’s Game of Life"/>
-  <meta property="og:description"
-        content="Play John Conway’s Game of Life in your browser."/>
-  <meta property="og:image"
-        content="https://playgameoflife.com/pix/screen.png"/>
+  <meta property="og:description" content="Play John Conway’s Game of Life in your browser."/>
+  <meta property="og:image" content="https://playgameoflife.com/pix/screen.png"/>
   <meta property="og:url" content="https://playgameoflife.com/"/>
 
   <meta name="twitter:card" content="summary_large_image"/>
@@ -27,17 +24,6 @@
   <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"/>
 
   <link rel="stylesheet" type="text/css" href="/style.css"/>
-  <script>
-    window.onerror = function() {
-      setTimeout(
-          function() {
-            var div = document.createElement("div");
-            div.className = "oldbrowser";
-            div.innerHTML = "<p>⚠️ Something went wrong.\n\nAre you using an older browser?</p><p><a href='https://bitstorm.org/gameoflife/'>Visit the Game of Life for older browsers.</a></p>";
-            document.body.appendChild(div);
-          }, 1000);
-    };
-  </script>
   <script src="/bundle.min.js"></script>
   <script async src='https://www.google-analytics.com/analytics.js'></script>
 </head>
@@ -49,8 +35,8 @@
 
   <gol-canvas class="gol-canvas">
     .O.
-    ..O
-    OOO
+..O
+OOO
 
   </gol-canvas>
 
