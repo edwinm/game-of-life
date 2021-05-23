@@ -185,17 +185,6 @@ gol-controls {
   }
 }
 
-.oldbrowser {
-  position: absolute;
-  width: 300px;
-  left: 50%;
-  top: 150px;
-  margin-left: -150px;
-  padding: 40px;
-  border: 4px solid red;
-  background-color: white;
-}
-
 @media (prefers-color-scheme: dark) {
   a {
     color: #b5c7e7;

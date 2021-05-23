@@ -23,17 +23,6 @@
   <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"/>
 
   <link rel="stylesheet" type="text/css" href="/style.css"/>
-  <script>
-    window.onerror = function () {
-      setTimeout(
-        function () {
-          var div = document.createElement("div");
-          div.className = "oldbrowser";
-          div.innerHTML = "<p>⚠️ Something went wrong.\n\nAre you using an older browser?</p><p><a href='https://bitstorm.org/gameoflife/'>Visit the Game of Life for older browsers.</a></p>";
-          document.body.appendChild(div);
-        }, 1000);
-    };
-  </script>
   <script src="/bundle.min.js"></script>
   <script async src='https://www.google-analytics.com/analytics.js'></script>
 </head>
