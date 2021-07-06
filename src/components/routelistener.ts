@@ -99,7 +99,7 @@ async function loadLexicon() {
 
   fromEvent($("#lexicon [data-internal]"), "click").subscribe((event) => {
     const a = (<HTMLElement>event.target).closest("a");
-    router.push(a.href);
+    router.push(a.getAttribute("href"));
     event.preventDefault();
   });
   isLexiconLoaded = true;
