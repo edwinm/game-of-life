@@ -1,8 +1,10 @@
 html {
-  position: fixed;
   box-sizing: border-box;
   background-color: #b3b3b3;
-  overflow: hidden;
+  font-family: Trebuchet MS, Arial, Helvetica, sans-serif;
+  -ms-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,12 +19,10 @@ html {
   box-sizing: inherit;
 }
 
+html,
 body {
-  font-family: Trebuchet MS, Arial, Helvetica, sans-serif;
   margin: 0;
-  -ms-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
+  overflow: hidden;
 }
 
 dt {
@@ -59,14 +59,14 @@ div.example .redo {
 }
 
 main {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  height: 100vh;
+  position: fixed;
+  display: grid;
+  grid-template-rows: 100px 1fr min-content;
+  width: 100vw;
+  height: 100%;
 }
 
 header {
-  flex: 0 0 100px;
   width: 100vw;
   border-bottom: 3px solid #2a4e97;
   background: url(/pix/header.png) no-repeat, url(/pix/header-bg.png) repeat-x;
@@ -86,22 +86,15 @@ header {
 }
 
 gol-canvas {
-  flex: 1 1;
   display: block;
-  width: 100vw;
   padding: 10px;
   background: #404040;
   font-family: monospace;
 }
 
-gol-controls {
-  flex: 0 0 content;
-}
-
 .header-img {
-  width: 100vw;
-  border-bottom: 4px solid #005ec6;
   display: block;
+  border-bottom: 4px solid #005ec6;
 }
 
 .selection section {
@@ -168,8 +161,8 @@ gol-controls {
     height: auto;
   }
 
-  header {
-    flex-basis: 60px;
+  main {
+    grid-template-rows: 60px 1fr min-content;
   }
 
   .selection section {
