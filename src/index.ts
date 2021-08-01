@@ -51,11 +51,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   routeListener(newPattern$);
 
-  const userAgent = navigator.userAgent;
-  if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
-    $("main").classList.add("safari");
-  }
-
   try {
     navigator.serviceWorker.register("/service-worker.js");
   } catch (e) {}
