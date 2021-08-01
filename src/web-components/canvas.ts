@@ -293,11 +293,7 @@ export class GolCanvas extends HTMLElement implements CustomElement {
     );
 
     resize$.subscribe(() => {
-      $("main").classList.add("heightfix");
-      setTimeout(() => {
-        $("main").classList.remove("heightfix");
-        this.calculateDimensions();
-      }, 0);
+      this.calculateDimensions();
     });
 
     size$.subscribe((newGridSize) => {

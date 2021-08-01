@@ -65,14 +65,6 @@ main {
   height: 100vh;
 }
 
-main.safari {
-  height: -webkit-fill-available;
-}
-
-main.heightfix {
-  height: 100vh;
-}
-
 header {
   flex: 0 0 100px;
   width: 100vw;
