@@ -7,7 +7,7 @@
         {
             "src": "/pix/screen.png",
             "sizes": "1200x630",
-            "type": "image/jpg"
+            "type": "image/png"
         },
         {
             "src": "/apple-touch-icon.png",
