@@ -28,5 +28,6 @@
     ],
     "display": "standalone",
     "background_color": "#bddeff",
-    "theme_color": "#3663a8"
+    "theme_color": "#3663a8",
+    "categories": ["games", "education", "entertainment", "math", "science"]
 }
