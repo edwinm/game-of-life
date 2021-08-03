@@ -5,8 +5,8 @@
     "description": "Play John Conway’s Game of Life in your browser.",
     "icons": [
         {
-            "src": "/pix/screen.png",
-            "sizes": "1200x774",
+            "src": "/pix/screen2-1.png",
+            "sizes": "1200x600",
             "type": "image/png"
         },
         {
