@@ -49,7 +49,7 @@
         "rollup-plugin-node-resolve": "^5.2.0",
         "rollup-plugin-terser": "^7.0.0",
         "sanitize-filename": "^1.6.3",
-        "serve": "^11.3.2",
+        "serve": "^12.0.0",
         "string-strip-html": "^4.5.1",
         "tslib": "^2.0.1",
         "typescript": "^3.9.7",
