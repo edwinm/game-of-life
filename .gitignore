@@ -4,7 +4,6 @@ built
 deploy.sh
 dist/bundle.min.js*
 dist/lexicon
-dist/service-worker.*
 dist/workbox-*
 backlog.txt
 dist/list.rss
