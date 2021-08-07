@@ -7,3 +7,4 @@ dist/lexicon
 dist/service-worker.*
 dist/workbox-*
 backlog.txt
+dist/list.rss
