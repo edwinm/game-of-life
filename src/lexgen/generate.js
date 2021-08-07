@@ -1,7 +1,7 @@
 const fs = require("fs");
 const readline = require("readline");
-const stripHtml = require("string-strip-html");
-const Entities = require("html-entities").AllHtmlEntities;
+const { stripHtml } = require("string-strip-html");
+const { encode } = require("html-entities");
 const sanitize = require("sanitize-filename");
 const mkdirp = require("mkdirp");
 const { createCanvas } = require("canvas");
@@ -29,7 +29,7 @@ async function main() {
 
   let state = termState;
   let data = {};
-  const entities = new Entities();
+  // const entities = new Entities();
 
   fs.readFile("src/lexgen/template.html", "utf8", (err, template) => {
     if (err) throw err;
@@ -149,7 +149,7 @@ async function main() {
           name: data.name,
           nameCase: titleCase(data.name),
           date,
-          description: entities.encode(stripHtml(data.description)),
+          description: encode(stripHtml(data.description).result),
           info: data.description,
           saveName: filename,
           term: saveFileName(data, 0),
@@ -309,7 +309,7 @@ async function main() {
       <title>${titleCase(data.name)} - John Conway’s Game of Life</title>
       <link>https://playgameoflife.com/lexicon/${filename}</link>
       <description>${stripHtml(data.description)
-        .replace(/&apos;/g, "'")
+        .result.replace(/&apos;/g, "'")
         .replace(/&quot;/g, '"')}</description>
       <enclosure url="https://playgameoflife.com/lexicon/pix/${filename}.png" length="${
           imageData.size
