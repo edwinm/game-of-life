@@ -17,22 +17,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   const { infoIsOpen$ } = info.getObservers();
 
-  const {
-    click$,
-    dimension$,
-    offset$,
-    initialPattern$,
-  } = canvas.getObservers();
+  const { click$, dimension$, offset$, initialPattern$ } =
+    canvas.getObservers();
 
   const { redraw$ } = shape.getObservers();
 
-  const {
-    nextShape$,
-    resize$,
-    size$,
-    reset$,
-    clear$,
-  } = controls.getObservers();
+  const { nextShape$, resize$, size$, reset$, clear$ } =
+    controls.getObservers();
 
   canvas.setObservers(redraw$, resize$, size$);
 

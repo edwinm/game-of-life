@@ -1,3 +1,9 @@
+@media (max-width: 410px) {
+  :root {
+    --small: 1;
+  }
+}
+
 html {
   box-sizing: border-box;
   background-color: #b3b3b3;

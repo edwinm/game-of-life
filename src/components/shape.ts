@@ -23,7 +23,10 @@ export class Shape {
     merge(initialPattern$, newPattern$).subscribe((initialPattern) => {
       this.current = this.patternToShape(initialPattern);
       this.last = [...this.current];
-      this.center(dimension$.value());
+      const dimension = dimension$.value();
+      if (dimension) {
+        this.center(dimension);
+      }
       this.redraw(true);
     });
 

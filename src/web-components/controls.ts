@@ -142,7 +142,7 @@ export class GolControls extends HTMLElement implements CustomElement {
       
       <form>
         <gol-button icon="info" href="/info">Explanation</gol-button>
-        <gol-button icon="book" href="/lexicon">Lexicon</gol-button>
+        <gol-button icon="book" href="/lexicon" responsive="true">Lexicon</gol-button>
         <gol-button id="start" icon="play">Start</gol-button>
         <gol-button id="next" icon="redo">Next</gol-button>
         <gol-button id="reset" icon="close">Clear</gol-button>

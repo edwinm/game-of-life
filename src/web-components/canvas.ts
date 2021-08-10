@@ -56,9 +56,10 @@ export class GolCanvas extends HTMLElement implements CustomElement {
 
     this.setDragging();
 
-    setTimeout(() => {
+    const dimensionSub = this.dimension$.subscribe(() => {
       this.initialPattern$.dispatch(this.textContent);
-    }, 0);
+      dimensionSub.unsubscribe();
+    });
   }
 
   getObservers() {
@@ -375,10 +376,11 @@ export class GolCanvas extends HTMLElement implements CustomElement {
     }
 
     if (setDimension) {
-      this.dimension$.dispatch({
+      const dimension = {
         width: Math.floor(this.canvasDomElement.width / this.cellSize),
         height: Math.floor(this.canvasDomElement.height / this.cellSize),
-      });
+      };
+      this.dimension$.dispatch(dimension);
     }
   }
 
