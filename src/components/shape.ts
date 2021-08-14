@@ -20,6 +20,10 @@ export class Shape {
     reset$: Observable<void>,
     clear$: Observable<void>
   ) {
+    dimension$.subscribe((newDimension, oldDimension) => {
+      this.setNewDimension(newDimension, oldDimension);
+    });
+
     merge(initialPattern$, newPattern$).subscribe((initialPattern) => {
       this.current = this.patternToShape(initialPattern);
       this.last = [...this.current];
@@ -28,10 +32,6 @@ export class Shape {
         this.center(dimension);
       }
       this.redraw(true);
-    });
-
-    dimension$.subscribe((newDimension, oldDimension) => {
-      this.setNewDimension(newDimension, oldDimension);
     });
 
     offset$.subscribe((offset) => {
