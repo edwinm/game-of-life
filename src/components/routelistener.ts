@@ -82,9 +82,18 @@ async function loadLexicon() {
     return;
   }
 
+  $("#lexicon .selection").innerHTML = "Loading lexicon…";
+
   const currentTerm = $("[data-term]").getAttribute("data-term");
 
   const lexicon = await (await fetch("/list.html")).text();
+
+  if (lexicon == "") {
+    setTimeout(() => {
+      $("#lexicon .selection").innerHTML = "Lexicon could not be loaded";
+    }, 1000);
+    return;
+  }
 
   $("#lexicon .selection").innerHTML = lexicon;
 
