@@ -21,6 +21,7 @@ export class Shape {
     clear$: Observable<void>
   ) {
     dimension$.subscribe((newDimension, oldDimension) => {
+      console.log("dimension$", newDimension);
       this.setNewDimension(newDimension, oldDimension);
     });
 
@@ -86,16 +87,16 @@ export class Shape {
   }
 
   private setNewDimension(dimension: Dimension, oldDimension: Dimension) {
-    if (
-      oldDimension &&
-      dimension.width != oldDimension.width &&
-      dimension.height != oldDimension.height
-    ) {
-      this.setOffset({
-        x: Math.round((dimension.width - oldDimension.width) / 2.001),
-        y: Math.round((dimension.height - oldDimension.height) / 2.001),
-      });
-    }
+    // if (
+    //   oldDimension &&
+    //   dimension.width != oldDimension.width &&
+    //   dimension.height != oldDimension.height
+    // ) {
+    //   this.setOffset({
+    //     x: Math.round((dimension.width - oldDimension.width) / 2.001),
+    //     y: Math.round((dimension.height - oldDimension.height) / 2.001),
+    //   });
+    // }
     this.redraw();
   }
 

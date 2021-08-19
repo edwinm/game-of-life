@@ -233,6 +233,7 @@ export class GolCanvas extends HTMLElement implements CustomElement {
             ),
           });
         }
+        this.calculateDimensions();
       }
       this.lastTouchCount = event.touches.length;
     });
@@ -294,10 +295,12 @@ export class GolCanvas extends HTMLElement implements CustomElement {
     );
 
     resize$.subscribe(() => {
+      // TODO center shape
       this.calculateDimensions();
     });
 
     size$.subscribe((newGridSize) => {
+      // TODO Now center shape
       this.setCellSize(newGridSize);
     });
   }
