@@ -299,8 +299,7 @@ export class GolCanvas extends HTMLElement implements CustomElement {
       this.calculateDimensions();
     });
 
-    size$.subscribe((newGridSize) => {
-      // TODO Now center shape
+    size$.subscribe((newGridSize, oldGridSize) => {
       this.setCellSize(newGridSize);
     });
   }

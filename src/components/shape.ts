@@ -18,11 +18,11 @@ export class Shape {
     toggle$: Observable<Cell>,
     offset$: Observable<Offset>,
     reset$: Observable<void>,
-    clear$: Observable<void>
+    clear$: Observable<void>,
+    size$: Observable<number>
   ) {
-    dimension$.subscribe((newDimension, oldDimension) => {
-      console.log("dimension$", newDimension);
-      this.setNewDimension(newDimension, oldDimension);
+    dimension$.subscribe(() => {
+      this.redraw();
     });
 
     merge(initialPattern$, newPattern$).subscribe((initialPattern) => {
@@ -59,6 +59,31 @@ export class Shape {
       this.last = [];
       this.redraw();
     });
+
+    size$.subscribe((newGridSize, oldGridSize) => {
+      if (oldGridSize == undefined || newGridSize == oldGridSize) {
+        return;
+      }
+
+      const dimension = dimension$.value();
+      this.setOffset({
+        x: Math.round(
+          (dimension.width - (dimension.width * newGridSize) / oldGridSize) / 2
+        ),
+        y: Math.round(
+          (dimension.height - (dimension.height * newGridSize) / oldGridSize) /
+            2
+        ),
+      });
+      this.redraw();
+    });
+  }
+
+  private setOffset(offset: Offset) {
+    this.current.forEach((cell: Cell) => {
+      cell.x += offset.x;
+      cell.y += offset.y;
+    });
   }
 
   private redraw(isNew = false) {
@@ -84,27 +109,6 @@ export class Shape {
       cell.y += shapeTop;
     });
     this.last = [...this.current];
-  }
-
-  private setNewDimension(dimension: Dimension, oldDimension: Dimension) {
-    // if (
-    //   oldDimension &&
-    //   dimension.width != oldDimension.width &&
-    //   dimension.height != oldDimension.height
-    // ) {
-    //   this.setOffset({
-    //     x: Math.round((dimension.width - oldDimension.width) / 2.001),
-    //     y: Math.round((dimension.height - oldDimension.height) / 2.001),
-    //   });
-    // }
-    this.redraw();
-  }
-
-  private setOffset(offset: Offset) {
-    this.current.forEach((cell: Cell) => {
-      cell.x += offset.x;
-      cell.y += offset.y;
-    });
   }
 
   private toggle(toggleCell: Cell) {

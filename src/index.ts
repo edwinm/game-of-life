@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     click$,
     offset$,
     reset$,
-    clear$
+    clear$,
+    size$
   );
 
   controls.setObservers(redraw$, click$, infoIsOpen$, newPattern$);
