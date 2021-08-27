@@ -51,6 +51,7 @@ export class Shape {
 
     reset$.subscribe(() => {
       this.current = [...this.last];
+      this.center(dimension$.value());
       this.redraw();
     });
 
@@ -91,22 +92,34 @@ export class Shape {
   }
 
   private center(dimension: Dimension) {
-    let shapeWidth = 0;
-    let shapeHeight = 0;
+    let shapeLeft = Number.MAX_VALUE;
+    let shapeRight = 0;
+    let shapeTop = Number.MAX_VALUE;
+    let shapeBottom = 0;
     this.current.forEach((cell) => {
-      if (cell.x > shapeWidth) {
-        shapeWidth = cell.x;
+      if (cell.x > shapeRight) {
+        shapeRight = cell.x;
       }
-      if (cell.y > shapeHeight) {
-        shapeHeight = cell.y;
+      if (cell.x < shapeLeft) {
+        shapeLeft = cell.x;
+      }
+      if (cell.y > shapeBottom) {
+        shapeBottom = cell.y;
+      }
+      if (cell.y < shapeTop) {
+        shapeTop = cell.y;
       }
     });
 
-    const shapeLeft = Math.round((dimension.width - shapeWidth) / 2);
-    const shapeTop = Math.round((dimension.height - shapeHeight) / 2);
+    const shapeMoveRight = Math.round(
+      dimension.width / 2 - shapeLeft - (shapeRight - shapeLeft) / 2
+    );
+    const shapeMoveDown = Math.round(
+      dimension.height / 2 - shapeTop - (shapeBottom - shapeTop) / 2
+    );
     this.current.forEach((cell: Cell) => {
-      cell.x += shapeLeft;
-      cell.y += shapeTop;
+      cell.x += shapeMoveRight;
+      cell.y += shapeMoveDown;
     });
     this.last = [...this.current];
   }
