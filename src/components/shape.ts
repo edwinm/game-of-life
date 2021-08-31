@@ -60,7 +60,8 @@ export class Shape {
       setTimeout(() => {
         this.center(dimension$.value());
         this.redraw();
-      }, 0);
+        // TODO use event instead of timer
+      }, 100);
     });
 
     clear$.subscribe(() => {
