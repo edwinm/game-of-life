@@ -171,9 +171,11 @@ export class GolControls extends HTMLElement implements CustomElement {
   }
 
   getObservers() {
+    const rotate$ = fromEvent(window, "orientationchange");
+
     const resize$ = merge(
+      rotate$,
       fromEvent(window, "resize"),
-      fromEvent(window, "orientationchange"),
       this.documentReady$
     );
 
@@ -183,6 +185,7 @@ export class GolControls extends HTMLElement implements CustomElement {
       size$: this.size$.observable(),
       reset$: this.resetShape$.observable(),
       clear$: this.clearShape$.observable(),
+      rotate$: rotate$.observable(),
     };
   }
 

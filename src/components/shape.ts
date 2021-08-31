@@ -19,7 +19,8 @@ export class Shape {
     offset$: Observable<Offset>,
     reset$: Observable<void>,
     clear$: Observable<void>,
-    size$: Observable<number>
+    size$: Observable<number>,
+    rotate$: Observable<Event>
   ) {
     dimension$.subscribe(() => {
       this.redraw();
@@ -51,6 +52,11 @@ export class Shape {
 
     reset$.subscribe(() => {
       this.current = [...this.last];
+      this.center(dimension$.value());
+      this.redraw();
+    });
+
+    rotate$.subscribe(() => {
       this.center(dimension$.value());
       this.redraw();
     });

@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   const { redraw$ } = shape.getObservers();
 
-  const { nextShape$, resize$, size$, reset$, clear$ } =
+  const { nextShape$, resize$, size$, reset$, clear$, rotate$ } =
     controls.getObservers();
 
   canvas.setObservers(redraw$, resize$, size$);
@@ -36,7 +36,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     offset$,
     reset$,
     clear$,
-    size$
+    size$,
+    rotate$
   );
 
   controls.setObservers(redraw$, click$, infoIsOpen$, newPattern$);
