@@ -57,8 +57,10 @@ export class Shape {
     });
 
     rotate$.subscribe(() => {
-      this.center(dimension$.value());
-      this.redraw();
+      setTimeout(() => {
+        this.center(dimension$.value());
+        this.redraw();
+      }, 0);
     });
 
     clear$.subscribe(() => {
