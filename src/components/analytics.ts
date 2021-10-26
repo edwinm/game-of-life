@@ -1,27 +1,31 @@
+// @ts-ignore
+window.dataLayer = window.dataLayer || [];
+
+function gtag() {
+  // @ts-ignore
+  dataLayer.push(arguments);
+}
+
 export function analyticsInit(id: string) {
   // @ts-ignore
-  window.ga =
-    window.ga ||
-    function () {
-      (ga.q = ga.q || []).push(arguments);
-    };
-  ga.l = +new Date();
+  gtag("js", new Date());
 
-  ga("create", id, "auto");
-  ga("set", "forceSSL", true);
-  ga("set", "anonymizeIp", true);
-  ga("send", "pageview");
+  // @ts-ignore
+  gtag("config", id, { anonymize_ip: true });
+
+  // @ts-ignore
+  gtag("event", "page_view");
 }
 
-export function analyticsPageview(path: string) {
-  ga("send", "pageview", path);
+export function analyticsPageview(page_location: string) {
+  // @ts-ignore
+  gtag("event", "page_view", { page_location });
 }
 
-window.addEventListener("error", function (e) {
-  ga("send", {
-    hitType: "event",
-    eventCategory: "Website",
-    eventAction: "JavaScript Error",
-    eventLabel: `${e.message} at ${e.filename}:${e.lineno}`,
+window.addEventListener("error", function (error) {
+  // @ts-ignore
+  gtag("event", "exception", {
+    description: `${error.message} at ${error.filename}:${error.lineno}`,
+    fatal: false,
   });
 });
