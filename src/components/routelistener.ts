@@ -119,4 +119,4 @@ fromEvent(window, "hashchange").subscribe(() => {
   $(`a[name='${document.location.hash.substr(1)}']`).scrollIntoView();
 });
 
-analyticsInit("UA-93616-2");
+analyticsInit("G-V6DPPMYG5N");
