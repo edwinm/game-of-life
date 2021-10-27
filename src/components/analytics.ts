@@ -1,23 +1,12 @@
 export function analyticsInit(id: string) {
   // @ts-ignore
-  window.dataLayer = window.dataLayer || [];
+  gtag("js", new Date());
 
-  function gtag() {
-    // @ts-ignore
-    dataLayer.push(arguments);
-    console.log("gtag()");
+  // @ts-ignore
+  gtag("config", id, { anonymize_ip: true });
 
-    // @ts-ignore
-    gtag("js", new Date());
-
-    // @ts-ignore
-    gtag("config", id, { anonymize_ip: true });
-
-    // @ts-ignore
-    gtag("event", "page_view");
-  }
-
-  console.log("---");
+  // @ts-ignore
+  gtag("event", "page_view");
 }
 
 export function analyticsPageview(page_location: string) {
