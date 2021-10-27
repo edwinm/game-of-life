@@ -5,16 +5,19 @@ export function analyticsInit(id: string) {
   function gtag() {
     // @ts-ignore
     dataLayer.push(arguments);
+    console.log("gtag()");
+
+    // @ts-ignore
+    gtag("js", new Date());
+
+    // @ts-ignore
+    gtag("config", id, { anonymize_ip: true });
+
+    // @ts-ignore
+    gtag("event", "page_view");
   }
 
-  // @ts-ignore
-  gtag("js", new Date());
-
-  // @ts-ignore
-  gtag("config", id, { anonymize_ip: true });
-
-  // @ts-ignore
-  gtag("event", "page_view");
+  console.log("---");
 }
 
 export function analyticsPageview(page_location: string) {
