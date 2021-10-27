@@ -1,3 +1,11 @@
+// @ts-ignore
+window.dataLayer = window.dataLayer || [];
+
+function gtag() {
+  // @ts-ignore
+  dataLayer.push(arguments);
+}
+
 export function analyticsInit(id: string) {
   // @ts-ignore
   gtag("js", new Date());

@@ -119,11 +119,4 @@ fromEvent(window, "hashchange").subscribe(() => {
   $(`a[name='${document.location.hash.substr(1)}']`).scrollIntoView();
 });
 
-// @ts-ignore
-window.dataLayer = window.dataLayer || [];
-function gtag() {
-  // @ts-ignore
-  dataLayer.push(arguments);
-}
-
 analyticsInit("G-V6DPPMYG5N");
