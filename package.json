@@ -35,10 +35,9 @@
         "@rollup/plugin-typescript": "^8.2.5",
         "@types/google.analytics": "0.0.42",
         "brotli-cli": "^1.0.2",
-        "canvas": "^2.8.0",
         "carbonium": "^1.0.2",
         "cuprum": "^0.1.14",
-        "google-closure-compiler": "^20210601.0.0",
+        "google-closure-compiler": "^20211201.0.0",
         "html-entities": "^2.3.2",
         "husky": "^7.0.1",
         "mkdirp": "^1.0.4",
@@ -50,14 +49,16 @@
         "rollup-plugin-node-resolve": "^5.2.0",
         "rollup-plugin-terser": "^7.0.2",
         "sanitize-filename": "^1.6.3",
-        "serve": "^12.0.0",
-        "string-strip-html": "^8.3.0",
+        "serve": "^13.0.2",
+        "string-strip-html": "^9.1.1",
         "tslib": "^2.3.0",
         "typescript": "^4.3.5",
         "web-component-decorator": "^1.1.0",
         "workbox-build": "^6.2.2"
     },
     "dependencies": {
-        "npm-check-updates": "^11.8.3"
+        "@types/offscreencanvas": "^2019.6.4",
+        "canvas": "^2.8.0",
+        "npm-check-updates": "^12.0.5"
     }
 }
