@@ -41,7 +41,8 @@ async function main() {
       nameCase: "Loading…",
       term: "",
       date,
-      description: "Play John Conway’s Game of Life in your browser.",
+      description:
+        "Play the Game of Life online, a single player game invented in 1970 by Cambridge mathematician John Conway.",
       info: "Loading full Life Lexicon…",
       saveName: "index",
       pattern: ".O.\n..O\nOOO\n",
