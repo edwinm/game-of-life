@@ -16,6 +16,7 @@
   --light: #fff;
   --bg-heading: #88bdff;
 
+  --fg-primary: #444;
   --bg-primary: rgb(179, 179, 179);
   --bg-primary-transparent: rgb(179, 179, 179, 0.7);
 }
@@ -24,8 +25,9 @@
   :root {
     --bg-heading: #79b5ff;
 
-    --bg-primary: rgb(117, 117, 117);
-    --bg-primary-transparent: rgb(117, 117, 117, 0.7);
+    --fg-primary: #ccc;
+    --bg-primary: rgb(100, 100, 100);
+    --bg-primary-transparent: rgb(100, 100, 100, 0.7);
   }
 }
 

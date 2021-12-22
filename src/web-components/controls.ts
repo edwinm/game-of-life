@@ -52,6 +52,7 @@ export class GolControls extends HTMLElement implements CustomElement {
         }
         
         .generation {
+          color: var(--fg-primary);
           font-size: 20px;
         }
         
