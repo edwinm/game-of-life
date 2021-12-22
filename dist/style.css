@@ -14,25 +14,29 @@
 :root {
   --primary: #2a4e97;
   --light: #fff;
-  --bg-light: #88bdff;
+  --bg-heading: #88bdff;
 
-  --bg-light2: #b3b3b3;
+  --bg-primary: rgb(179, 179, 179);
+  --bg-primary-transparent: rgb(179, 179, 179, 0.7);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-heading: #79b5ff;
+
+    --bg-primary: rgb(117, 117, 117);
+    --bg-primary-transparent: rgb(117, 117, 117, 0.7);
+  }
 }
 
 html {
   box-sizing: border-box;
-  background-color: #b3b3b3;
+  background-color: var(--bg-primary);
   font-family: Trebuchet MS, Arial, Helvetica, sans-serif;
   -ms-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
   accent-color: var(--primary);
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    background-color: #6f6f6f;
-  }
 }
 
 *,
@@ -89,7 +93,7 @@ main {
 }
 
 header {
-  background: var(--bg-light);
+  background: var(--bg-heading);
   padding: 0 20px;
 }
 

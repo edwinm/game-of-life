@@ -31,6 +31,7 @@ export class GolControls extends HTMLElement implements CustomElement {
       <style>
         :host {
           width: 100vw;
+          position: relative;
         }
         
         form {
@@ -46,19 +47,12 @@ export class GolControls extends HTMLElement implements CustomElement {
           margin-left: 30px;
         }
         
-        form > * {
-            margin: 5px 20px;
-        }
-        
         input[type="range"] {
           width: 80px;
         }
         
         .generation {
-          display: inline-block;
-          min-width: 42px;
           font-size: 20px;
-          text-align: right;
         }
         
         nowrap {
@@ -85,10 +79,10 @@ export class GolControls extends HTMLElement implements CustomElement {
           --min-width: 220px;
         }
         
-        form > gol-button {
+        form gol-button {
           --background: #2A4E97;
           --color: white;
-          margin-top: 15px;
+          margin: 15px 20px 20px;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -98,25 +92,32 @@ export class GolControls extends HTMLElement implements CustomElement {
         }
                 
         #controls {
-          white-space: nowrap;
-          border: 1px solid #999;
-          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          position: absolute;
+          top: -220px;
+          right: 40px;
+          height: 150px;
+          padding: 10px 40px;
           border-radius: 10px;
+          box-shadow: 2px 2px 3px hsla(0, 0%, 0%, 0.2);
+          background-color: var(--bg-primary-transparent);
+          backdrop-filter: blur(3px);
         }
         
-        @media (prefers-color-scheme: dark) {
-          #controls {
-            background-color: #828080;
-            border-color: #626262;
-          }
+        .control-item {
+          display: flex;
+          gap: 25px;
+          align-items: center;
         }
-               
+        
         @media (max-width: 650px), (max-height: 650px) {
           form {
             margin: 0;
             padding-bottom: 20px;
           }
-          form > * {
+          form gol-button {
             margin: 5px;
           }
 
@@ -144,16 +145,27 @@ export class GolControls extends HTMLElement implements CustomElement {
         <gol-button icon="info" href="/info">Explanation</gol-button>
         <gol-button icon="book" href="/lexicon" responsive="true">Lexicon</gol-button>
         <gol-button id="start" icon="play">Start</gol-button>
-        <gol-button id="next" icon="redo">Next</gol-button>
-        <gol-button id="reset" icon="close">Clear</gol-button>
-        <div class="generation" title="Generations" aria-label="Generations">0</div>
+        <div>
+          <gol-button id="next" icon="redo">Next</gol-button>
+          <gol-button id="reset" icon="close">Clear</gol-button>
+        </div>
+        
 
         <div id="controls">
-          <svg width="20" height="20" viewBox="0 0 313 281" version="1.1" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><path d="M56.961,280.3c-34.939,-29.393 -56.961,-72.221 -56.961,-119.874c0,-88.541 76.03,-160.426 169.678,-160.426c60.073,0 112.897,29.581 143.052,74.164l-55.039,39.795c-23.62,-34.217 -63.104,-56.658 -107.788,-56.658c-72.236,0 -130.883,58.647 -130.883,130.883c0,35.908 14.492,68.459 37.941,92.116Z" style="fill:#000;"/><path d="M162.389,193.653c-1.065,1.886 -2.377,3.707 -3.935,5.407c-8.877,9.688 -22.364,11.798 -30.1,4.709c-7.737,-7.088 -6.81,-20.708 2.066,-30.396c1.64,-1.789 3.437,-3.32 5.326,-4.582l126.373,-110.976l-99.73,135.838Z" style="fill:#e61a1a;"/></svg>
-          <input id="speed" type="range" min="0" max="100" value="50" title="Speed dial" aria-label="Speed dial">
+          <div class="control-item">
+            <svg width="20" height="20" viewBox="0 0 313 281" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><path d="M56.961,280.3c-34.939,-29.393 -56.961,-72.221 -56.961,-119.874c0,-88.541 76.03,-160.426 169.678,-160.426c60.073,0 112.897,29.581 143.052,74.164l-55.039,39.795c-23.62,-34.217 -63.104,-56.658 -107.788,-56.658c-72.236,0 -130.883,58.647 -130.883,130.883c0,35.908 14.492,68.459 37.941,92.116Z" style="fill:#000;"/><path d="M162.389,193.653c-1.065,1.886 -2.377,3.707 -3.935,5.407c-8.877,9.688 -22.364,11.798 -30.1,4.709c-7.737,-7.088 -6.81,-20.708 2.066,-30.396c1.64,-1.789 3.437,-3.32 5.326,-4.582l126.373,-110.976l-99.73,135.838Z" style="fill:#e61a1a;"/></svg>
+            <input id="speed" type="range" min="0" max="100" value="50" title="Speed dial" aria-label="Speed dial">
+          </div>
 
-          <svg width="20" height="20" viewBox="0 0 225 225" version="1.1" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><path d="M181.444,0l-6.437,0l0,224.662l6.437,0l0,-224.662ZM49.655,0l-6.437,0l0,224.662l6.437,0l0,-224.662Z" style="fill:#000;"/><path d="M224.662,181.444l0,-6.437l-224.662,0l0,6.437l224.662,0ZM224.662,49.655l0,-6.437l-224.662,0l0,6.437l224.662,0Z" style="fill:#000;"/></svg>
-          <input id="size" type="range" min="0" max="100" value="43" title="Grid size" aria-label="Grid size">
+          <div class="control-item">
+            <svg width="20" height="20" viewBox="0 0 225 225" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><path d="M181.444,0l-6.437,0l0,224.662l6.437,0l0,-224.662ZM49.655,0l-6.437,0l0,224.662l6.437,0l0,-224.662Z" style="fill:#000;"/><path d="M224.662,181.444l0,-6.437l-224.662,0l0,6.437l224.662,0ZM224.662,49.655l0,-6.437l-224.662,0l0,6.437l224.662,0Z" style="fill:#000;"/></svg>
+            <input id="size" type="range" min="0" max="100" value="43" title="Grid size" aria-label="Grid size">
+          </div>
+          
+          <div class="control-item">
+            <svg class="redo" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M0 0h24v24H0z" fill="none"/><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/></svg>
+            <span class="generation" title="Generations" aria-label="Generations">0</span>
+          </div>
         </div>
       </form>
     `;
