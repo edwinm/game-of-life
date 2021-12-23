@@ -78,7 +78,7 @@ OOO
 </gol-info>
 
 <gol-info id="info" role="dialog" aria-modal="true">
-  <h1>John Conway’s Game of Life</h1>
+  <h1>John Conway’s Game of Life Explanation</h1>
 
   <p>
     The Game of Life is not your typical computer game. It is a cellular
@@ -87,121 +87,127 @@ OOO
 
   <p>
     This game became widely known when it was mentioned in an article
-    published by Scientific American in 1970. It consists of a collection of
+    published by Scientific American in 1970. It consists of a grid of
     cells which, based on a few mathematical rules, can live, die or
     multiply. Depending on the initial conditions, the cells form various
     patterns throughout the course of the game.
   </p>
 
-  <h3>Rules</h3>
+  <article class="rules">
+    <h3>Rules</h3>
 
-  <dl>
-    <dt>For a space that is populated:</dt>
-    <dd>
-      <p>Each cell with one or no neighbors dies, as if by solitude.</p>
-      <div class="example">
-        <img src="pix/example/1.1.png" width="69" height="70" alt=""
-             loading="lazy">
-        <img class="redo" src="pix/example/redo.svg" width="50" height="50"
-             alt="" loading="lazy">
-        <img src="pix/example/1.2.png" width="69" height="70" alt=""
-             loading="lazy">
-      </div>
-    </dd>
-    <dd>
-      <p>Each cell with four or more neighbors dies, as if by
-        overpopulation.</p>
-      <div class="example">
-        <img src="pix/example/5.1.png" width="69" height="70" alt=""
-             loading="lazy">
-        <img class="redo" src="pix/example/redo.svg" width="50" height="50"
-             alt="" loading="lazy">
-        <img src="pix/example/5.2.png" width="69" height="70" alt=""
-             loading="lazy">
-      </div>
-    </dd>
-    <dd>
-      <p>Each cell with two or three neighbors survives.</p>
-      <div class="example">
-        <img src="pix/example/2.1.png" width="69" height="70" alt=""
-             loading="lazy">
-        <img class="redo" src="pix/example/redo.svg" width="50" height="50"
-             alt="" loading="lazy">
-        <img src="pix/example/2.2.png" width="69" height="70" alt=""
-             loading="lazy">
-      </div>
-    </dd>
+    <dl>
+      <dt class="heading-example">For a space that is populated:
+        <div class="example-text">Examples</div>
+      </dt>
+      <dd>
+        <p>Each cell with one or no neighbors dies, as if by solitude.</p>
+        <div class="example">
+          <img src="pix/example/1.1.png" width="69" height="70" alt=""
+               loading="lazy">
+          <img class="redo" src="pix/example/redo.svg" width="50" height="50"
+               alt="" loading="lazy">
+          <img src="pix/example/1.2.png" width="69" height="70" alt=""
+               loading="lazy">
+        </div>
+      </dd>
+      <dd>
+        <p>Each cell with four or more neighbors dies, as if by
+          overpopulation.</p>
+        <div class="example">
+          <img src="pix/example/5.1.png" width="69" height="70" alt=""
+               loading="lazy">
+          <img class="redo" src="pix/example/redo.svg" width="50" height="50"
+               alt="" loading="lazy">
+          <img src="pix/example/5.2.png" width="69" height="70" alt=""
+               loading="lazy">
+        </div>
+      </dd>
+      <dd>
+        <p>Each cell with two or three neighbors survives.</p>
+        <div class="example">
+          <img src="pix/example/2.1.png" width="69" height="70" alt=""
+               loading="lazy">
+          <img class="redo" src="pix/example/redo.svg" width="50" height="50"
+               alt="" loading="lazy">
+          <img src="pix/example/2.2.png" width="69" height="70" alt=""
+               loading="lazy">
+        </div>
+      </dd>
 
-    <dt>For a space that is empty or unpopulated</dt>
-    <dd>
-      <p>Each cell with three neighbors becomes populated.</p>
-      <div class="example">
-        <img src="pix/example/3.1.png" width="69" height="70" alt=""
-             loading="lazy">
-        <img class="redo" src="pix/example/redo.svg" width="50" height="50"
-             alt="" loading="lazy">
-        <img src="pix/example/3.2.png" width="69" height="70" alt=""
-             loading="lazy">
-      </div>
-    </dd>
-  </dl>
-
-  <h3>The Controls</h3>
-
-  <p>
-    Choose a pattern from the lexicon or make one yourself by clicking on the
-    cells.
-    The 'Start' button advances the game by several generations
-    (each new generation corresponding to one iteration of the rules).
-  </p>
+      <dt>For a space that is empty or unpopulated:</dt>
+      <dd>
+        <p>Each cell with three neighbors becomes populated.</p>
+        <div class="example">
+          <img src="pix/example/3.1.png" width="69" height="70" alt=""
+               loading="lazy">
+          <img class="redo" src="pix/example/redo.svg" width="50" height="50"
+               alt="" loading="lazy">
+          <img src="pix/example/3.2.png" width="69" height="70" alt=""
+               loading="lazy">
+        </div>
+      </dd>
+    </dl>
+  </article>
 
   <h3>More information</h3>
 
-  <p>In the first video, from Stephen Hawkings’ documentary The Meaning of Life,
-    the rules are explained,
-    in the second, John Conway himself talks about the Game of Life.</p>
+  <p>Video’s about the Game of Life</p>
 
-  <div class="videos">
-    <a href="https://youtu.be/CgOcEZinQ2I" target="_blank" rel="noopener">
-      <img src="pix/yt-hawkins.jpg"
-           alt="Stephen Hawkings The Meaning of Life (John Conway's Game of Life segment)"
-           width="279" height="157" loading="lazy">
-    </a>
+  <section class="videos">
 
-    <a href="https://youtu.be/R9Plq-D1gEk" target="_blank" rel="noopener">
-      <img src="pix/yt-numberphile.jpg"
-           alt="Inventing Game of Life (John Conway) - Numberphile" width="279"
-           height="157" loading="lazy">
-    </a>
-  </div>
+    <figure>
+      <a href="https://youtu.be/CgOcEZinQ2I" target="_blank"
+         rel="noopener">
+        <img src="pix/yt-hawkins.jpg"
+             alt="Stephen Hawkings The Meaning of Life (John Conway's Game of Life segment)"
+             width="279" height="157" loading="lazy">
+      </a>
+      <figcaption>The rules are explained in Stephen Hawkings’ documentary The Meaning of Life</figcaption>
+    </figure>
 
-  <p>The Guardian published a nice article about John Conway.</p>
+    <figure>
+      <a href="https://youtu.be/R9Plq-D1gEk" target="_blank" rel="noopener">
+        <img src="pix/yt-numberphile.jpg"
+             alt="Inventing Game of Life (John Conway) - Numberphile" width="279"
+             height="157" loading="lazy">
+      </a>
+      <figcaption>John Conway himself talks about the Game of Life</figcaption>
+    </figure>
+
+  </section>
+
+  <p>Interesting articles about John Conway</p>
 
   <ul>
     <li><a
         href="https://www.theguardian.com/science/2015/jul/23/john-horton-conway-the-most-charismatic-mathematician-in-the-world"
         target="_blank" rel="noopener">John Horton Conway: the world’s most
-      charismatic mathematician </a></li>
+      charismatic mathematician</a> (The Guardian)</li>
+    <li><a
+        href="https://www.wired.com/2015/09/life-games-playful-genius-john-conway/"
+        target="_blank" rel="noopener">A Life in Games: The Playful Genius of John Conway</a> (Wired)</li>
   </ul>
 
-  <hr>
+  <aside class="ad">
+    <p>If you’ve been thinking “I’d like to <a
+        href="https://www.findmyelectric.com/sell-my-tesla/" target='_blank'
+        rel='noopener'>sell my Tesla</a>,”
+      check out
+      FindMyElectric.com—the ultimate Tesla marketplace, and one of Game of
+      Life’s
+      supporters!</p>
 
-  <p>If you’ve been thinking “I’d like to <a
-      href="https://www.findmyelectric.com/sell-my-tesla/" target='_blank'
-      rel='noopener'>sell my Tesla</a>,”
-    check out
-    FindMyElectric.com—the ultimate Tesla marketplace, and one of Game of Life’s
-    supporters!</p>
-
-  <p>The Game of Life is also supported by <a
-      href="https://www.dotcom-tools.com/website-speed-test" target='_blank'
-      rel='noopener'>Dotcom-Tools</a>,
-    <a href="https://www.loadview-testing.com/load-testing" target='_blank'
-       rel='noopener'>Load View Testing</a>,
-    <a href="https://www.drivencoffee.com/" target='_blank' rel='noopener'>Driven
-      Coffee Roasters</a>, and <a
-        href="https://webhostingbuddy.com/" target='_blank' rel='noopener'>Web
-      Hosting Buddy</a>.</p>
+    <p>The Game of Life is also supported by <a
+        href="https://www.dotcom-tools.com/website-speed-test" target='_blank'
+        rel='noopener'>Dotcom-Tools</a>,
+      <a href="https://www.loadview-testing.com/load-testing" target='_blank'
+         rel='noopener'>Load View Testing</a>,
+      <a href="https://www.drivencoffee.com/" target='_blank' rel='noopener'>Driven
+        Coffee Roasters</a>, and <a
+          href="https://webhostingbuddy.com/" target='_blank' rel='noopener'>Web
+        Hosting Buddy</a>.</p>
+  </aside>
 
   <p>
     Implemented by Edwin Martin &lt;<a

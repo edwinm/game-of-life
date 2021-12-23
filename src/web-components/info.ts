@@ -50,7 +50,6 @@ export class GolInfo extends HTMLElement implements CustomElement {
           width: 90vw;
           max-height: 90vh;
           background: white;
-          border: 1px solid #666;
           box-shadow: hsla(0, 0%, 0%, 0.3) 5px 5px 5px;
           z-index: 2000;
           transition: all 250ms ease;
@@ -85,12 +84,6 @@ export class GolInfo extends HTMLElement implements CustomElement {
           z-index: 100;
         }
         
-        .close-button-container {
-          display: flex;
-          justify-content: center;
-          padding-top: 2em;
-        }
-        
         gol-button {
           --background: #2A4E97;
           --color: white;
@@ -121,9 +114,6 @@ export class GolInfo extends HTMLElement implements CustomElement {
           <gol-button class="close-button" icon="close" data-close></gol-button>
           <div class="info-content">
             <slot></slot>
-            <p class="close-button-container">
-              <gol-button data-close icon="close">Close</gol-button>
-            </p>
           </div>
         </section>
       </div>
