@@ -19,6 +19,13 @@
   --fg-primary: #444;
   --bg-primary: rgb(179, 179, 179);
   --bg-primary-transparent: rgb(179, 179, 179, 0.7);
+
+  --shadow-color: 0deg 0% 63%;
+
+  --shadow-elevation-medium: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.36),
+    0.8px 1.6px 2px -0.8px hsl(var(--shadow-color) / 0.36),
+    2.1px 4.1px 5.2px -1.7px hsl(var(--shadow-color) / 0.36),
+    5px 10px 12.6px -2.5px hsl(var(--shadow-color) / 0.36);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,6 +35,7 @@
     --fg-primary: #ccc;
     --bg-primary: rgb(100, 100, 100);
     --bg-primary-transparent: rgb(100, 100, 100, 0.7);
+    --shadow-color: 210deg 6% 11%;
   }
 }
 
@@ -139,6 +147,12 @@ header {
   padding: 0 20px;
 }
 
+.copyright {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
 .title {
   font-family: HandelGothic, Trebuchet MS, sans-serif;
   font-size: 50px;
@@ -168,18 +182,19 @@ gol-canvas {
 
 .selection section {
   padding: 20px;
-  border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   content-visibility: auto;
+  background-color: #e9e9e9;
+  box-shadow: var(--shadow-elevation-medium);
 }
 
 .selection section pre {
   overflow: scroll;
 }
 
-.selection b {
-  font-size: 26px;
+.selection section h2 {
+  margin-top: 0;
 }
 
 .selection .image a {
@@ -189,13 +204,7 @@ gol-canvas {
   justify-content: center;
   align-items: center;
   border-radius: 3px;
-  background-color: #ccc;
-}
-
-@media (prefers-color-scheme: dark) {
-  .selection .image a {
-    background-color: #535353;
-  }
+  border: 1px solid #ccc;
 }
 
 .selection .image a:focus {
@@ -205,11 +214,6 @@ gol-canvas {
 .selection img {
   display: block;
   background-color: #7e7e7e;
-}
-
-.cc-icon {
-  float: right;
-  margin-left: 10px;
 }
 
 .videos {
@@ -223,6 +227,12 @@ gol-canvas {
 .videos img {
   display: block;
   box-shadow: hsla(0, 0%, 0%, 0.3) 5px 5px 5px;
+}
+
+.meta {
+  margin: 0;
+  font-size: smaller;
+  color: #777;
 }
 
 @media (max-width: 650px), (max-height: 650px) {
@@ -283,5 +293,17 @@ a:active {
 
   .ad {
     background: #4a4b4f;
+  }
+
+  .meta {
+    color: #ccc;
+  }
+
+  .selection section {
+    background-color: #4a4b4f;
+  }
+
+  .selection .image a {
+    border: 1px solid #626262;
   }
 }

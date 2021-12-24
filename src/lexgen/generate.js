@@ -74,16 +74,31 @@ async function main() {
             line.match(/<p>:/) || line.match(/<p><a name=[^>]+>:/);
 
           if (newPatternMatches) {
-            // save current data
+            // save previous data
             await saveAll(indexOutStream, template, data, rss);
-            // if (count-- <= 0) {
-            //   break forall;
-            // }
 
-            const nameMatches = line.match(/<b>([^<]+)<\/b>/);
+            let name = "";
+            let meta = "";
+            let metaMatches = "";
+            const nameMatches = line.match(/<b>([^<]+)<\/b> (.*)/);
+
+            if (nameMatches) {
+              name = nameMatches[1];
+              line = nameMatches[2];
+            }
+
+            // breaks at long long snake?
+            metaMatches = line.match(/\(([^=]+)\) ?(.*)/);
+
+            if (metaMatches) {
+              meta = metaMatches[1];
+              line = metaMatches[2];
+            }
+
             // start new data
             data = {
-              name: nameMatches[1],
+              name,
+              meta,
               date,
               description: "",
               patterns: [],
@@ -117,6 +132,8 @@ async function main() {
           break;
       }
     }
+
+    await saveAll(indexOutStream, template, data, rss);
 
     rss.writeRssFooter();
     fileInStream.close();
@@ -164,9 +181,11 @@ async function main() {
     }
 
     outStream.write(
-      `<section data-term="${saveFileName(data, 0)}">${
-        data.description
-      }</section>\n`
+      `<section data-term="${saveFileName(data, 0)}">
+        <h2>${data.name}</h2>
+        <div class="meta">${data.meta}</div>
+        <p>${data.description}</p>
+      </section>\n`
     );
   }
 
