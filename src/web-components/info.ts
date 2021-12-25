@@ -111,14 +111,14 @@ export class GolInfo extends HTMLElement implements CustomElement {
 
         @media (max-width: 650px) {
           section {
-            top: 10vh;
-            width: 95vw;
-            max-height: 70vh;
+            top: 0;
+            width: 100vw;
+            max-height: 100vh;
           }
           
           .info-content {
-            padding: 5px;
-            max-height: 70vh;
+            padding: 60px 5px;
+            max-height: 100vh;
           }
         }
       </style>
