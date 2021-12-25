@@ -66,7 +66,7 @@ export class GolInfo extends HTMLElement implements CustomElement {
           overflow-y: scroll;
           overflow-x: hidden;
           overflow-scrolling: touch;
-          padding: 2em;
+          padding: 60px 2em 2em;
           border: 2px solid transparent; /*bugfix*/
         }
         
@@ -77,11 +77,22 @@ export class GolInfo extends HTMLElement implements CustomElement {
           }
         }
         
+        .header {
+          display: flex;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 70px;
+          background-color: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(2px);
+          pointer-events: none;
+        }
+        
         .close-button {
           position: absolute;
-          right: 1em;
-          top: 0.5em;
-          z-index: 100;
+          top: 14px;
+          right: 20px;        
         }
         
         gol-button {
@@ -92,6 +103,9 @@ export class GolInfo extends HTMLElement implements CustomElement {
         @media (prefers-color-scheme: dark) {
           gol-button {
             --background: #29457D;
+          }
+          .header {
+            background-color: rgba(56, 57, 60, 0.9);
           }
         }
 
@@ -111,6 +125,7 @@ export class GolInfo extends HTMLElement implements CustomElement {
       
       <div id="whitebox">
         <section>
+          <div class="header"></div>
           <gol-button class="close-button" icon="close" data-close></gol-button>
           <div class="info-content">
             <slot></slot>
