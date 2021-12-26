@@ -52,6 +52,8 @@ export class GolControls extends HTMLElement implements CustomElement {
         }
         
         .generation {
+          position: relative;
+          left: 2px;
           color: var(--fg-primary);
           font-size: 20px;
         }
@@ -116,7 +118,7 @@ export class GolControls extends HTMLElement implements CustomElement {
         @media (max-width: 650px), (max-height: 650px) {
           form {
             margin: 0;
-            padding-bottom: 20px;
+            padding: 10px 0 20px;
           }
           form gol-button {
             margin: 5px;

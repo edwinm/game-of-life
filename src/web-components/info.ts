@@ -92,7 +92,7 @@ export class GolInfo extends HTMLElement implements CustomElement {
         .close-button {
           position: absolute;
           top: 14px;
-          right: 20px;        
+          right: 2em;        
         }
         
         gol-button {
@@ -117,9 +117,13 @@ export class GolInfo extends HTMLElement implements CustomElement {
           }
           
           .info-content {
-            padding: 60px 5px;
+            padding: 60px 15px;
             max-height: 100vh;
           }
+          
+        .close-button {
+          right: 15px;        
+        }
         }
       </style>
       

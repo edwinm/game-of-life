@@ -14,7 +14,7 @@
 :root {
   --primary: #2a4e97;
   --light: #fff;
-  --bg-heading: #88bdff;
+  --bg-heading: #b0d3ff;
 
   --fg-primary: #444;
   --bg-primary: rgb(179, 179, 179);
@@ -43,10 +43,14 @@ html {
   box-sizing: border-box;
   background-color: var(--bg-primary);
   font-family: Trebuchet MS, Arial, Helvetica, sans-serif;
-  -ms-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
   accent-color: var(--primary);
+}
+
+a {
+  -webkit-hyphens: none;
+  hyphens: none;
 }
 
 *,
@@ -220,7 +224,7 @@ gol-canvas {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 30px;
   margin: 30px 0 40px;
 }
 
@@ -301,6 +305,14 @@ a:active {
 
   .selection section {
     background-color: #4a4b4f;
+  }
+
+  header {
+    background-color: #4285d7;
+  }
+
+  .title {
+    color: #1b3262;
   }
 
   .selection .image a {
