@@ -185,18 +185,21 @@ gol-canvas {
 }
 
 .selection section {
+  padding-top: 80px;
+}
+
+.selection .block {
   padding: 20px;
   border-radius: 5px;
-  margin-bottom: 40px;
   background-color: #e9e9e9;
   box-shadow: var(--shadow-elevation-medium);
 }
 
-.selection section pre {
+.selection .block pre {
   overflow: scroll;
 }
 
-.selection section h2 {
+.selection .block h2 {
   margin: 0 0 5px;
 }
 
@@ -253,7 +256,7 @@ gol-canvas {
     font-size: 30px;
   }
 
-  .selection section {
+  .selection .block {
     padding: 8px;
   }
 }
@@ -303,7 +306,7 @@ a:active {
     color: #ccc;
   }
 
-  .selection section {
+  .selection .block {
     background-color: #4a4b4f;
   }
 
