@@ -71,16 +71,18 @@ async function main() {
           // <p><a name=Z>:</a><a name=wss><b>zebra stripes
           // <p>:<b>tumbling T-tetson</b> (p8)
           const newPatternMatches =
-            line.match(/<p>:/) || line.match(/<p><a name=[^>]+>:/);
+            line.match(/<p>:?<a name=([^>]+)>:?/) || line.match(/<p>:/);
 
           if (newPatternMatches) {
             // save previous data
             await saveAll(indexOutStream, template, data, rss);
 
+            const code = newPatternMatches[1] ?? "";
+
             let name = "";
             let meta = "";
             let metaMatches = "";
-            const nameMatches = line.match(/<b>([^<]+)<\/b> (.*)/);
+            const nameMatches = line.match(/<b>([^<]+)<\/b>\S(.*)/);
 
             if (nameMatches) {
               name = nameMatches[1];
@@ -97,6 +99,7 @@ async function main() {
 
             // start new data
             data = {
+              code,
               name,
               meta,
               date,
@@ -164,6 +167,7 @@ async function main() {
         writePage(`${lexiconDir}html/${filename}.html`, template, {
           title: `${titleCase(data.name)} - John Conway’s Game of Life`,
           url: `https://playgameoflife.com/lexicon/${filename}`,
+          code: data.code,
           name: data.name,
           nameCase: titleCase(data.name),
           date,
@@ -181,10 +185,12 @@ async function main() {
     }
 
     outStream.write(
-      `<section data-term="${saveFileName(data, 0)}">
-        <h2>${data.name}</h2>
-        <div class="meta">${data.meta}</div>
-        <p>${data.description}</p>
+      `<section id="${data.code}" data-term="${saveFileName(data, 0)}">
+        <div class="block">
+          <h2>${data.name}</h2>
+          <div class="meta">${data.meta}</div>
+          <p>${data.description}</p>
+        </div>
       </section>\n`
     );
   }
