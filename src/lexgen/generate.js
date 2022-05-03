@@ -77,7 +77,7 @@ async function main() {
             // save previous data
             await saveAll(indexOutStream, template, data, rss);
 
-            const code = newPatternMatches[1] ?? "";
+            const code = newPatternMatches[1] || "";
 
             let name = "";
             let meta = "";
