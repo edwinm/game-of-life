@@ -97,26 +97,27 @@ async function loadLexicon() {
 
   $("#lexicon .selection").innerHTML = lexicon;
 
-  if (currentTerm) {
-    $(`[data-term='${currentTerm}']`).scrollIntoView();
-  } else {
-    const currentHash = document.location.hash.substr(1);
-    if (currentHash) {
-      document.location.hash = currentHash;
-    }
-  }
+  // TODO: broken
+  // if (currentTerm) {
+  //   $(`[data-term='${currentTerm}']`).scrollIntoView();
+  // } else {
+  //   const currentHash = document.location.hash.substr(1);
+  //   if (currentHash) {
+  //     document.location.hash = currentHash;
+  //   }
+  // }
 
-  fromEvent($("#lexicon [data-internal]"), "click").subscribe((event) => {
-    const a = (<HTMLElement>event.target).closest("a");
-    router.push(a.getAttribute("href"));
-    event.preventDefault();
-  });
+  // fromEvent($("#lexicon [data-internal]"), "click").subscribe((event) => {
+  //   const a = (<HTMLElement>event.target).closest("a");
+  //   router.push(a.getAttribute("href"));
+  //   event.preventDefault();
+  // });
   isLexiconLoaded = true;
 }
 
 // Browser fix hash change
-fromEvent(window, "hashchange").subscribe(() => {
-  $(`a[name='${document.location.hash.substr(1)}']`).scrollIntoView();
-});
+// fromEvent(window, "hashchange").subscribe(() => {
+//   $(`a[name='${document.location.hash.substr(1)}']`).scrollIntoView();
+// });
 
 analyticsInit("G-V6DPPMYG5N");
