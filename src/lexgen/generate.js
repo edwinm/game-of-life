@@ -1,6 +1,5 @@
 const fs = require("fs");
 const readline = require("readline");
-const { stripHtml } = require("string-strip-html");
 const { encode } = require("html-entities");
 const sanitize = require("sanitize-filename");
 const mkdirp = require("mkdirp");
@@ -10,6 +9,8 @@ main();
 
 async function main() {
   console.log("Generate lexicon files");
+
+  const { stripHtml } = await import("string-strip-html");
 
   await mkdirp("dist/lexicon/html");
   await mkdirp("dist/lexicon/data");
