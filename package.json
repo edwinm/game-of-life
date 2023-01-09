@@ -31,6 +31,9 @@
         "url": "https://github.com/edwinm/game-of-life/issues"
     },
     "homepage": "https://github.com/edwinm/game-of-life#readme",
+    "engines": {
+        "node": ">=18"
+    },
     "devDependencies": {
         "@rollup/plugin-typescript": "^11.0.0",
         "@types/google.analytics": "0.0.42",

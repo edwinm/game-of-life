@@ -1,6 +1,3 @@
-[build]
-	environment = { NODE_VERSION = "18.13.0" }
-
 [[redirects]]
   from = "/info"
   to = "/index.html"
