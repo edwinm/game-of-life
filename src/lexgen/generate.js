@@ -83,7 +83,7 @@ async function main() {
             let name = "";
             let meta = "";
             let metaMatches = "";
-            const nameMatches = line.match(/<b>([^<]+)<\/b>\S(.*)/);
+            const nameMatches = line.match(/<b>([^<]+)<\/b>\S*\s(.*)/);
 
             if (nameMatches) {
               name = nameMatches[1];
