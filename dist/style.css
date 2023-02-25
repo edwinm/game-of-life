@@ -48,7 +48,13 @@ html {
   accent-color: var(--primary);
 }
 
-a {
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   -webkit-hyphens: none;
   hyphens: none;
 }
