@@ -166,7 +166,7 @@ main {
 
 header {
   background: var(--bg-heading);
-  padding: 0 20px;
+  padding: 0 30px;
 }
 
 .copyright {
@@ -203,11 +203,11 @@ gol-canvas {
 }
 
 .selection section {
-  padding-top: 80px;
+  padding-top: 40px;
 }
 
 .selection .block {
-  padding: 20px;
+  padding: 40px;
   border-radius: 5px;
   background-color: #e9e9e9;
   box-shadow: var(--shadow-elevation-medium);
@@ -275,7 +275,7 @@ gol-canvas {
   }
 
   .selection .block {
-    padding: 8px;
+    padding: 16px;
   }
 }
 a {
@@ -329,11 +329,11 @@ a:active {
   }
 
   header {
-    background-color: #4285d7;
+    background-color: #3663a8;
   }
 
   .title {
-    color: #1b3262;
+    color: #aacbff;
   }
 
   .selection .image a {
