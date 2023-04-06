@@ -35,33 +35,33 @@
         "node": ">=18"
     },
     "devDependencies": {
-        "@rollup/plugin-typescript": "^11.0.0",
+        "@rollup/plugin-typescript": "^11.1.0",
         "@types/google.analytics": "0.0.42",
         "brotli-cli": "^1.0.4",
         "carbonium": "^1.2.1",
         "cuprum": "^0.1.17",
-        "google-closure-compiler": "^20221102.0.1",
+        "google-closure-compiler": "^20230228.0.0",
         "html-entities": "^2.3.3",
         "husky": "^8.0.3",
-        "mkdirp": "^1.0.4",
+        "mkdirp": "^2.1.6",
         "npm-run-all": "^4.1.5",
-        "prettier": "^2.8.2",
+        "prettier": "^2.8.7",
         "pretty-quick": "^3.1.3",
-        "rollup": "^3.9.1",
+        "rollup": "^3.20.2",
         "rollup-plugin-livereload": "^2.0.5",
         "rollup-plugin-node-resolve": "^5.2.0",
         "sanitize-filename": "^1.6.3",
-        "serve": "^14.1.2",
-        "string-strip-html": "^13.0.6",
-        "tslib": "^2.4.1",
-        "typescript": "^4.9.4",
+        "serve": "^14.2.0",
+        "string-strip-html": "^13.2.1",
+        "tslib": "^2.5.0",
+        "typescript": "^5.0.3",
         "web-component-decorator": "^1.1.0",
         "workbox-build": "^6.5.4"
     },
     "dependencies": {
-        "@rollup/plugin-terser": "^0.3.0",
+        "@rollup/plugin-terser": "^0.4.0",
         "@types/offscreencanvas": "^2019.7.0",
-        "canvas": "^2.11.0",
-        "npm-check-updates": "^16.6.2"
+        "canvas": "^2.11.2",
+        "npm-check-updates": "^16.10.7"
     }
 }
