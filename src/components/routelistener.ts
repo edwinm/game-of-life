@@ -1,7 +1,7 @@
 import router from "./router";
 import { $ } from "carbonium";
 import { Cuprum, fromEvent } from "cuprum";
-import { analyticsInit, analyticsPageview } from "./analytics";
+// import { analyticsInit, analyticsPageview } from "./analytics";
 import { GolInfo } from "../web-components/info";
 
 let isLexiconLoaded = false;
@@ -61,7 +61,7 @@ export function routeListener(newPattern$: Cuprum<string>) {
           }
         }
     }
-    analyticsPageview(path);
+    //analyticsPageview(path);
   }
 }
 
@@ -120,4 +120,4 @@ async function loadLexicon() {
 //   $(`a[name='${document.location.hash.substr(1)}']`).scrollIntoView();
 // });
 
-analyticsInit("G-V6DPPMYG5N");
+// analyticsInit("G-V6DPPMYG5N");
