@@ -147,10 +147,16 @@ export class GolControls extends HTMLElement implements CustomElement {
       <form>
         <gol-button icon="info" href="/info">Explanation</gol-button>
         <gol-button icon="book" href="/lexicon" responsive="true">Lexicon</gol-button>
-        <gol-button id="start" icon="play">Start</gol-button>
+        <gol-button id="start" icon="play">
+          <span slot="default">Start</span>
+          <span slot="alternative">Stop</span>
+        </gol-button>
         <div>
           <gol-button id="next" icon="redo">Next</gol-button>
-          <gol-button id="reset" icon="close">Clear</gol-button>
+          <gol-button id="reset" icon="close">
+            <span slot="default">Clear</span>
+            <span slot="alternative">Reset</span>
+          </gol-button>
         </div>
         
 
@@ -243,10 +249,10 @@ export class GolControls extends HTMLElement implements CustomElement {
 
     const resetButton = $("#reset", this.shadowRoot);
     if (gen == 0) {
-      resetButton.textContent = "Clear";
+      resetButton.removeAttribute("alternative");
       resetButton.setAttribute("icon", "close");
     } else {
-      resetButton.textContent = "Reset";
+      resetButton.setAttribute("alternative", "");
       resetButton.setAttribute("icon", "replay");
     }
   }
@@ -274,13 +280,14 @@ export class GolControls extends HTMLElement implements CustomElement {
 
   private setupStart() {
     fromEvent($("#start", this.shadowRoot), "click").subscribe((event) => {
+      const button = (event.target as HTMLElement).closest("gol-button");
       if (this.isPlaying) {
-        (<HTMLInputElement>event.target).textContent = "Start";
-        (<HTMLInputElement>event.target).setAttribute("icon", "play");
+        button.removeAttribute("alternative");
+        button.setAttribute("icon", "play");
         this.stop();
       } else {
-        (<HTMLInputElement>event.target).textContent = "Stop";
-        (<HTMLInputElement>event.target).setAttribute("icon", "stop");
+        button.setAttribute("alternative", "");
+        button.setAttribute("icon", "stop");
         this.play();
       }
     });

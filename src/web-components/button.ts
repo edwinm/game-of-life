@@ -31,10 +31,14 @@ export class GolButton extends HTMLElement implements CustomElement {
           transition: all 250ms ease;
         }
         
-        #button.pressed {
+        #button:active {
           box-shadow: inset 2px 2px 3px hsla(0, 0%, 0%, 0.3);
         }
         
+        #button:active .container {
+          top: 1px;
+        }
+
         #button.disabled {
           background-color: #999;
           color: #ccc;
@@ -52,16 +56,8 @@ export class GolButton extends HTMLElement implements CustomElement {
           justify-content: center;
         }
         
-        #button.pressed .container {
-          top: 1px;
-        }
-
-        #button:focus {
-          outline: none;
+        #button:focus-visible {
           border: 2px solid white;
-        }
-        #button.no-focus:focus {
-          border: 2px solid transparent;
         }
         
         /* Icons */
@@ -83,6 +79,14 @@ export class GolButton extends HTMLElement implements CustomElement {
         svg.visible {
           display: inline-block;
         }
+
+        slot[name] {
+          display: none;
+        }
+
+        slot[name].visible {
+          display: inline;
+        }
       
         @media (max-width: 650px), (max-height: 650px) {
           #button {
@@ -94,12 +98,14 @@ export class GolButton extends HTMLElement implements CustomElement {
       <button id="button">
         <div class="container">
           <svg class="close" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-          <svg class="book" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24"/></g><g><g><g><path d="M17.5,4.5c-1.95,0-4.05,0.4-5.5,1.5c-1.45-1.1-3.55-1.5-5.5-1.5S2.45,4.9,1,6v14.65c0,0.65,0.73,0.45,0.75,0.45 C3.1,20.45,5.05,20,6.5,20c1.95,0,4.05,0.4,5.5,1.5c1.35-0.85,3.8-1.5,5.5-1.5c1.65,0,3.35,0.3,4.75,1.05 C22.66,21.26,23,20.86,23,20.6V6C21.51,4.88,19.37,4.5,17.5,4.5z M21,18.5c-1.1-0.35-2.3-0.5-3.5-0.5c-1.7,0-4.15,0.65-5.5,1.5V8 c1.35-0.85,3.8-1.5,5.5-1.5c1.2,0,2.4,0.15,3.5,0.5V18.5z"/></g></g></g></svg>
+          <svg class="book" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><rect fill="none" height="24" width="24"/><path d="M17.5,4.5c-1.95,0-4.05,0.4-5.5,1.5c-1.45-1.1-3.55-1.5-5.5-1.5S2.45,4.9,1,6v14.65c0,0.65,0.73,0.45,0.75,0.45 C3.1,20.45,5.05,20,6.5,20c1.95,0,4.05,0.4,5.5,1.5c1.35-0.85,3.8-1.5,5.5-1.5c1.65,0,3.35,0.3,4.75,1.05 C22.66,21.26,23,20.86,23,20.6V6C21.51,4.88,19.37,4.5,17.5,4.5z M21,18.5c-1.1-0.35-2.3-0.5-3.5-0.5c-1.7,0-4.15,0.65-5.5,1.5V8 c1.35-0.85,3.8-1.5,5.5-1.5c1.2,0,2.4,0.15,3.5,0.5V18.5z"/></svg>
           <svg class="info" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
           <svg class="play" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M8 5v14l11-7z"/></svg>
           <svg class="redo" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/></svg>
           <svg class="replay" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
           <svg class="stop" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M6 6h12v12H6z"/></svg>          
+          <slot name="default" class="visible"></slot>
+          <slot name="alternative"></slot>
           <slot></slot>
         </div>
       </button>
@@ -115,17 +121,11 @@ export class GolButton extends HTMLElement implements CustomElement {
       getComputedStyle(this).getPropertyValue("--small").trim() == "1";
 
     this.button = $("#button", this.shadowRoot);
-    this.subscribers
-      .add(fromEvent(this.button, "mousedown").subscribe(this.onPress))
-      .add(fromEvent(this.button, "keydown").subscribe(this.onPress))
-      .add(fromEvent(this.button, "mouseup").subscribe(this.onRelease))
-      .add(fromEvent(this.button, "keyup").subscribe(this.onRelease))
-      .add(fromEvent(this.button, "blur").subscribe(this.onRelease))
-      .add(
-        fromEvent(this.button, "click").subscribe(() => {
-          this.onClick();
-        })
-      );
+    this.subscribers.add(
+      fromEvent(this.button, "click").subscribe(() => {
+        this.onClick();
+      })
+    );
 
     if (this.textContent) {
       $(".container", this.shadowRoot).classList.add("with-text");
@@ -145,6 +145,18 @@ export class GolButton extends HTMLElement implements CustomElement {
   setIcon(icon: string) {
     $("svg.visible", this.shadowRoot).classList.remove("visible");
     $(`svg.${icon}`, this.shadowRoot).classList.add("visible");
+  }
+
+  @attribute("alternative")
+  setAlternative(alternative: boolean) {
+    $("slot[name=default]", this.shadowRoot).classList.toggle(
+      "visible",
+      alternative === null
+    );
+    $(`slot[name=alternative]`, this.shadowRoot).classList.toggle(
+      "visible",
+      alternative !== null
+    );
   }
 
   focus(options?: FocusOptions) {
@@ -170,21 +182,5 @@ export class GolButton extends HTMLElement implements CustomElement {
     if (this.hasAttribute("href")) {
       router.push(this.getAttribute("href"));
     }
-  }
-
-  private onPress(event: Event) {
-    const button = (<HTMLButtonElement>event.target).closest("#button");
-    if ((<KeyboardEvent>event).key != "Tab") {
-      button.classList.add("pressed");
-      button.classList.toggle("no-focus", event.type != "keydown");
-    } else {
-      button.classList.remove("no-focus");
-    }
-  }
-
-  private onRelease(event: Event) {
-    (<HTMLButtonElement>event.target)
-      .closest("#button")
-      .classList.remove("pressed");
   }
 }
