@@ -187,11 +187,9 @@ async function main() {
 
     outStream.write(
       `<section id="${data.code}" data-term="${saveFileName(data, 0)}">
-        <div class="block">
           <h2>${data.name}</h2>
           <div class="meta">${data.meta}</div>
           <p>${data.description}</p>
-        </div>
       </section>\n`
     );
   }
