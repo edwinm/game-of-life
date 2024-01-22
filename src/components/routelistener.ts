@@ -82,7 +82,9 @@ async function loadLexicon() {
     return;
   }
 
-  $("#lexicon .selection").innerHTML = "Loading lexicon…";
+  $("#lexicon .selection").innerHTML = `
+    <div class="loader"></div>
+    <div class="loading">Loading lexicon…</div>`;
 
   const currentTerm = $("[data-term]").getAttribute("data-term");
 
