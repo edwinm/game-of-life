@@ -173,7 +173,7 @@ export class GolControls extends HTMLElement implements CustomElement {
           
           <div class="control-item">
             <svg class="redo" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"><path d="M0 0h24v24H0z" fill="none"/><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/></svg>
-            <span class="generation" title="Number of generations" aria-label="Number of generations">0</span>
+            <span class="generation" title="Number of generations" aria-label="Number of generations" translate="no">0</span>
           </div>
         </div>
       </form>
