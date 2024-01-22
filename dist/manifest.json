@@ -29,5 +29,17 @@
     "display": "standalone",
     "background_color": "#bddeff",
     "theme_color": "#3663a8",
-    "categories": ["games", "education", "entertainment", "math", "science"]
+    "categories": ["games", "education", "entertainment", "math", "science"],
+    "shortcuts": [
+        {
+            "name": "Explanation",
+            "url": "/info",
+            "description": "How does the game work?"
+        },
+        {
+            "name": "Lexicon",
+            "url": "/lexicon",
+            "description": "Life Lexicon by Stephen Silver"
+        }
+    ]
 }
