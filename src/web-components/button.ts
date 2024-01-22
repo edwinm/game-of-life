@@ -29,6 +29,7 @@ export class GolButton extends HTMLElement implements CustomElement {
           box-shadow: 2px 2px 3px hsla(0, 0%, 0%, 0.3);
           outline: none;
           transition: all 250ms ease;
+          user-select: none;
         }
         
         #button:active {
