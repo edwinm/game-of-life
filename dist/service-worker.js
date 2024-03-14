@@ -34,11 +34,11 @@ define(["./workbox-5e39d866"], function (e) {
   }),
     e.precacheAndRoute(
       [
-        { url: "index.html", revision: "8e929b9284b6e5153de87c9c54c1d060" },
-        { url: "style.css", revision: "021364ad2a5685dd2ac2cf23123014fb" },
+        { url: "index.html", revision: "ef88074972d78d15814a1ed9abf5530d" },
+        { url: "style.css", revision: "76eecd53362b26aed1291984b318a5ad" },
         { url: "gol.wasm", revision: "b8ccae993f4b38bffe4d5ae0c11797c4" },
-        { url: "manifest.json", revision: "447d14650650e66f0998fc80a997e042" },
-        { url: "bundle.min.js", revision: "1d69a7948b5c7c453782d73dba152867" },
+        { url: "manifest.json", revision: "a5e180cbc3f15fb0fc8741c6b9b58297" },
+        { url: "bundle.min.js", revision: "b9cc1ab0912f4e5e4ad74a6bf624f88e" },
       ],
       { directoryIndex: "index.html" }
     ),
