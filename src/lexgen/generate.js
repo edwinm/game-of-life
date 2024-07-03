@@ -2,7 +2,7 @@ const fs = require("fs");
 const readline = require("readline");
 const { encode } = require("html-entities");
 const sanitize = require("sanitize-filename");
-const mkdirp = require("mkdirp");
+const { mkdirp } = require("mkdirp");
 const { createCanvas } = require("canvas");
 
 main();
@@ -337,8 +337,8 @@ async function main() {
         .result.replace(/&apos;/g, "'")
         .replace(/&quot;/g, '"')}</description>
       <enclosure url="https://playgameoflife.com/lexicon/pix/${filename}.png" length="${
-          imageData.size
-        }" type="image/png" />
+        imageData.size
+      }" type="image/png" />
       <pubDate>${date822}</pubDate>
       <guid isPermaLink="true">https://playgameoflife.com/lexicon/${filename}</guid>
     </item>
