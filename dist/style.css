@@ -42,7 +42,11 @@
 html {
   box-sizing: border-box;
   background-color: var(--bg-primary);
-  font-family: Trebuchet MS, Arial, Helvetica, sans-serif;
+  font-family:
+    Trebuchet MS,
+    Arial,
+    Helvetica,
+    sans-serif;
   -webkit-hyphens: auto;
   hyphens: auto;
   accent-color: var(--primary);
@@ -176,7 +180,10 @@ header {
 }
 
 .title {
-  font-family: HandelGothic, Trebuchet MS, sans-serif;
+  font-family:
+    HandelGothic,
+    Trebuchet MS,
+    sans-serif;
   font-size: 50px;
   color: var(--primary);
   white-space: nowrap;
@@ -318,8 +325,10 @@ a:active {
     color: #ccc;
   }
 
-  .ad {
-    background: #4a4b4f;
+  .referrals {
+    background: #474747;
+    padding: 1px 35px 28px;
+    display: block;
   }
 
   .meta {
@@ -359,19 +368,35 @@ a:active {
 }
 @keyframes loader-effect {
   0% {
-    background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+    background-position:
+      0 0,
+      100% 0,
+      100% 100%,
+      0 100%;
   }
   33% {
-    background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+    background-position:
+      0 0,
+      100% 0,
+      100% 100%,
+      0 100%;
     width: 60px;
     height: 60px;
   }
   66% {
-    background-position: 100% 0, 100% 100%, 0 100%, 0 0;
+    background-position:
+      100% 0,
+      100% 100%,
+      0 100%,
+      0 0;
     width: 60px;
     height: 60px;
   }
   100% {
-    background-position: 100% 0, 100% 100%, 0 100%, 0 0;
+    background-position:
+      100% 0,
+      100% 100%,
+      0 100%,
+      0 0;
   }
 }
