@@ -4,7 +4,7 @@
     "description": "Game of Life",
     "main": "gameoflife.js",
     "scripts": {
-        "start": "serve dist",
+        "start": "serve -l 3010 dist",
         "build": "rollup --config --sourcemap",
         "buildall": "npm-run-all --parallel build generate",
         "livereload": "rollup --config rollup-livereload.config.mjs --sourcemap --watch",
