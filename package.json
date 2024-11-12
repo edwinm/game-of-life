@@ -62,6 +62,6 @@
         "@rollup/plugin-terser": "^0.4.4",
         "@types/offscreencanvas": "^2019.7.3",
         "canvas": "^2.11.2",
-        "npm-check-updates": "^16.14.20"
+        "npm-check-updates": "^17.0.0"
     }
 }
