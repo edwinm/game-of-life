@@ -313,6 +313,12 @@ export class GolControls extends HTMLElement implements CustomElement {
     this.nextShape$ = this.nextGeneration$.map(() => {
       this.setGeneration(this.generation + 1);
       const newShape = wasm.next(this.redraw$.value().pattern);
+      if (newShape.length == 0) {
+        const button = $<HTMLInputElement>("#start", this.shadowRoot);
+        button.removeAttribute("alternative");
+        button.setAttribute("icon", "play");
+        this.stop();
+      }
       if (this.isPlaying) {
         this.timer = setTimeout(() => {
           this.nextGeneration$.dispatch();
