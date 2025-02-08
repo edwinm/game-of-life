@@ -8,7 +8,7 @@ import { Shape } from "./components/shape";
 import { routeListener } from "./components/routelistener";
 import { GolButton } from "./web-components/button";
 
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", () => {
   const canvas = <GolCanvas>$("gol-canvas");
   const controls = <GolControls>$("gol-controls");
   const info = <GolInfo>$("#info");
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   const { infoIsOpen$ } = info.getObservers();
 
-  const { click$, dimension$, offset$, initialPattern$ } =
+  const { click$, dimension$, offset$, initialPattern$, zoom$ } =
     canvas.getObservers();
 
   const { redraw$ } = shape.getObservers();
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     rotate$
   );
 
-  controls.setObservers(redraw$, click$, infoIsOpen$, newPattern$);
+  controls.setObservers(redraw$, click$, infoIsOpen$, newPattern$, zoom$);
 
   routeListener(newPattern$);
 
