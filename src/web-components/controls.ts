@@ -239,6 +239,10 @@ export class GolControls extends HTMLElement implements CustomElement {
     zoom$.subscribe((zoom) => {
       const size = $<HTMLInputElement>("#size", this.shadowRoot);
 
+      if (zoom == 100) {
+        zoom = 10;
+      }
+
       const newSize = Math.min(
         Math.max(0, parseInt(size.value) - zoom / 2),
         100
