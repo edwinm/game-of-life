@@ -241,6 +241,8 @@ export class GolControls extends HTMLElement implements CustomElement {
 
       if (zoom == 100) {
         zoom = 10;
+      } else if (zoom == -100) {
+        zoom = -10;
       }
 
       const newSize = Math.min(
