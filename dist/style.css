@@ -193,8 +193,8 @@ main {
 }
 
 header {
-  color: light-dark(#126dfe, #66a3fe);
-  background: light-dark(#cee3ff, #0052cc);
+  color: var(--blue-8);
+  background: var(--blue-3);
   padding: 0 30px;
 }
 
