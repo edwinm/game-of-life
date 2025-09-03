@@ -12,6 +12,7 @@
 }
 
 :root {
+  color-scheme: light dark;
   --grey-1: light-dark(#f1f4fe, #4a5167);
   --grey-2: light-dark(#e4e6ed, #595e72);
   --grey-3: light-dark(#c8cad3, #63687c);
@@ -23,16 +24,16 @@
   --grey-9: light-dark(#595e72, #e4e6ed);
   --grey-10: light-dark(#4a5167, #f1f4fe);
 
-  --blue-1: light-dark(#e5f3ff, #0046b4);
-  --blue-2: light-dark(#cee3ff, #0052cc);
-  --blue-3: light-dark(#8ebcff, #005ce3);
-  --blue-4: light-dark(#66a3fe, #126dfe);
-  --blue-5: light-dark(#3b88fc, #2276fd);
-  --blue-6: light-dark(#2276fd, #3b88fc);
-  --blue-7: light-dark(#126dfe, #66a3fe);
-  --blue-8: light-dark(#005ce3, #8ebcff);
-  --blue-9: light-dark(#0052cc, #cee3ff);
-  --blue-10: light-dark(#0046b4, #e5f3ff);
+  --blue-1: light-dark(#ebf4ff, #1f4d8a);
+  --blue-2: light-dark(#d9e5f6, #2d5a9b);
+  --blue-3: light-dark(#b4c8e7, #3663a8);
+  --blue-4: light-dark(#8ba9d8, #4777c2);
+  --blue-5: light-dark(#698fcb, #537fc4);
+  --blue-6: light-dark(#537fc4, #698fcb);
+  --blue-7: light-dark(#4777c2, #8ba9d8);
+  --blue-8: light-dark(#3663a8, #b4c8e7);
+  --blue-9: light-dark(#2d5a9b, #d9e5f6);
+  --blue-10: light-dark(#1f4d8a, #ebf4ff);
 
   --primary: #2a4e97;
   --light: #fff;
@@ -192,7 +193,8 @@ main {
 }
 
 header {
-  background: var(--bg-heading);
+  color: light-dark(#126dfe, #66a3fe);
+  background: light-dark(#cee3ff, #0052cc);
   padding: 0 30px;
 }
 
@@ -208,7 +210,6 @@ header {
     Trebuchet MS,
     sans-serif;
   font-size: 50px;
-  color: var(--primary);
   white-space: nowrap;
 }
 
@@ -359,13 +360,10 @@ a:active {
     background-color: #4a4b4f;
   }
 
-  header {
-    background-color: #3663a8;
-  }
-
-  .title {
-    color: #aacbff;
-  }
+  /*header {*/
+  /*  color: #aacbff;*/
+  /*  background-color: #3663a8;*/
+  /*}*/
 
   .loading {
     text-align: center;
