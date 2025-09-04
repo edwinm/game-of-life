@@ -193,8 +193,10 @@ main {
 }
 
 header {
+  color: #3663a8;
+  background-color: #b4c8e7;
   color: var(--blue-8);
-  background: var(--blue-3);
+  background-color: var(--blue-3);
   padding: 0 30px;
 }
 
