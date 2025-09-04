@@ -53,6 +53,9 @@ export class GolInfo extends HTMLElement implements CustomElement {
           box-shadow: hsla(0, 0%, 0%, 0.3) 5px 5px 5px;
           z-index: 2000;
           transition: all 250ms ease;
+          border-radius: 6px;
+          orner-shape: squircle;
+          overflow: hidden;
         }
         
         .anim section {
@@ -114,6 +117,7 @@ export class GolInfo extends HTMLElement implements CustomElement {
             top: 0;
             width: 100vw;
             max-height: 100vh;
+            border-radius: 0;
           }
           
           .info-content {
