@@ -257,14 +257,18 @@ gol-canvas {
 }
 
 .selection .image a {
+  background-color: #7e7e7e;
+  border-radius: 8px;
+  corner-shape: squircle;
+}
+
+.selection .image a {
   display: flex;
   width: 100%;
   padding: 25px;
   margin-top: 30px;
   justify-content: center;
   align-items: center;
-  border-radius: 3px;
-  border: 1px solid #ccc;
 }
 
 .selection .image a:focus {
