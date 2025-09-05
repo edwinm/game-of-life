@@ -123,7 +123,8 @@ dd {
 }
 
 li {
-  margin: 5px 0;
+  margin: 5px 0 5px 10px;
+  list-style-type: square;
 }
 
 .heading-example {
@@ -229,6 +230,14 @@ header {
   padding: 10px 20px;
   margin: 50px 0 20px;
   border-radius: 5px;
+}
+
+.video-thumb {
+  transition: all 150ms ease;
+}
+
+.video-thumb:hover {
+  transform: scale(1.03);
 }
 
 gol-canvas {
