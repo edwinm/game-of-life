@@ -311,7 +311,7 @@ export class GolControls extends HTMLElement implements CustomElement {
     fromEvent($("#lexicon", this.shadowRoot), "click").subscribe((event) => {
       const match = /\/lexicon\/(?<shape>.*)/.exec(location.pathname);
       const shape = match?.groups?.shape;
-      const path = shape ? `/lexicon?${shape}` : "/lexicon";
+      const path = shape ? `/lexicon#$${shape}` : "/lexicon";
       router.push(path);
     });
   }

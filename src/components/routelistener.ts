@@ -1,6 +1,6 @@
 import router from "./router";
 import { $ } from "carbonium";
-import { Cuprum, fromEvent } from "cuprum";
+import { Cuprum } from "cuprum";
 // import { analyticsInit, analyticsPageview } from "./analytics";
 import { GolInfo } from "../web-components/info";
 
@@ -40,35 +40,22 @@ export function routeListener(newPattern$: Cuprum<string>) {
         break;
       case "/lexicon":
         if (enter) {
+          const lexiconMatch = location.hash.match(/#\$(.+)/);
           lexicon.setAttribute("open", "");
           setTitle("Lexicon");
-          loadLexicon();
+          loadLexicon(lexiconMatch?.[1]);
         } else {
           lexicon.removeAttribute("open");
           setTitle();
         }
         break;
       default:
-        const matchArray1 = path.match(/\/lexicon\?(.+)/);
-        if (matchArray1) {
-          if (enter) {
-            lexicon.setAttribute("open", "");
-            setTitle("Lexicon");
-            loadLexicon(matchArray1[1]);
-          } else {
-            lexicon.removeAttribute("open");
-            router.push(`/lexicon/${matchArray1[1]}`);
-            setTitle();
-          }
-          return;
-        }
-
         if (enter && isNew) {
-          const matchArray2 = path.match(/\/lexicon\/(.+)/);
-          if (matchArray2) {
+          const shapeMatch = path.match(/\/lexicon\/(.+)/);
+          if (shapeMatch) {
             newPattern$.dispatch("");
             const json = await (
-              await fetch(`/lexicon/data/${matchArray2[1]}.json`)
+              await fetch(`/lexicon/data/${shapeMatch[1]}.json`)
             ).json();
             newPattern$.dispatch(json.pattern);
             setTitle(json.name);
@@ -93,10 +80,12 @@ function setTitle(title?: string) {
 
 async function loadLexicon(shape?: string) {
   if (isLexiconLoaded) {
+    lexiconJump(shape);
     return;
   }
 
-  $("#lexicon .selection").innerHTML = `
+  const lexiconHTML = $("#lexicon .selection");
+  lexiconHTML.innerHTML = `
     <div class="loader"></div>
     <div class="loading">Loading lexicon…</div>`;
 
@@ -109,17 +98,20 @@ async function loadLexicon(shape?: string) {
     return;
   }
 
-  $("#lexicon .selection").innerHTML = lexicon;
+  lexiconHTML.innerHTML = lexicon;
+  lexiconJump(shape);
 
+  isLexiconLoaded = true;
+}
+
+function lexiconJump(shape?: string) {
   const shapeElement = document.querySelector(`[data-term="${shape}"]`);
 
-  console.log("shape", shape, shapeElement);
+  console.log("lexiconJump shape", shape, shapeElement);
 
   if (shapeElement) {
     shapeElement.scrollIntoView();
   }
-
-  isLexiconLoaded = true;
 }
 
 // analyticsInit("G-V6DPPMYG5N");
