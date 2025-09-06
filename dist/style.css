@@ -236,7 +236,8 @@ header {
   transition: all 150ms ease;
 }
 
-.video-thumb:hover {
+.video-thumb:hover,
+:focus .video-thumb {
   transform: scale(1.03);
 }
 
@@ -269,15 +270,19 @@ gol-canvas {
   background-color: #7e7e7e;
   border-radius: 8px;
   corner-shape: squircle;
-}
-
-.selection .image a {
   display: flex;
   width: 100%;
   padding: 25px;
   margin-top: 30px;
   justify-content: center;
   align-items: center;
+  filter: grayscale(0.3) brightness(1.1);
+  transition: all 250ms ease;
+}
+
+.selection .image a:hover,
+.selection .image a:focus {
+  filter: grayscale(0) brightness(1);
 }
 
 .selection .image a:focus {
@@ -381,11 +386,6 @@ a:active {
   .selection section {
     background-color: #4a4b4f;
   }
-
-  /*header {*/
-  /*  color: #aacbff;*/
-  /*  background-color: #3663a8;*/
-  /*}*/
 
   .loading {
     text-align: center;
