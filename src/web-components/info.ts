@@ -182,8 +182,10 @@ export class GolInfo extends HTMLElement implements CustomElement {
 
     this.subscribers.add(
       combine(closeButtonClick, escKey, outsideClick).subscribe(() => {
+        const match = /#\$(.+)/.exec(location.hash);
+        const path = match ? `/lexicon/${match[1]}` : "/";
         // TODO: Fix this when new navigation API is available
-        router.push("/");
+        router.push(path);
       })
     );
 
