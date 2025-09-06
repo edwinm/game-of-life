@@ -40,7 +40,7 @@ export function routeListener(newPattern$: Cuprum<string>) {
         break;
       case "/lexicon":
         if (enter) {
-          const lexiconMatch = location.hash.match(/#\$(.+)/);
+          const lexiconMatch = location.hash.match(/#\$?(.+)/);
           lexicon.setAttribute("open", "");
           setTitle("Lexicon");
           loadLexicon(lexiconMatch?.[1]);
@@ -79,6 +79,8 @@ function setTitle(title?: string) {
 }
 
 async function loadLexicon(shape?: string) {
+  console.log("> loadLexicon shape", shape);
+
   if (isLexiconLoaded) {
     lexiconJump(shape);
     return;
@@ -105,12 +107,18 @@ async function loadLexicon(shape?: string) {
 }
 
 function lexiconJump(shape?: string) {
+  console.log("jump shape", shape);
   const shapeElement = document.querySelector(`[data-term="${shape}"]`);
 
-  console.log("lexiconJump shape", shape, shapeElement);
+  console.log("> lexiconJump shape", shape, shapeElement);
 
   if (shapeElement) {
     shapeElement.scrollIntoView();
+  } else {
+    const termElement = document.querySelector(`[id="${shape}"]`);
+    if (termElement) {
+      termElement.scrollIntoView();
+    }
   }
 }
 
