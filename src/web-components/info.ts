@@ -187,7 +187,11 @@ export class GolInfo extends HTMLElement implements CustomElement {
           router.push(`/lexicon/${match[1]}`);
         } else {
           // TODO: Fix this when new navigation API is available
-          router.back();
+          if (location.pathname === "/info") {
+            router.back();
+          } else {
+            router.push("/");
+          }
         }
       })
     );
