@@ -139,7 +139,7 @@ export class GolControls extends HTMLElement implements CustomElement {
       
       <form>
         <gol-button icon="info" href="/info">Explanation</gol-button>
-        <gol-button icon="book" href="/lexicon" responsive="true">Lexicon</gol-button>
+        <gol-button id="lexicon" icon="book" responsive="true">Lexicon</gol-button>
         <gol-button id="start" icon="play">
           <span slot="default">Start</span>
           <span slot="alternative">Stop</span>
@@ -180,6 +180,7 @@ export class GolControls extends HTMLElement implements CustomElement {
     this.setupSpeed();
     this.setupSize();
     this.setupStart();
+    this.setupLexicon();
     this.setupGeneration();
     this.setupReset();
   }
@@ -303,6 +304,15 @@ export class GolControls extends HTMLElement implements CustomElement {
         button.setAttribute("icon", "stop");
         this.play();
       }
+    });
+  }
+
+  private setupLexicon() {
+    fromEvent($("#lexicon", this.shadowRoot), "click").subscribe((event) => {
+      const match = /\/lexicon\/(?<shape>.*)/.exec(location.pathname);
+      const shape = match?.groups?.shape;
+      const path = shape ? `/lexicon?${shape}` : "/lexicon";
+      router.push(path);
     });
   }
 

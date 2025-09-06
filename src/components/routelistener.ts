@@ -49,12 +49,26 @@ export function routeListener(newPattern$: Cuprum<string>) {
         }
         break;
       default:
+        const matchArray1 = path.match(/\/lexicon\?(.+)/);
+        if (matchArray1) {
+          if (enter) {
+            lexicon.setAttribute("open", "");
+            setTitle("Lexicon");
+            loadLexicon(matchArray1[1]);
+          } else {
+            lexicon.removeAttribute("open");
+            router.push(`/lexicon/${matchArray1[1]}`);
+            setTitle();
+          }
+          return;
+        }
+
         if (enter && isNew) {
-          const matchArray = path.match(/\/lexicon\/(.+)/);
-          if (matchArray) {
+          const matchArray2 = path.match(/\/lexicon\/(.+)/);
+          if (matchArray2) {
             newPattern$.dispatch("");
             const json = await (
-              await fetch(`/lexicon/data/${matchArray[1]}.json`)
+              await fetch(`/lexicon/data/${matchArray2[1]}.json`)
             ).json();
             newPattern$.dispatch(json.pattern);
             setTitle(json.name);
@@ -77,7 +91,7 @@ function setTitle(title?: string) {
   }
 }
 
-async function loadLexicon() {
+async function loadLexicon(shape?: string) {
   if (isLexiconLoaded) {
     return;
   }
@@ -85,8 +99,6 @@ async function loadLexicon() {
   $("#lexicon .selection").innerHTML = `
     <div class="loader"></div>
     <div class="loading">Loading lexicon…</div>`;
-
-  const currentTerm = $("[data-term]").getAttribute("data-term");
 
   const lexicon = await (await fetch("/list.html")).text();
 
@@ -99,27 +111,15 @@ async function loadLexicon() {
 
   $("#lexicon .selection").innerHTML = lexicon;
 
-  // TODO: broken
-  // if (currentTerm) {
-  //   $(`[data-term='${currentTerm}']`).scrollIntoView();
-  // } else {
-  //   const currentHash = document.location.hash.substr(1);
-  //   if (currentHash) {
-  //     document.location.hash = currentHash;
-  //   }
-  // }
+  const shapeElement = document.querySelector(`[data-term="${shape}"]`);
 
-  // fromEvent($("#lexicon [data-internal]"), "click").subscribe((event) => {
-  //   const a = (<HTMLElement>event.target).closest("a");
-  //   router.push(a.getAttribute("href"));
-  //   event.preventDefault();
-  // });
+  console.log("shape", shape, shapeElement);
+
+  if (shapeElement) {
+    shapeElement.scrollIntoView();
+  }
+
   isLexiconLoaded = true;
 }
-
-// Browser fix hash change
-// fromEvent(window, "hashchange").subscribe(() => {
-//   $(`a[name='${document.location.hash.substr(1)}']`).scrollIntoView();
-// });
 
 // analyticsInit("G-V6DPPMYG5N");

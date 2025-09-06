@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "es2015",
-        "lib": ["dom", "es2015"],
+        "target": "es2018",
+        "module": "es2018",
+        "lib": ["dom", "es2018"],
         "strict": false,
         "noUncheckedIndexedAccess": true,
         "sourceMap": true,
