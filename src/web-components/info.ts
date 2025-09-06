@@ -188,8 +188,10 @@ export class GolInfo extends HTMLElement implements CustomElement {
     );
 
     fromEvent(this, "click").subscribe((event) => {
+      const isImage = (<HTMLElement>event.target).closest(".image");
       const section = (<HTMLElement>event.target).closest("[data-term]");
-      if (section) {
+
+      if (isImage && section) {
         const path = `/lexicon/${section.getAttribute("data-term")}`;
         router.push(path);
         event.stopPropagation();
