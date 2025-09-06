@@ -186,9 +186,12 @@ export class GolInfo extends HTMLElement implements CustomElement {
     );
 
     fromEvent(this, "click").subscribe((event) => {
-      const section = (<HTMLElement>event.target).closest("[data-url]");
+      const section = (<HTMLElement>event.target).closest("[data-term]");
       if (section) {
-        router.push(section.getAttribute("data-url"));
+        const path = `/lexicon/${section.getAttribute("data-term")}`;
+        router.push(path);
+        event.stopPropagation();
+        event.preventDefault();
       }
     });
   }
