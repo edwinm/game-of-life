@@ -90,12 +90,14 @@ export class GolInfo extends HTMLElement implements CustomElement {
           background-color: rgba(255, 255, 255, 0.9);
           backdrop-filter: blur(2px);
           pointer-events: none;
+          z-index: 10;
         }
         
         .close-button {
           position: absolute;
           top: 14px;
-          right: 2em;        
+          right: 2em;
+          z-index: 10;
         }
         
         gol-button {
