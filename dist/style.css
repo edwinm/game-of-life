@@ -237,7 +237,7 @@ header {
 }
 
 .video-thumb:hover,
-:focus .video-thumb {
+a:focus > .video-thumb {
   transform: scale(1.03);
 }
 
