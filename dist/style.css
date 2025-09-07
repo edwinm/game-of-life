@@ -279,6 +279,11 @@ gol-canvas {
   filter: grayscale(0.3) brightness(1.1);
   transition: all 250ms ease;
 }
+@media (prefers-color-scheme: dark) {
+  .selection .image a {
+    filter: grayscale(0.3) brightness(0.9);
+  }
+}
 
 .selection .image a:hover,
 .selection .image a:focus {
