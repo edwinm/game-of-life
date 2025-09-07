@@ -182,17 +182,17 @@ export class GolInfo extends HTMLElement implements CustomElement {
 
     this.subscribers.add(
       combine(closeButtonClick, escKey, outsideClick).subscribe(() => {
-        const match = /#\$(.+)/.exec(location.hash);
-        if (match) {
-          router.push(`/lexicon/${match[1]}`);
-        } else {
-          // TODO: Fix this when new navigation API is available
-          if (location.pathname === "/info") {
-            router.back();
-          } else {
-            router.push("/");
-          }
-        }
+        console.log("close button");
+
+        router.push("/");
+
+        // const match = /#\$(.+)/.exec(location.hash);
+        // if (match) {
+        //   router.push(`/lexicon/${match[1]}`);
+        // } else {
+        //   // TODO: Fix this when new navigation API is available
+        //   router.push("/");
+        // }
       })
     );
 
