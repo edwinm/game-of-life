@@ -69,7 +69,7 @@ export class GolInfo extends HTMLElement implements CustomElement {
           overflow-y: scroll;
           overflow-x: hidden;
           overflow-scrolling: touch;
-          padding: 60px 2em 2em;
+          padding: 60px 2em;
           border: 2px solid transparent; /*bugfix*/
         }
         
