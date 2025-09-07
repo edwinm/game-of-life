@@ -79,8 +79,6 @@ function setTitle(title?: string) {
 }
 
 async function loadLexicon(shape?: string) {
-  console.log("> loadLexicon shape", shape);
-
   if (isLexiconLoaded) {
     lexiconJump(shape);
     return;
@@ -107,10 +105,7 @@ async function loadLexicon(shape?: string) {
 }
 
 function lexiconJump(shape?: string) {
-  console.log("jump shape", shape);
   const shapeElement = document.querySelector(`[data-term="${shape}"]`);
-
-  console.log("> lexiconJump shape", shape, shapeElement);
 
   if (shapeElement) {
     shapeElement.scrollIntoView();
