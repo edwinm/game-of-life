@@ -20,7 +20,8 @@ export class Shape {
     reset$: Observable<void>,
     clear$: Observable<void>,
     size$: Observable<number>,
-    rotate$: Observable<Event>
+    rotate$: Observable<Event>,
+    shift$: Observable<Cell>
   ) {
     dimension$.subscribe(() => {
       this.redraw();
@@ -37,6 +38,11 @@ export class Shape {
     });
 
     offset$.subscribe((offset) => {
+      this.setOffset(offset);
+      this.redraw();
+    });
+
+    shift$.subscribe((offset) => {
       this.setOffset(offset);
       this.redraw();
     });

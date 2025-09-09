@@ -19,6 +19,7 @@ export class GolControls extends HTMLElement implements CustomElement {
   private clearShape$ = new Cuprum<void>();
   private wheelZoom$ = new Cuprum<number>();
   private documentReady$ = new Cuprum<Event>();
+  private shift$ = new Cuprum<Cell>();
   private timer = null;
 
   constructor() {
@@ -201,6 +202,7 @@ export class GolControls extends HTMLElement implements CustomElement {
       reset$: this.resetShape$.observable(),
       clear$: this.clearShape$.observable(),
       rotate$: rotate$.observable(),
+      shift$: this.shift$.observable(),
     };
   }
 
@@ -253,6 +255,7 @@ export class GolControls extends HTMLElement implements CustomElement {
       size.value = newSize.toString();
 
       this.wheelZoom$.dispatch(newSize);
+      this.shift$.dispatch({ x: 1, y: 0 });
     });
   }
 
