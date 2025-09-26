@@ -12,14 +12,13 @@ export class GolControls extends HTMLElement implements CustomElement {
   private speed: number;
   private redraw$: Observable<Draw>;
 
-  private size$: Cuprum<number>;
+  private size$: Cuprum<Size>;
   private nextGeneration$: Cuprum<void>;
   private nextShape$: Cuprum<Cell[]>;
   private resetShape$ = new Cuprum<void>();
   private clearShape$ = new Cuprum<void>();
-  private wheelZoom$ = new Cuprum<number>();
+  private wheelZoom$ = new Cuprum<Size>();
   private documentReady$ = new Cuprum<Event>();
-  private shift$ = new Cuprum<Cell>();
   private timer = null;
 
   constructor() {
@@ -202,7 +201,6 @@ export class GolControls extends HTMLElement implements CustomElement {
       reset$: this.resetShape$.observable(),
       clear$: this.clearShape$.observable(),
       rotate$: rotate$.observable(),
-      shift$: this.shift$.observable(),
     };
   }
 
@@ -211,7 +209,7 @@ export class GolControls extends HTMLElement implements CustomElement {
     toggle$: Observable<Cell>,
     infoIsOpen$: Observable<boolean>,
     newPattern$: Observable<string>,
-    zoom$: Observable<number>
+    zoom$: Observable<Size>
   ) {
     this.redraw$ = redraw$;
 
@@ -239,7 +237,7 @@ export class GolControls extends HTMLElement implements CustomElement {
       this.setGeneration(0);
     });
 
-    zoom$.subscribe((zoom) => {
+    zoom$.subscribe(({ size: zoom, x, y }) => {
       const size = $<HTMLInputElement>("#size", this.shadowRoot);
 
       if (zoom == 100) {
@@ -248,14 +246,12 @@ export class GolControls extends HTMLElement implements CustomElement {
         zoom = -10;
       }
 
-      const newSize = Math.min(
-        Math.max(0, parseInt(size.value) - zoom / 2),
-        100
+      let newSize = Math.floor(
+        Math.min(Math.max(2, parseInt(size.value) - zoom / 2), 100)
       );
       size.value = newSize.toString();
 
-      this.wheelZoom$.dispatch(newSize);
-      this.shift$.dispatch({ x: 1, y: 0 });
+      this.wheelZoom$.dispatch({ size: newSize, x, y });
     });
   }
 
@@ -275,13 +271,17 @@ export class GolControls extends HTMLElement implements CustomElement {
 
   private setupSize() {
     const size = $<HTMLInputElement>("#size", this.shadowRoot);
-    this.size$ = merge(
-      fromEvent(size, "input").map((event) =>
-        Number((<HTMLInputElement>event.target).value)
-      ),
+    this.size$ = merge<Size>(
+      fromEvent(size, "input").map((event) => ({
+        size: Number((<HTMLInputElement>event.target).value),
+      })),
       this.wheelZoom$,
-      new Cuprum<number>().dispatch(Number(size.value))
-    ).map((value) => Math.round(2 + (38 / 100) * value));
+      new Cuprum<Size>().dispatch({ size: Number(size.value) })
+    ).map<Size>(({ size, x, y }) => ({
+      size: Math.round(2 + (38 / 100) * size),
+      x,
+      y,
+    }));
   }
 
   private play() {

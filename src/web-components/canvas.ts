@@ -15,7 +15,7 @@ export class GolCanvas extends HTMLElement implements CustomElement {
   private click$ = new Cuprum<Cell>();
   private drag$ = new Cuprum<Offset>();
   private initialPattern$ = new Cuprum<string>();
-  private zoom$ = new Cuprum<number>();
+  private zoom$ = new Cuprum<Size>();
   private dragStart = <Offset>{ x: 0, y: 0 };
   private sizeStart: number;
   private distStart: number;
@@ -247,7 +247,13 @@ export class GolCanvas extends HTMLElement implements CustomElement {
     });
 
     fromEvent(this.canvasDomElement, "wheel").subscribe((event: WheelEvent) => {
-      this.zoom$.dispatch(event.deltaY);
+      const canvasRect = this.canvasDomElement.getBoundingClientRect();
+
+      this.zoom$.dispatch({
+        size: event.deltaY,
+        x: (event.clientX - canvasRect.left) / canvasRect.width,
+        y: (event.clientY - canvasRect.top) / canvasRect.height,
+      });
     });
 
     this.drag$.subscribe(({ x, y }) => {
@@ -261,7 +267,7 @@ export class GolCanvas extends HTMLElement implements CustomElement {
   setObservers(
     redraw$: Observable<Draw>,
     resize$: Observable<Event>,
-    size$: Observable<number>
+    size$: Observable<Size>
   ) {
     let timer = null;
     let opacity = 0;
@@ -305,8 +311,8 @@ export class GolCanvas extends HTMLElement implements CustomElement {
       this.calculateDimensions();
     });
 
-    size$.subscribe((newGridSize) => {
-      this.setCellSize(newGridSize);
+    size$.subscribe(({ size }) => {
+      this.setCellSize(size);
     });
   }
 

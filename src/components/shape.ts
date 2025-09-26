@@ -19,11 +19,10 @@ export class Shape {
     offset$: Observable<Offset>,
     reset$: Observable<void>,
     clear$: Observable<void>,
-    size$: Observable<number>,
-    rotate$: Observable<Event>,
-    shift$: Observable<Cell>
+    size$: Observable<Size>,
+    rotate$: Observable<Event>
   ) {
-    dimension$.subscribe(() => {
+    dimension$.subscribe((newDimension, oldDimension) => {
       this.redraw();
     });
 
@@ -38,11 +37,6 @@ export class Shape {
     });
 
     offset$.subscribe((offset) => {
-      this.setOffset(offset);
-      this.redraw();
-    });
-
-    shift$.subscribe((offset) => {
       this.setOffset(offset);
       this.redraw();
     });
@@ -76,20 +70,25 @@ export class Shape {
       this.redraw();
     });
 
-    size$.subscribe((newGridSize, oldGridSize) => {
-      if (oldGridSize == undefined || newGridSize == oldGridSize) {
+    size$.subscribe(({ size: newSize, x: xMouse, y: yMouse }, old) => {
+      const oldSize = old?.size;
+      if (oldSize == undefined || newSize == oldSize) {
         return;
       }
 
       const dimension = dimension$.value();
+
+      const x = Math.round(
+        (dimension.width - (dimension.width * newSize) / oldSize) * xMouse
+      );
+
+      const y = Math.round(
+        (dimension.height - (dimension.height * newSize) / oldSize) * yMouse
+      );
+
       this.setOffset({
-        x: Math.round(
-          (dimension.width - (dimension.width * newGridSize) / oldGridSize) / 2
-        ),
-        y: Math.round(
-          (dimension.height - (dimension.height * newGridSize) / oldGridSize) /
-            2
-        ),
+        x,
+        y,
       });
       this.redraw();
     });

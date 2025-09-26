@@ -8,6 +8,7 @@ export default {
 		file: "dist/bundle.min.js",
 		format: "iife",
 		name: "bundle",
+		sourcemap: true,
 	},
 	plugins: [nodeResolve(), typescript({ noEmitOnError: false }), livereload()],
 };
