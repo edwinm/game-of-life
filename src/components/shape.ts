@@ -22,7 +22,7 @@ export class Shape {
     size$: Observable<Size>,
     rotate$: Observable<Event>
   ) {
-    dimension$.subscribe((newDimension, oldDimension) => {
+    dimension$.subscribe(() => {
       this.redraw();
     });
 
@@ -70,28 +70,30 @@ export class Shape {
       this.redraw();
     });
 
-    size$.subscribe(({ size: newSize, x: xMouse, y: yMouse }, old) => {
-      const oldSize = old?.size;
-      if (oldSize == undefined || newSize == oldSize) {
-        return;
+    size$.subscribe(
+      ({ size: newSize, x: xMouse = 0.5, y: yMouse = 0.5 }, old) => {
+        const oldSize = old?.size;
+        if (oldSize == undefined || newSize == oldSize) {
+          return;
+        }
+
+        const dimension = dimension$.value();
+
+        const x = Math.round(
+          (dimension.width - (dimension.width * newSize) / oldSize) * xMouse
+        );
+
+        const y = Math.round(
+          (dimension.height - (dimension.height * newSize) / oldSize) * yMouse
+        );
+
+        this.setOffset({
+          x,
+          y,
+        });
+        this.redraw();
       }
-
-      const dimension = dimension$.value();
-
-      const x = Math.round(
-        (dimension.width - (dimension.width * newSize) / oldSize) * xMouse
-      );
-
-      const y = Math.round(
-        (dimension.height - (dimension.height * newSize) / oldSize) * yMouse
-      );
-
-      this.setOffset({
-        x,
-        y,
-      });
-      this.redraw();
-    });
+    );
   }
 
   private setOffset(offset: Offset) {
