@@ -5,8 +5,8 @@
     "description": "Play John Conway’s Game of Life in your browser.",
     "icons": [
         {
-            "src": "/pix/screen2-1.png",
-            "sizes": "1200x600",
+            "src": "/pix/gol-image.png",
+            "sizes": "1200x642",
             "type": "image/png"
         },
         {
@@ -29,7 +29,14 @@
     "display": "standalone",
     "background_color": "#bddeff",
     "theme_color": "#3663a8",
-    "categories": ["games", "education", "entertainment", "math", "science"],
+    "categories": [
+        "games",
+        "education",
+        "entertainment",
+        "math",
+        "science",
+        "stem"
+    ],
     "shortcuts": [
         {
             "name": "Explanation",

@@ -47,7 +47,7 @@ async function main() {
       info: "Loading full Life Lexicon…",
       saveName: "index",
       pattern: ".O.\n..O\nOOO\n",
-      image: "https://playgameoflife.com/pix/screen.png",
+      image: "https://playgameoflife.com/pix/gol-image.png",
       twitterImage: "https://playgameoflife.com/pix/screen2-1.png",
     });
 
