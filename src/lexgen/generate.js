@@ -48,7 +48,6 @@ async function main() {
       saveName: "index",
       pattern: ".O.\n..O\nOOO\n",
       image: "https://playgameoflife.com/pix/gol-image.png",
-      twitterImage: "https://playgameoflife.com/pix/screen2-1.png",
     });
 
     parse(template, 7);
@@ -178,7 +177,6 @@ async function main() {
           term: saveFileName(data, 0),
           pattern: data.patterns[patternIndex],
           image: `https://playgameoflife.com/lexicon/pix/${filename}.png`,
-          twitterImage: `https://playgameoflife.com/lexicon/pix/${filename}.png`,
         });
 
         rss.writeRssItem(data, imageData, filename);
