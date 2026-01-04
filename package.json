@@ -36,6 +36,7 @@
     },
     "devDependencies": {
         "@rollup/plugin-typescript": "^12.1.2",
+        "@sentry/browser": "^10.32.1",
         "@types/google.analytics": "0.0.46",
         "brotli-cli": "^2.1.0",
         "carbonium": "^1.2.4",
