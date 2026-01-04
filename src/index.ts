@@ -28,7 +28,7 @@ setTimeout(() => {
       clear: (
         document
           .querySelector("gol-controls")
-          ?.shadowRoot.getElementById("clear")
+          ?.shadowRoot.getElementById("reset")
           ?.shadowRoot.querySelector("slot[class=visible]") as HTMLSlotElement
       )?.assignedElements()?.[0].textContent,
     },
