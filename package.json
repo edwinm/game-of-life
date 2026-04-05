@@ -32,7 +32,7 @@
     },
     "homepage": "https://github.com/edwinm/game-of-life#readme",
     "engines": {
-        "node": ">=18"
+        "node": ">=24"
     },
     "devDependencies": {
         "@rollup/plugin-typescript": "^12.3.0",
