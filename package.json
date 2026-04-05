@@ -58,6 +58,9 @@
         "web-component-decorator": "^1.2.0",
         "workbox-build": "^7.4.0"
     },
+    "overrides": {
+        "serialize-javascript": "^7.0.5"
+    },
     "dependencies": {
         "@rollup/plugin-terser": "^1.0.0",
         "@types/offscreencanvas": "^2019.7.3",
