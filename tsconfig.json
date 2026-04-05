@@ -10,6 +10,7 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "moduleResolution": "node",
+        "ignoreDeprecations": "6.0",
         "forceConsistentCasingInFileNames": true,
         "types": ["google.analytics", "offscreencanvas"]
     }
