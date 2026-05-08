@@ -329,7 +329,7 @@ async function main() {
       this.stream.write(
         `
     <item>
-      <title>${titleCase(data.name)} - John Conway’s Game of Life</title>
+      <title>${titleCase(data.name)} – John Conway’s Game of Life</title>
       <link>https://playgameoflife.com/lexicon/${filename}</link>
       <description>${stripHtml(data.description)
         .result.replace(/&apos;/g, "'")
