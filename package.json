@@ -14,7 +14,8 @@
         "wasm": "emcc -Os src/wasm/gol.c -o dist/gol.wasm -s EXPORTED_FUNCTIONS='[\"_gol\"]' -s INITIAL_MEMORY=4MB -s TOTAL_MEMORY=4MB -s TOTAL_STACK=1MB",
         "sw": "node src/sw/generate.js",
         "brotli": "npx brotli-cli compress dist/*.js dist/*.css",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "npm run test:wasm",
+        "test:wasm": "mkdir -p built && clang -O2 -Wall -Wextra -o built/gol_test src/wasm/gol_test.c && built/gol_test",
         "prepare": "husky install"
     },
     "repository": {
