@@ -22,9 +22,9 @@ if (!self.define) {
       location.href;
     if (i[t]) return;
     let o = {};
-    const c = (e) => n(e, t),
-      l = { module: { uri: t }, exports: o, require: c };
-    i[t] = Promise.all(s.map((e) => l[e] || c(e))).then((e) => (r(...e), o));
+    const d = (e) => n(e, t),
+      c = { module: { uri: t }, exports: o, require: d };
+    i[t] = Promise.all(s.map((e) => c[e] || d(e))).then((e) => (r(...e), o));
   };
 }
 define(["./workbox-3187bf51"], function (e) {
@@ -36,9 +36,9 @@ define(["./workbox-3187bf51"], function (e) {
       [
         { url: "index.html", revision: "cb9be77b096321e0e7b37fdb16e029fb" },
         { url: "style.css", revision: "72b0332aa571cea5e34c3862575279c6" },
-        { url: "gol.wasm", revision: "b8ccae993f4b38bffe4d5ae0c11797c4" },
+        { url: "gol2.wasm", revision: "f2c95c4687189df267dbd750d7b461cf" },
         { url: "manifest.json", revision: "ee377d2af29bff92d134be9793d7a591" },
-        { url: "bundle.min.js", revision: "59a213bea52a7ae94bb3ba72330664cf" },
+        { url: "bundle.min.js", revision: "8075d591f4d4c5987ec7308d447b3b85" },
       ],
       { directoryIndex: "index.html" }
     ),

@@ -295,6 +295,13 @@ export class GolControls extends HTMLElement implements CustomElement {
     clearTimeout(this.timer);
   }
 
+  private stopAndShowPlay() {
+    const button = $<HTMLInputElement>("#start", this.shadowRoot);
+    button.removeAttribute("alternative");
+    button.setAttribute("icon", "play");
+    this.stop();
+  }
+
   private setupStart() {
     fromEvent($("#start", this.shadowRoot), "click").subscribe((event) => {
       const button = (event.target as HTMLElement).closest("gol-button");
@@ -337,13 +344,20 @@ export class GolControls extends HTMLElement implements CustomElement {
       .map(() => {});
 
     this.nextShape$ = this.nextGeneration$.map(() => {
+      const pattern = this.redraw$.value().pattern;
+
+      // Too many cells for the wasm memory. Keep the pattern as it is rather
+      // than replacing it with the empty one wasm.next() returns, which would
+      // look like the shape died out.
+      if (pattern.length > wasm.MAX_LIVE_CELLS) {
+        this.stopAndShowPlay();
+        return pattern;
+      }
+
       this.setGeneration(this.generation + 1);
-      const newShape = wasm.next(this.redraw$.value().pattern);
+      const newShape = wasm.next(pattern);
       if (newShape.length == 0) {
-        const button = $<HTMLInputElement>("#start", this.shadowRoot);
-        button.removeAttribute("alternative");
-        button.setAttribute("icon", "play");
-        this.stop();
+        this.stopAndShowPlay();
       }
       if (this.isPlaying) {
         this.timer = setTimeout(() => {

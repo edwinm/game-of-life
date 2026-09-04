@@ -1,22 +1,31 @@
 type customInstance = WebAssembly.Instance & {
   exports: {
-    _gol(
+    // Emscripten drops the leading underscore of the C name in the wasm export
+    gol(
       shapeByteOffset: number,
-      neighbourByteOffset: number,
+      scratchByteOffset: number,
       shapeSize: number
     ): number;
+    _initialize?(): void;
   };
 };
 
-// shape cell size = 2 * 4 = 8 bytes
-// neighbour cell size = 3 * 4 = 12 bytes
-// 4MB - 1MB stack, shared for shape and neighbour cells:
-// 3 * 1024 * 1024 / (8 + 12) * 8
+// The 3MB above the stack holds two regions, per live cell:
+//
+//   cells    4 * 8 bytes   x and y of 4 bytes each; gol() can return up to four
+//                          times the cells it was given, so there is room for it
+//   scratch  9 * 8 bytes   nine 64-bit keys, one for the cell and eight for the
+//                          neighbours it contributes to
+//
+// That is 104 bytes per cell: 3 * 1024 * 1024 / 104 = 30240 cells (% 32 == 0).
 
-const MAX_CELLS = 1258272; // Max 157.284 cells; MAX_CELLS % 32 == 0
+export const MAX_LIVE_CELLS = 30240;
 
 // Stack = 1 * 1024 * 1024
 const OFFSET = 1048576;
+
+// 2016256, a multiple of 8 so the keys are aligned
+const SCRATCH_OFFSET = OFFSET + MAX_LIVE_CELLS * 4 * 8;
 
 let instance: customInstance;
 let memory: WebAssembly.Memory;
@@ -32,7 +41,7 @@ export async function init() {
     },
   };
 
-  const responsePromise = fetch("/gol.wasm");
+  const responsePromise = fetch("/gol2.wasm");
 
   if ("instantiateStreaming" in WebAssembly) {
     instance = <customInstance>(
@@ -47,10 +56,19 @@ export async function init() {
       await WebAssembly.instantiate(module, importObject)
     );
   }
+
+  // Reactor modules built with --no-entry expect this before their first call
+  instance.exports._initialize?.();
 }
 
 export function next(cells: Cell[]): Cell[] {
   const outShape = <Cell[]>[];
+
+  // Beyond this the cells would be written past their region, into the scratch
+  // keys and eventually past the end of the wasm memory
+  if (cells.length > MAX_LIVE_CELLS) {
+    return outShape;
+  }
 
   const shapeHeap = new Int32Array(memory.buffer, OFFSET, cells.length * 2);
 
@@ -59,7 +77,7 @@ export function next(cells: Cell[]): Cell[] {
     shapeHeap[i * 2 + 1] = cell.y;
   });
 
-  const newLength = instance.exports._gol(OFFSET, MAX_CELLS, cells.length);
+  const newLength = instance.exports.gol(OFFSET, SCRATCH_OFFSET, cells.length);
 
   const result = new Int32Array(memory.buffer, OFFSET, newLength * 2);
 

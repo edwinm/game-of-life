@@ -149,12 +149,11 @@ static int reference_gol(const struct cells_struct* cells, int len,
 	`cells` is left untouched.
 */
 static void assert_generation(const char* name, const struct cells_struct* cells, int len) {
-	/* gol() writes its result back into the input array; every push() can add
-	   at most one neighbour, so 8 * len + 1 entries is always enough */
-	size_t capacity = (size_t)len * 8 + 1;
-	struct cells_struct* actual = checked_malloc(sizeof(struct cells_struct) * capacity);
-	struct neighbours_struct* scratch =
-		checked_malloc(sizeof(struct neighbours_struct) * capacity);
+	/* gol() writes its result back into the input array, which can hold more
+	   cells than it started with; see the buffer sizes it documents */
+	struct cells_struct* actual =
+		checked_malloc(sizeof(struct cells_struct) * ((size_t)len * 4 + 1));
+	uint64_t* scratch = checked_malloc(sizeof(uint64_t) * ((size_t)len * 9 + 1));
 	struct cells_struct* expected;
 	int expected_count, actual_count;
 	int ok;
@@ -266,7 +265,7 @@ static void test_large_random_grid(int size) {
 
 	started = clock();
 	assert_generation(name, cells, len);
-	printf("       (%.1f s)\n", (double)(clock() - started) / CLOCKS_PER_SEC);
+	printf("       (%.3f s)\n", (double)(clock() - started) / CLOCKS_PER_SEC);
 
 	free(cells);
 }

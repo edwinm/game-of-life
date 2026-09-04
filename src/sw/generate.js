@@ -8,7 +8,7 @@ workboxBuild
     globPatterns: [
       "./index.html",
       "./style.css",
-      "./gol.wasm",
+      "./gol2.wasm",
       "./manifest.json",
       "./bundle.min.js",
     ],
