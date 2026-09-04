@@ -319,49 +319,43 @@ export class GolCanvas extends HTMLElement implements CustomElement {
   private draw(cells: Cell[], drag: Offset, opacity = 1) {
     const ctx = this.ctx;
     const size = this.cellSize;
+    const width = this.canvasDomElement.width;
+    const height = this.canvasDomElement.height;
 
+    // Background
     ctx.fillStyle = "#7e7e7e";
+    ctx.fillRect(0, 0, width + size, height);
+
+    // Grid: all lines in one path, one stroke call
+    const grid = new Path2D();
+    for (let n = drag.x % size; n <= width; n += size) {
+      grid.moveTo(n + 0.5, 0);
+      grid.lineTo(n + 0.5, height);
+    }
+    for (let n = drag.y % size; n <= height; n += size) {
+      grid.moveTo(0, n + 0.5);
+      grid.lineTo(width, n + 0.5);
+    }
     ctx.lineWidth = 1;
-    ctx.fillRect(
-      0,
-      0,
-      this.canvasDomElement.width + this.cellSize,
-      this.canvasDomElement.height
-    );
     ctx.strokeStyle = "#999";
+    ctx.stroke(grid);
 
-    for (
-      let n = drag.x % this.cellSize;
-      n <= this.canvasDomElement.width;
-      n += this.cellSize
-    ) {
-      ctx.beginPath();
-      ctx.moveTo(n + 0.5, 0);
-      ctx.lineTo(n + 0.5, this.canvasDomElement.height);
-      ctx.stroke();
-    }
-    for (
-      let n = drag.y % this.cellSize;
-      n <= this.canvasDomElement.height;
-      n += this.cellSize
-    ) {
-      ctx.beginPath();
-      ctx.moveTo(0, n + 0.5);
-      ctx.lineTo(this.canvasDomElement.width, n + 0.5);
-      ctx.stroke();
-    }
-
-    // ctx.fillStyle = "rgba(255, 255, 0, 0.5)";
-    ctx.fillStyle = `rgba(255, 255, 0, ${opacity})`;
-    ctx.lineWidth = 1;
-    cells.forEach((cell) => {
-      ctx.fillRect(
-        cell.x * size + 1 + drag.x,
-        cell.y * size + 1 + drag.y,
-        size - 1,
-        size - 1
+    // Cells: all rectangles in one path, one fill call
+    const cellsPath = new Path2D();
+    const cellSize = size - 1;
+    const offsetX = 1 + drag.x;
+    const offsetY = 1 + drag.y;
+    for (let i = 0; i < cells.length; i++) {
+      const cell = cells[i];
+      cellsPath.rect(
+        cell.x * size + offsetX,
+        cell.y * size + offsetY,
+        cellSize,
+        cellSize
       );
-    });
+    }
+    ctx.fillStyle = `rgba(255, 255, 0, ${opacity})`;
+    ctx.fill(cellsPath);
 
     if (this.ctxOffscreen) {
       const bitmap = this.offscreen.transferToImageBitmap();
