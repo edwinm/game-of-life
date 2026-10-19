@@ -27,8 +27,8 @@
         }
     ],
     "display": "standalone",
-    "background_color": "#bddeff",
-    "theme_color": "#3663a8",
+    "background_color": "#e0e9f6",
+    "theme_color": "#1a2230",
     "categories": [
         "games",
         "education",

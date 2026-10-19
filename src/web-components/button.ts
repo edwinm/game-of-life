@@ -41,13 +41,13 @@ export class GolButton extends HTMLElement implements CustomElement {
         }
 
         #button.disabled {
-          background-color: #999;
-          color: #ccc;
+          background-color: var(--disabled-background, #999);
+          color: var(--disabled-color, #ccc);
           box-shadow: none;
         }
-        
+
         #button.disabled svg {
-          fill: #ccc;
+          fill: var(--disabled-color, #ccc);
         }
         
         .container {
@@ -58,7 +58,7 @@ export class GolButton extends HTMLElement implements CustomElement {
         }
         
         #button:focus-visible {
-          border: 2px solid white;
+          border: 2px solid var(--focus-color, white);
         }
         
         /* Icons */

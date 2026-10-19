@@ -73,20 +73,19 @@ export class GolControls extends HTMLElement implements CustomElement {
         #start {
           --size: 60px;
           --min-width: 220px;
+          --background: var(--button-primary-bg);
+          --color: var(--button-primary-fg);
+          --focus-color: var(--button-primary-fg);
         }
-        
+
         form gol-button {
-          --background: #2A4E97;
-          --color: white;
+          --background: var(--button-bg);
+          --color: var(--button-fg);
+          --disabled-background: var(--button-disabled-bg);
+          --disabled-color: var(--button-disabled-fg);
           margin: 15px 20px 20px;
         }
 
-        @media (prefers-color-scheme: dark) {
-          gol-button {
-            --background: #29457D;
-          }
-        }
-                
         #controls {
           display: flex;
           flex-direction: column;
@@ -98,14 +97,19 @@ export class GolControls extends HTMLElement implements CustomElement {
           padding: 10px 40px;
           border-radius: 10px;
           box-shadow: 2px 2px 3px hsla(0, 0%, 0%, 0.2);
+          color: var(--fg-primary);
           background-color: var(--bg-primary-transparent);
           backdrop-filter: blur(3px);
         }
-        
+
         .control-item {
           display: flex;
           gap: 25px;
           align-items: center;
+        }
+
+        .control-item svg {
+          fill: currentColor;
         }
         
         @media (max-width: 650px), (max-height: 650px) {
@@ -155,12 +159,12 @@ export class GolControls extends HTMLElement implements CustomElement {
 
         <div id="controls">
           <div class="control-item">
-            <svg width="20" height="20" viewBox="0 0 313 281" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><path d="M56.961,280.3c-34.939,-29.393 -56.961,-72.221 -56.961,-119.874c0,-88.541 76.03,-160.426 169.678,-160.426c60.073,0 112.897,29.581 143.052,74.164l-55.039,39.795c-23.62,-34.217 -63.104,-56.658 -107.788,-56.658c-72.236,0 -130.883,58.647 -130.883,130.883c0,35.908 14.492,68.459 37.941,92.116Z" style="fill:#000;"/><path d="M162.389,193.653c-1.065,1.886 -2.377,3.707 -3.935,5.407c-8.877,9.688 -22.364,11.798 -30.1,4.709c-7.737,-7.088 -6.81,-20.708 2.066,-30.396c1.64,-1.789 3.437,-3.32 5.326,-4.582l126.373,-110.976l-99.73,135.838Z" style="fill:#e61a1a;"/></svg>
+            <svg width="20" height="20" viewBox="0 0 313 281" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><path d="M56.961,280.3c-34.939,-29.393 -56.961,-72.221 -56.961,-119.874c0,-88.541 76.03,-160.426 169.678,-160.426c60.073,0 112.897,29.581 143.052,74.164l-55.039,39.795c-23.62,-34.217 -63.104,-56.658 -107.788,-56.658c-72.236,0 -130.883,58.647 -130.883,130.883c0,35.908 14.492,68.459 37.941,92.116Z" style="fill:currentColor;"/><path d="M162.389,193.653c-1.065,1.886 -2.377,3.707 -3.935,5.407c-8.877,9.688 -22.364,11.798 -30.1,4.709c-7.737,-7.088 -6.81,-20.708 2.066,-30.396c1.64,-1.789 3.437,-3.32 5.326,-4.582l126.373,-110.976l-99.73,135.838Z" style="fill:#e61a1a;"/></svg>
             <input id="speed" type="range" min="0" max="100" value="50" title="Speed dial" aria-label="Speed dial">
           </div>
 
           <div class="control-item">
-            <svg width="20" height="20" viewBox="0 0 225 225" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><path d="M181.444,0l-6.437,0l0,224.662l6.437,0l0,-224.662ZM49.655,0l-6.437,0l0,224.662l6.437,0l0,-224.662Z" style="fill:#000;"/><path d="M224.662,181.444l0,-6.437l-224.662,0l0,6.437l224.662,0ZM224.662,49.655l0,-6.437l-224.662,0l0,6.437l224.662,0Z" style="fill:#000;"/></svg>
+            <svg width="20" height="20" viewBox="0 0 225 225" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><path d="M181.444,0l-6.437,0l0,224.662l6.437,0l0,-224.662ZM49.655,0l-6.437,0l0,224.662l6.437,0l0,-224.662Z" style="fill:currentColor;"/><path d="M224.662,181.444l0,-6.437l-224.662,0l0,6.437l224.662,0ZM224.662,49.655l0,-6.437l-224.662,0l0,6.437l224.662,0Z" style="fill:currentColor;"/></svg>
             <input id="size" type="range" min="0" max="100" value="43" title="Grid size" aria-label="Grid size">
           </div>
           

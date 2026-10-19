@@ -1,0 +1,11 @@
+{
+    "version": "0.0.1",
+    "configurations": [
+        {
+            "name": "gol",
+            "runtimeExecutable": "npx",
+            "runtimeArgs": ["serve", "-l", "3010", "dist"],
+            "port": 3010
+        }
+    ]
+}

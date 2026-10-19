@@ -35,13 +35,23 @@
   --blue-9: light-dark(#2d5a9b, #d9e5f6);
   --blue-10: light-dark(#1f4d8a, #ebf4ff);
 
-  --primary: #2a4e97;
+  --primary: #2a467a;
   --light: #fff;
   --bg-heading: #b0d3ff;
 
-  --fg-primary: #444;
-  --bg-primary: rgb(179, 179, 179);
-  --bg-primary-transparent: rgb(179, 179, 179, 0.7);
+  --fg-primary: #4c5666;
+  --bg-primary: #e0e9f6;
+  --bg-primary-transparent: rgb(224, 233, 246, 0.8);
+
+  /* Header and footer */
+  --header-fg: #213966;
+  --header-bg: #e0e9f6;
+  --button-fg: #fff;
+  --button-bg: #2a467a;
+  --button-primary-fg: #172135;
+  --button-primary-bg: #f5dc3a;
+  --button-disabled-fg: #7f8792;
+  --button-disabled-bg: #bfc8d5;
 
   --shadow-color: 0deg 0% 63%;
 
@@ -54,12 +64,22 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --primary: #8fb0e6;
     --bg-heading: #79b5ff;
 
-    --fg-primary: #ccc;
-    --bg-primary: rgb(100, 100, 100);
-    --bg-primary-transparent: rgb(100, 100, 100, 0.7);
+    --fg-primary: #a9b3c4;
+    --bg-primary: #1a2230;
+    --bg-primary-transparent: rgb(26, 34, 48, 0.8);
     --shadow-color: 210deg 6% 11%;
+
+    --header-fg: #cfe0f6;
+    --header-bg: #1a2230;
+    --button-fg: #edf2f9;
+    --button-bg: #2d4268;
+    --button-primary-fg: #172135;
+    --button-primary-bg: #f5dc3a;
+    --button-disabled-fg: #636975;
+    --button-disabled-bg: #29313d;
   }
 }
 
@@ -196,10 +216,8 @@ main {
 header {
   display: flex;
   align-items: center;
-  color: #3663a8;
-  background-color: #b4c8e7;
-  color: var(--blue-8);
-  background-color: var(--blue-3);
+  color: var(--header-fg);
+  background-color: var(--header-bg);
   padding-left: 30px;
 }
 
