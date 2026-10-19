@@ -101,14 +101,11 @@ export class GolInfo extends HTMLElement implements CustomElement {
         }
         
         gol-button {
-          --background: #2A4E97;
-          --color: white;
+          --background: var(--button-bg);
+          --color: var(--button-fg);
         }
-        
+
         @media (prefers-color-scheme: dark) {
-          gol-button {
-            --background: #29457D;
-          }
           .header {
             background-color: rgba(56, 57, 60, 0.9);
           }
