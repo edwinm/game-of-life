@@ -24,6 +24,9 @@ export class GolCanvas extends HTMLElement implements CustomElement {
   private isDragging = false;
   private isMouseDown = false;
   private lastTouchCount = 0;
+  private gridBg: string;
+  private gridLine: string;
+  private lastDraw: [Cell[], Offset, number];
 
   constructor() {
     super();
@@ -54,6 +57,17 @@ export class GolCanvas extends HTMLElement implements CustomElement {
     } catch (e) {
       this.ctx = this.canvasDomElement.getContext("2d", { alpha: false });
     }
+
+    this.setGridColors();
+    matchMedia("(prefers-color-scheme: dark)").addEventListener(
+      "change",
+      () => {
+        this.setGridColors();
+        if (this.lastDraw) {
+          this.draw(...this.lastDraw);
+        }
+      }
+    );
 
     this.setDragging();
 
@@ -316,14 +330,21 @@ export class GolCanvas extends HTMLElement implements CustomElement {
     });
   }
 
+  private setGridColors() {
+    const style = getComputedStyle(this);
+    this.gridBg = style.getPropertyValue("--grid-bg").trim();
+    this.gridLine = style.getPropertyValue("--grid-line").trim();
+  }
+
   private draw(cells: Cell[], drag: Offset, opacity = 1) {
+    this.lastDraw = [cells, drag, opacity];
     const ctx = this.ctx;
     const size = this.cellSize;
     const width = this.canvasDomElement.width;
     const height = this.canvasDomElement.height;
 
     // Background
-    ctx.fillStyle = "#7e7e7e";
+    ctx.fillStyle = this.gridBg;
     ctx.fillRect(0, 0, width + size, height);
 
     // Grid: all lines in one path, one stroke call
@@ -337,7 +358,7 @@ export class GolCanvas extends HTMLElement implements CustomElement {
       grid.lineTo(width, n + 0.5);
     }
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "#999";
+    ctx.strokeStyle = this.gridLine;
     ctx.stroke(grid);
 
     // Cells: all rectangles in one path, one fill call

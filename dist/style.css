@@ -53,6 +53,10 @@
   --button-disabled-fg: #798a8d;
   --button-disabled-bg: #bcced2;
 
+  /* Canvas grid */
+  --grid-bg: #7e7e7e;
+  --grid-line: #999;
+
   --shadow-color: 0deg 0% 63%;
 
   --shadow-elevation-medium:
@@ -80,6 +84,9 @@
     --button-primary-bg: #f5dc3a;
     --button-disabled-fg: #5d6c71;
     --button-disabled-bg: #223339;
+
+    --grid-bg: #3a3a3a;
+    --grid-line: #4d4d4d;
   }
 }
 
