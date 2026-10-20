@@ -17,7 +17,7 @@
         "test": "npm run test:wasm && npm run test:wasm-build",
         "test:wasm": "mkdir -p built && clang -O2 -Wall -Wextra -o built/gol_test src/wasm/gol_test.c && built/gol_test",
         "test:wasm-build": "npm run wasm && node --test src/wasm/gol_wasm_test.mjs",
-        "prepare": "husky install"
+        "prepare": "husky"
     },
     "repository": {
         "type": "git",
