@@ -51,7 +51,11 @@ export class GolControls extends HTMLElement implements CustomElement {
         input[type="range"] {
           width: 80px;
         }
-        
+
+        input[type="range"]:focus-visible {
+          outline-offset: 4px;
+        }
+
         .generation {
           position: relative;
           left: 2px;
