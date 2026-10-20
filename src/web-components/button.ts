@@ -81,6 +81,11 @@ export class GolButton extends HTMLElement implements CustomElement {
           display: inline-block;
         }
 
+        svg.book {
+          position: relative;
+          top: -1px;
+        }
+
         slot[name] {
           display: none;
         }
