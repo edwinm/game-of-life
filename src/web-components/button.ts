@@ -20,7 +20,7 @@ export class GolButton extends HTMLElement implements CustomElement {
           min-width: var(--min-width, 0);
           height: var(--size, 40px);
           padding: 0 30px;
-          border: 2px solid transparent;
+          border: 2px solid var(--border-color, transparent);
           border-radius: calc( var(--size, 40px) * 0.5);
           corner-shape: superellipse(1.2);
           font-size: calc( var(--size, 40px) * 0.5);
@@ -42,6 +42,7 @@ export class GolButton extends HTMLElement implements CustomElement {
 
         #button.disabled {
           background-color: var(--disabled-background, #999);
+          border-color: transparent;
           color: var(--disabled-color, #ccc);
           box-shadow: none;
         }
@@ -59,6 +60,8 @@ export class GolButton extends HTMLElement implements CustomElement {
         
         #button:focus-visible {
           border: 2px solid var(--focus-color, white);
+          outline: 2px solid var(--focus-ring, transparent);
+          outline-offset: 2px;
         }
         
         /* Icons */

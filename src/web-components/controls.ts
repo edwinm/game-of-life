@@ -75,7 +75,9 @@ export class GolControls extends HTMLElement implements CustomElement {
           --min-width: 220px;
           --background: var(--button-primary-bg);
           --color: var(--button-primary-fg);
+          --border-color: var(--button-primary-border);
           --focus-color: var(--button-primary-fg);
+          --focus-ring: var(--button-primary-focus-ring);
         }
 
         form gol-button {

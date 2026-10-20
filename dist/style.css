@@ -50,6 +50,8 @@
   --button-bg: #00576b;
   --button-primary-fg: #06262f;
   --button-primary-bg: #f5dc3a;
+  --button-primary-border: #00576b;
+  --button-primary-focus-ring: #00576b;
   --button-disabled-fg: #798a8d;
   --button-disabled-bg: #bcced2;
 
@@ -82,6 +84,8 @@
     --button-bg: #174c5b;
     --button-primary-fg: #06262f;
     --button-primary-bg: #f5dc3a;
+    --button-primary-border: transparent;
+    --button-primary-focus-ring: #f5dc3a;
     --button-disabled-fg: #5d6c71;
     --button-disabled-bg: #223339;
 
