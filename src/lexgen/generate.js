@@ -44,7 +44,7 @@ async function main() {
       date,
       description:
         "Play the Game of Life online, a single player game invented in 1970 by Cambridge mathematician John Conway.",
-      info: "Loading full Life Lexicon…",
+      info: "Loading full <a class='nolink' href='/list'>Life Lexicon</a>…",
       saveName: "index",
       pattern: ".O.\n..O\nOOO\n",
       image: "https://playgameoflife.com/pix/gol-image.png",
@@ -61,6 +61,8 @@ async function main() {
     let pattern = "";
 
     const rl = readline.createInterface({ input: fileInStream });
+
+    indexOutStream.write('<meta name="robots" content="noindex" />\n\n');
 
     forall: for await (let line of rl) {
       switch (state) {

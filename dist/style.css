@@ -295,6 +295,12 @@ gol-canvas {
   margin: 0 0 5px;
 }
 
+.nolink {
+  color: inherit;
+  text-decoration: none;
+  cursor: text;
+}
+
 .selection .image a {
   background-color: #7e7e7e;
   border-radius: 8px;
