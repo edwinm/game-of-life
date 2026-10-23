@@ -1,8 +1,8 @@
 if (!self.define) {
   let e,
     i = {};
-  const n = (n, s) => (
-    (n = new URL(n + ".js", s).href),
+  const n = (n, r) => (
+    (n = new URL(n + ".js", r).href),
     i[n] ||
       new Promise((i) => {
         if ("document" in self) {
@@ -15,7 +15,7 @@ if (!self.define) {
         return e;
       })
   );
-  self.define = (s, r) => {
+  self.define = (r, s) => {
     const t =
       e ||
       ("document" in self ? document.currentScript.src : "") ||
@@ -24,14 +24,13 @@ if (!self.define) {
     let o = {};
     const d = (e) => n(e, t),
       c = { module: { uri: t }, exports: o, require: d };
-    i[t] = Promise.all(s.map((e) => c[e] || d(e))).then((e) => (r(...e), o));
+    i[t] = Promise.all(r.map((e) => c[e] || d(e))).then((e) => (s(...e), o));
   };
 }
-define(["./workbox-3187bf51"], function (e) {
+define(["./workbox-958dc79a"], function (e) {
   "use strict";
-  (self.addEventListener("message", (e) => {
-    e.data && "SKIP_WAITING" === e.data.type && self.skipWaiting();
-  }),
+  (self.skipWaiting(),
+    e.clientsClaim(),
     e.precacheAndRoute(
       [
         { url: "index.html", revision: "28f8f1fc35879ed26e9c683aadb0993f" },

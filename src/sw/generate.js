@@ -21,6 +21,8 @@ workboxBuild
     ],
     navigateFallback: "/index.html",
     directoryIndex: "index.html",
+    skipWaiting: true,
+    clientsClaim: true,
   })
   .then((args) => {
     console.log(`Generated new service worker.`, args);
