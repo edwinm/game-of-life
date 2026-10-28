@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Woffle">
+<title>Weblettertypen</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #f6f6f7; --panel: #fff; --text: #1d1d1f; --muted: #6e6e73;
+  --line: #d9d9de; --accent: #0a66d8; --code: #f0f0f3;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1c1e; --panel: #262628; --text: #f2f2f4; --muted: #a1a1a6;
+    --line: #3a3a3d; --accent: #4c9bff; --code: #1f1f21;
+  }
+}
+@media (prefers-contrast: more) {
+  :root { --muted: var(--text); --line: var(--text); }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Ubuntu, sans-serif;
+}
+main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 48px; }
+header h1 { margin: 0; font-size: 34px; }
+header p { margin: 4px 0 0; color: var(--muted); }
+nav { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 12px; }
+nav a { color: var(--accent); }
+.toolbar {
+  position: sticky; top: 0; z-index: 1; display: flex; gap: 12px;
+  align-items: center; flex-wrap: wrap; padding: 10px 0; margin-top: 16px;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.toolbar label, .hint { color: var(--muted); font-size: 13px; }
+.toolbar output { min-width: 3ch; font-variant-numeric: tabular-nums; }
+section {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; padding: 20px; margin-top: 24px;
+}
+h2 { margin: 0; font-size: 24px; font-family: var(--family), system-ui, sans-serif; }
+h3 { margin: 22px 0 8px; font-size: 15px; }
+.meta { margin: 2px 0 12px; color: var(--muted); }
+.hint { margin: -4px 0 10px; }
+.style { border-top: 1px solid var(--line); padding: 14px 0; }
+.style .name { color: var(--muted); font-size: 12px; }
+.sample {
+  font-family: var(--family); font-size: var(--size, 48px);
+  font-feature-settings: var(--features, normal);
+  font-variation-settings: var(--variations, normal);
+  font-palette: var(--palette, normal);
+  line-height: 1.2; outline: none; overflow-wrap: anywhere;
+}
+.features { columns: 260px; column-gap: 16px; }
+.features label {
+  display: flex; gap: 8px; align-items: center; cursor: pointer;
+  break-inside: avoid; padding: 2px 0;
+}
+.features code { color: var(--muted); font-size: 12px; }
+.palettes { display: flex; flex-wrap: wrap; gap: 8px; }
+.palettes button {
+  display: flex; flex-direction: column; align-items: stretch; gap: 6px;
+  width: 168px; padding: 8px; font-size: 13px; text-align: left;
+}
+.palettes button[aria-pressed=true] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.strip { display: flex; height: 18px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.strip span { flex: 1; }
+.axis { display: grid; grid-template-columns: minmax(120px, 200px) 1fr 60px; gap: 12px; align-items: center; margin: 6px 0; }
+.axis output { text-align: right; font-variant-numeric: tabular-nums; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; }
+.code { position: relative; }
+pre {
+  margin: 0; background: var(--code); border: 1px solid var(--line);
+  border-radius: 8px; padding: 12px 14px; overflow-x: auto;
+  font: 13px/1.5 ui-monospace, "SF Mono", Consolas, "Ubuntu Mono", monospace;
+}
+button {
+  font: inherit; font-size: 12px; color: var(--text); background: var(--panel);
+  border: 1px solid var(--line); border-radius: 6px; padding: 3px 10px; cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+.code button { position: absolute; top: 8px; right: 8px; }
+.usage h2 { font-family: inherit; font-size: 20px; margin-bottom: 4px; }
+.note { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+footer { color: var(--muted); font-size: 12px; text-align: center; margin-top: 32px; }
+footer a { color: inherit; }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Weblettertypen</h1>
+  <p>1 familie · 2 stijlen</p>
+  <nav><a href="#exo-2">Exo 2</a></nav>
+</header>
+
+<div class="toolbar">
+  <label for="size">Grootte</label>
+  <input id="size" type="range" min="12" max="160" value="48" style="max-width: 240px">
+  <output id="size_value">48</output>
+  <span class="hint" style="margin: 0">Klik op een tekst om hem te wijzigen.</span>
+</div>
+
+<section class="family" id="exo-2" data-index="0" style="--family: &quot;Exo 2&quot;">
+  <h2>Exo 2</h2>
+  <p class="meta">2 stijlen</p>
+  <div class="samples">
+    <div class="style">
+      <div class="name">Regular</div>
+      <div class="sample" contenteditable="true" spellcheck="false" style="font-weight: 700; font-style: normal">Pa’s wijze lynx bezag vroom het fikse aquaduct</div>
+    </div>
+    <div class="style">
+      <div class="name">Italic</div>
+      <div class="sample" contenteditable="true" spellcheck="false" style="font-weight: 700; font-style: italic">Pa’s wijze lynx bezag vroom het fikse aquaduct</div>
+    </div>
+  </div>
+  <h3>OpenType-functies</h3>
+  <div class="features"></div>
+  <h3>CSS voor deze instellingen</h3>
+  <p class="hint">Past zich aan terwijl je de instellingen hierboven wijzigt.</p>
+  <div class="code"><pre class="settings-css" id="css_0">.text {
+  font-family: &quot;Exo 2&quot;, &quot;Exo 2 Fallback Roboto&quot;, &quot;Exo 2 Fallback&quot;, sans-serif;
+}
+
+&#47;* Beschikbare gewichten en stijlen:
+   font-weight: 700
+   font-weight: 700; font-style: italic
+*&#47;
+
+&#47;* &quot;Exo 2 Fallback Roboto&quot; is Roboto, aangepast aan de verhoudingen van Exo 2. Het geeft de tekst weer tot Exo 2 geladen is, zodat de tekst niet verspringt.
+   &quot;Exo 2 Fallback&quot; is Arial, aangepast aan de verhoudingen van Exo 2. Het geeft de tekst weer tot Exo 2 geladen is, zodat de tekst niet verspringt. *&#47;</pre><button type="button" data-copy="css_0">Kopieer</button></div>
+</section>
+
+<section class="usage">
+  <h2>Gebruiken op je website</h2>
+  <h3>Neem de stylesheet op in de &lt;head&gt; van je HTML:</h3>
+  <div class="code"><pre id="use_link">&lt;link rel=&quot;stylesheet&quot; href=&quot;fonts&#47;fonts.css&quot;&gt;</pre><button type="button" data-copy="use_link">Kopieer</button></div>
+  <h3>Of importeer hem bovenaan je eigen CSS:</h3>
+  <div class="code"><pre id="use_import">@import url(&quot;fonts&#47;fonts.css&quot;);</pre><button type="button" data-copy="use_import">Kopieer</button></div>
+</section>
+
+<footer>Gemaakt met <a href="https://getwoffle.app/">Woffle</a></footer>
+</main>
+
+<script type="application/json" id="data">{"families":[{"name":"Exo 2","stack":"\"Exo 2\", \"Exo 2 Fallback Roboto\", \"Exo 2 Fallback\", sans-serif","fallbackNote":"\"Exo 2 Fallback Roboto\" is Roboto, aangepast aan de verhoudingen van Exo 2. Het geeft de tekst weer tot Exo 2 geladen is, zodat de tekst niet verspringt.\n   \"Exo 2 Fallback\" is Arial, aangepast aan de verhoudingen van Exo 2. Het geeft de tekst weer tot Exo 2 geladen is, zodat de tekst niet verspringt.","features":[{"tag":"case","name":"Case-Sensitive Forms","on":false},{"tag":"cpsp","name":"Capital Spacing","on":false},{"tag":"dlig","name":"Discretionary Ligatures","on":false},{"tag":"frac","name":"Fractions","on":false},{"tag":"kern","name":"Kerning","on":true},{"tag":"liga","name":"Standard Ligatures","on":true},{"tag":"lnum","name":"Lining Figures","on":false},{"tag":"onum","name":"Oldstyle Figures","on":false},{"tag":"ordn","name":"Ordinals","on":false},{"tag":"pnum","name":"Proportional Figures","on":false},{"tag":"sinf","name":"Scientific Inferiors","on":false},{"tag":"subs","name":"Subscript","on":false},{"tag":"sups","name":"Superscript","on":false},{"tag":"tnum","name":"Tabular Figures","on":false}],"axes":[],"palettes":[],"variants":["font-weight: 700","font-weight: 700; font-style: italic"]}],"labels":{"copy":"Kopieer","copied":"Gekopieerd","variants":"Beschikbare gewichten en stijlen"}}</script>
+<script>
+(() => {
+  const data = JSON.parse(document.getElementById('data').textContent);
+  const quote = s => '"' + s.replace(/["\\]/g, '\\$&') + '"';
+  const num = n => String(Math.round(n * 100) / 100);
+
+  const size = document.getElementById('size');
+  size.addEventListener('input', () => {
+    document.documentElement.style.setProperty('--size', size.value + 'px');
+    document.getElementById('size_value').textContent = size.value;
+  });
+
+  document.querySelectorAll('section.family').forEach(section => {
+    const family = data.families[Number(section.dataset.index)];
+    const features = Object.fromEntries(family.features.map(f => [f.tag, f.on]));
+    const axes = Object.fromEntries(family.axes.map(a => [a.tag, a.default]));
+    const samples = section.querySelector('.samples');
+    const pre = section.querySelector('.settings-css');
+
+    const featureList = section.querySelector('.features');
+    for (const f of family.features) {
+      const label = document.createElement('label');
+      const box = document.createElement('input');
+      box.type = 'checkbox';
+      box.checked = f.on;
+      box.addEventListener('change', () => { features[f.tag] = box.checked; update(); });
+      const code = document.createElement('code');
+      code.textContent = f.tag;
+      label.append(box, document.createTextNode(f.name + ' '), code);
+      featureList.append(label);
+    }
+
+    let palette = 0;
+    const paletteList = section.querySelector('.palettes');
+    family.palettes.forEach((p, i) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.setAttribute('aria-pressed', String(i === palette));
+      const strip = document.createElement('span');
+      strip.className = 'strip';
+      for (const color of p.colors) {
+        const swatch = document.createElement('span');
+        swatch.style.background = color;
+        strip.append(swatch);
+      }
+      button.append(strip, document.createTextNode(p.name));
+      button.addEventListener('click', () => {
+        palette = i;
+        for (const [j, other] of [...paletteList.children].entries()) {
+          other.setAttribute('aria-pressed', String(j === i));
+        }
+        update();
+      });
+      paletteList.append(button);
+    });
+
+    const axisList = section.querySelector('.axes');
+    const axisInputs = {};
+    for (const a of family.axes) {
+      const row = document.createElement('div');
+      row.className = 'axis';
+      const id = 'axis_' + section.dataset.index + '_' + a.tag;
+      const name = document.createElement('label');
+      name.textContent = a.name + ' (' + a.tag + ')';
+      name.htmlFor = id;
+      const input = document.createElement('input');
+      Object.assign(input, { type: 'range', id, min: a.min, max: a.max, value: a.default,
+        step: (a.max - a.min) > 20 ? 1 : 0.1 });
+      const out = document.createElement('output');
+      out.textContent = num(a.default);
+      input.addEventListener('input', () => { axes[a.tag] = Number(input.value); out.textContent = num(axes[a.tag]); update(); });
+      axisInputs[a.tag] = [input, out];
+      row.append(name, input, out);
+      axisList.append(row);
+    }
+    const reset = section.querySelector('.reset-axes');
+    if (reset) reset.addEventListener('click', () => {
+      for (const a of family.axes) {
+        axes[a.tag] = a.default;
+        axisInputs[a.tag][0].value = a.default;
+        axisInputs[a.tag][1].textContent = num(a.default);
+      }
+      update();
+    });
+
+    function update() {
+      const changed = family.features.filter(f => features[f.tag] !== f.on);
+      const featureCss = changed.map(f => quote(f.tag) + ' ' + (features[f.tag] ? 1 : 0)).join(', ');
+      const variationCss = family.axes.map(a => quote(a.tag) + ' ' + num(axes[a.tag])).join(', ');
+      samples.style.setProperty('--features', featureCss || 'normal');
+      samples.style.setProperty('--variations', variationCss || 'normal');
+      samples.style.setProperty('--palette', palette ? family.palettes[palette].css : 'normal');
+      if (!family.features.length && !family.axes.length && !family.palettes.length) return;
+
+      const lines = ['font-family: ' + family.stack + ';'];
+      const custom = [];
+      for (const a of family.axes) {
+        const v = axes[a.tag];
+        if (v === a.default) continue;
+        if (a.tag === 'wght') lines.push('font-weight: ' + num(v) + ';');
+        else if (a.tag === 'wdth') lines.push('font-stretch: ' + num(v) + '%;');
+        else if (a.tag === 'slnt') lines.push('font-style: oblique ' + num(-v) + 'deg;');
+        else if (a.tag === 'ital') lines.push('font-style: ' + (v >= 0.5 ? 'italic' : 'normal') + ';');
+        else custom.push(quote(a.tag) + ' ' + num(v));
+      }
+      if (palette) lines.push('font-palette: ' + family.palettes[palette].css + ';');
+      if (changed.length) lines.push('font-feature-settings: ' + featureCss + ';');
+      if (custom.length) lines.push('font-variation-settings: ' + custom.join(', ') + ';');
+      const variants = family.variants.length
+        ? '\n\n/* ' + data.labels.variants + ':\n' + family.variants.map(v => '   ' + v).join('\n') + '\n*/'
+        : '';
+      const note = family.fallbackNote ? '\n\n/* ' + family.fallbackNote + ' */' : '';
+      pre.textContent = '.text {\n' + lines.map(l => '  ' + l).join('\n') + '\n}' + variants + note;
+      if (tailwindPre) tailwindPre.textContent = tailwindClasses(changed);
+    }
+
+    // The same settings as Tailwind classes; arbitrary ones in single
+    // quotes and with _ for spaces.
+    const tailwindPre = section.querySelector('.tailwind-classes');
+    const arbitrary = s => "'" + s.replace(/ /g, '_') + "'";
+    function tailwindClasses(changed) {
+      const tw = family.tailwind;
+      const classes = ['font-' + tw.name];
+      const custom = [];
+      for (const a of family.axes) {
+        const v = axes[a.tag];
+        if (v === a.default) continue;
+        if (a.tag === 'wght') classes.push(data.tailwindWeights[v] || 'font-[' + num(v) + ']');
+        else if (a.tag === 'wdth') classes.push(tw.v4 ? 'font-stretch-[' + num(v) + '%]' : '[font-stretch:' + num(v) + '%]');
+        else if (a.tag === 'slnt') classes.push('[font-style:oblique_' + num(-v) + 'deg]');
+        else if (a.tag === 'ital') classes.push(v >= 0.5 ? 'italic' : 'not-italic');
+        else custom.push(arbitrary(a.tag) + '_' + num(v));
+      }
+      if (palette) classes.push(tw.palettes[palette]);
+      if (changed.length) {
+        classes.push('[font-feature-settings:' + changed.map(f => arbitrary(f.tag) + '_' + (features[f.tag] ? 1 : 0)).join(',') + ']');
+      }
+      if (custom.length) classes.push('[font-variation-settings:' + custom.join(',') + ']');
+      return '<p class="' + classes.join(' ') + '">…</p>' + tw.variants;
+    }
+    update();
+  });
+
+  document.querySelectorAll('[data-copy]').forEach(button => {
+    button.addEventListener('click', async () => {
+      const text = document.getElementById(button.dataset.copy).textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (_) {
+        const area = document.createElement('textarea');
+        area.value = text;
+        document.body.append(area);
+        area.select();
+        document.execCommand('copy');
+        area.remove();
+      }
+      const label = button.textContent;
+      button.textContent = data.labels.copied;
+      setTimeout(() => { button.textContent = label; }, 1500);
+    });
+  });
+})();
+</script>
+</body>
+</html>

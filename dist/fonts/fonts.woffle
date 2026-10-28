@@ -1,0 +1,44 @@
+{
+  "generator": "Woffle",
+  "version": 2,
+  "fonts": [
+    {
+      "file": "Exo 2/Exo2-VariableFont_wght.woff2",
+      "source": "../../../../../Library/Containers/app.getwoffle.woffle/Data/Library/Application Support/app.getwoffle.woffle/Google Fonts/Exo 2/Exo2-VariableFont_wght.ttf",
+      "subsetFile": "Exo 2/Exo2-VariableFont_wght-subset.woff2",
+      "subset": "20,43,47,4C,61,65-66,69,6D-6F,73,77,79,2019",
+      "trim": {
+        "axes": {
+          "wght": [
+            700.0,
+            700.0
+          ]
+        }
+      },
+      "subsetSources": [
+        {
+          "block": "Basic Latin"
+        }
+      ]
+    },
+    {
+      "file": "Exo 2/Exo2-Italic-VariableFont_wght.woff2",
+      "source": "../../../../../Library/Containers/app.getwoffle.woffle/Data/Library/Application Support/app.getwoffle.woffle/Google Fonts/Exo 2/Exo2-Italic-VariableFont_wght.ttf",
+      "subsetFile": "Exo 2/Exo2-Italic-VariableFont_wght-subset.woff2",
+      "subset": "20,43,47,4C,61,65-66,69,6D-6F,73,77,79,2019",
+      "trim": {
+        "axes": {
+          "wght": [
+            700.0,
+            700.0
+          ]
+        }
+      },
+      "subsetSources": [
+        {
+          "block": "Basic Latin"
+        }
+      ]
+    }
+  ]
+}

@@ -22,9 +22,9 @@ if (!self.define) {
       location.href;
     if (i[t]) return;
     let o = {};
-    const d = (e) => n(e, t),
-      c = { module: { uri: t }, exports: o, require: d };
-    i[t] = Promise.all(r.map((e) => c[e] || d(e))).then((e) => (s(...e), o));
+    const c = (e) => n(e, t),
+      d = { module: { uri: t }, exports: o, require: c };
+    i[t] = Promise.all(r.map((e) => d[e] || c(e))).then((e) => (s(...e), o));
   };
 }
 define(["./workbox-958dc79a"], function (e) {
@@ -33,8 +33,8 @@ define(["./workbox-958dc79a"], function (e) {
     e.clientsClaim(),
     e.precacheAndRoute(
       [
-        { url: "index.html", revision: "28f8f1fc35879ed26e9c683aadb0993f" },
-        { url: "style.css", revision: "c81536b107147b855287b036d6d5315c" },
+        { url: "index.html", revision: "b4b956b622b1b274e41a1c2638447426" },
+        { url: "style.css", revision: "2692ba43c94e9e5459038cbb10258545" },
         { url: "gol2.wasm", revision: "f2c95c4687189df267dbd750d7b461cf" },
         { url: "manifest.json", revision: "23d457c0f01d7872b096f4b40a4b385a" },
         { url: "bundle.min.js", revision: "3148445d998f274b4794f13086227c78" },

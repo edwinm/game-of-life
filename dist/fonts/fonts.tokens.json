@@ -1,0 +1,46 @@
+{
+    "$description": "Fonts converted by Woffle; their @font-face rules are in fonts.css.",
+    "font": {
+        "family": {
+            "$type": "fontFamily",
+            "exo-2": {
+                "$value": [
+                    "Exo 2",
+                    "Exo 2 Fallback Roboto",
+                    "Exo 2 Fallback",
+                    "sans-serif"
+                ],
+                "$extensions": {
+                    "app.getwoffle.woffle": {
+                        "styles": [
+                            {
+                                "name": "Regular",
+                                "weight": 700,
+                                "style": "normal",
+                                "file": "Exo 2/Exo2-VariableFont_wght.woff2",
+                                "subset": "Exo 2/Exo2-VariableFont_wght-subset.woff2",
+                                "unicodeRange": "U+20, U+43, U+47, U+4C, U+61, U+65-66, U+69, U+6D-6F, U+73, U+77, U+79, U+2019"
+                            },
+                            {
+                                "name": "Italic",
+                                "weight": 700,
+                                "style": "italic",
+                                "file": "Exo 2/Exo2-Italic-VariableFont_wght.woff2",
+                                "subset": "Exo 2/Exo2-Italic-VariableFont_wght-subset.woff2",
+                                "unicodeRange": "U+20, U+43, U+47, U+4C, U+61, U+65-66, U+69, U+6D-6F, U+73, U+77, U+79, U+2019"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "weight": {
+            "$type": "fontWeight",
+            "exo-2": {
+                "bold": {
+                    "$value": 700
+                }
+            }
+        }
+    }
+}
