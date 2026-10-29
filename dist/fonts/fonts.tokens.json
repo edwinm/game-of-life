@@ -3,30 +3,86 @@
     "font": {
         "family": {
             "$type": "fontFamily",
-            "exo-2": {
+            "saira-semicondensed": {
                 "$value": [
-                    "Exo 2",
-                    "Exo 2 Fallback Roboto",
-                    "Exo 2 Fallback",
+                    "Saira SemiCondensed",
+                    "Saira SemiCondensed Fallback Roboto",
+                    "Saira SemiCondensed Fallback",
                     "sans-serif"
                 ],
                 "$extensions": {
                     "app.getwoffle.woffle": {
                         "styles": [
                             {
-                                "name": "Regular",
-                                "weight": 700,
+                                "name": "Thin",
+                                "weight": 250,
                                 "style": "normal",
-                                "file": "Exo 2/Exo2-VariableFont_wght.woff2",
-                                "subset": "Exo 2/Exo2-VariableFont_wght-subset.woff2",
+                                "file": "Saira SemiCondensed/SairaSemiCondensed-Thin.woff2",
+                                "subset": "Saira SemiCondensed/SairaSemiCondensed-Thin-subset.woff2",
                                 "unicodeRange": "U+20, U+43, U+47, U+4C, U+61, U+65-66, U+69, U+6D-6F, U+73, U+77, U+79, U+2019"
                             },
                             {
-                                "name": "Italic",
+                                "name": "ExtraLight",
+                                "weight": 275,
+                                "style": "normal",
+                                "file": "Saira SemiCondensed/SairaSemiCondensed-ExtraLight.woff2",
+                                "subset": "Saira SemiCondensed/SairaSemiCondensed-ExtraLight-subset.woff2",
+                                "unicodeRange": "U+20, U+43, U+47, U+4C, U+61, U+65-66, U+69, U+6D-6F, U+73, U+77, U+79, U+2019"
+                            },
+                            {
+                                "name": "Light",
+                                "weight": 300,
+                                "style": "normal",
+                                "file": "Saira SemiCondensed/SairaSemiCondensed-Light.woff2",
+                                "subset": "Saira SemiCondensed/SairaSemiCondensed-Light-subset.woff2",
+                                "unicodeRange": "U+20, U+43, U+47, U+4C, U+61, U+65-66, U+69, U+6D-6F, U+73, U+77, U+79, U+2019"
+                            },
+                            {
+                                "name": "Regular",
+                                "weight": 400,
+                                "style": "normal",
+                                "file": "Saira SemiCondensed/SairaSemiCondensed-Regular.woff2",
+                                "subset": "Saira SemiCondensed/SairaSemiCondensed-Regular-subset.woff2",
+                                "unicodeRange": "U+20, U+43, U+47, U+4C, U+61, U+65-66, U+69, U+6D-6F, U+73, U+77, U+79, U+2019"
+                            },
+                            {
+                                "name": "Medium",
+                                "weight": 500,
+                                "style": "normal",
+                                "file": "Saira SemiCondensed/SairaSemiCondensed-Medium.woff2",
+                                "subset": "Saira SemiCondensed/SairaSemiCondensed-Medium-subset.woff2",
+                                "unicodeRange": "U+20, U+43, U+47, U+4C, U+61, U+65-66, U+69, U+6D-6F, U+73, U+77, U+79, U+2019"
+                            },
+                            {
+                                "name": "SemiBold",
+                                "weight": 600,
+                                "style": "normal",
+                                "file": "Saira SemiCondensed/SairaSemiCondensed-SemiBold.woff2",
+                                "subset": "Saira SemiCondensed/SairaSemiCondensed-SemiBold-subset.woff2",
+                                "unicodeRange": "U+20, U+43, U+47, U+4C, U+61, U+65-66, U+69, U+6D-6F, U+73, U+77, U+79, U+2019"
+                            },
+                            {
+                                "name": "Bold",
                                 "weight": 700,
-                                "style": "italic",
-                                "file": "Exo 2/Exo2-Italic-VariableFont_wght.woff2",
-                                "subset": "Exo 2/Exo2-Italic-VariableFont_wght-subset.woff2",
+                                "style": "normal",
+                                "file": "Saira SemiCondensed/SairaSemiCondensed-Bold.woff2",
+                                "subset": "Saira SemiCondensed/SairaSemiCondensed-Bold-subset.woff2",
+                                "unicodeRange": "U+20, U+43, U+47, U+4C, U+61, U+65-66, U+69, U+6D-6F, U+73, U+77, U+79, U+2019"
+                            },
+                            {
+                                "name": "ExtraBold",
+                                "weight": 800,
+                                "style": "normal",
+                                "file": "Saira SemiCondensed/SairaSemiCondensed-ExtraBold.woff2",
+                                "subset": "Saira SemiCondensed/SairaSemiCondensed-ExtraBold-subset.woff2",
+                                "unicodeRange": "U+20, U+43, U+47, U+4C, U+61, U+65-66, U+69, U+6D-6F, U+73, U+77, U+79, U+2019"
+                            },
+                            {
+                                "name": "Black",
+                                "weight": 900,
+                                "style": "normal",
+                                "file": "Saira SemiCondensed/SairaSemiCondensed-Black.woff2",
+                                "subset": "Saira SemiCondensed/SairaSemiCondensed-Black-subset.woff2",
                                 "unicodeRange": "U+20, U+43, U+47, U+4C, U+61, U+65-66, U+69, U+6D-6F, U+73, U+77, U+79, U+2019"
                             }
                         ]
@@ -36,9 +92,33 @@
         },
         "weight": {
             "$type": "fontWeight",
-            "exo-2": {
+            "saira-semicondensed": {
+                "250": {
+                    "$value": 250
+                },
+                "275": {
+                    "$value": 275
+                },
+                "light": {
+                    "$value": 300
+                },
+                "regular": {
+                    "$value": 400
+                },
+                "medium": {
+                    "$value": 500
+                },
+                "semi-bold": {
+                    "$value": 600
+                },
                 "bold": {
                     "$value": 700
+                },
+                "extra-bold": {
+                    "$value": 800
+                },
+                "black": {
+                    "$value": 900
                 }
             }
         }

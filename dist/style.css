@@ -90,6 +90,11 @@
 html {
   box-sizing: border-box;
   background-color: var(--bg-primary);
+  font-family:
+    Trebuchet MS,
+    Arial,
+    Helvetica,
+    sans-serif;
   -webkit-hyphens: auto;
   hyphens: auto;
   accent-color: var(--primary);
@@ -227,8 +232,10 @@ header {
 }
 
 .title {
-  font-family: "Exo 2", "Exo 2 Fallback Roboto", "Exo 2 Fallback", sans-serif;
-  font-weight: 558;
+  font-family:
+    "Saira SemiCondensed", "Saira SemiCondensed Fallback Roboto",
+    "Saira SemiCondensed Fallback", sans-serif;
+  font-weight: 600;
   font-size: 50px;
   white-space: nowrap;
   margin: 0;

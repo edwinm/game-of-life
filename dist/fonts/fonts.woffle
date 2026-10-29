@@ -1,42 +1,190 @@
 {
   "generator": "Woffle",
   "version": 2,
+  "characterSets": [
+    {
+      "id": "hnnp4ulox3",
+      "name": "Conway’s Game of Life",
+      "items": [
+        {
+          "added": " CGLaefimnoswy’",
+          "removed": ""
+        }
+      ]
+    }
+  ],
+  "sampleTexts": [
+    {
+      "id": "hnnadnvtwr",
+      "name": "Conway’s Game of Life",
+      "text": "Conway’s Game of Life",
+      "lines": [
+        "",
+        "",
+        ""
+      ]
+    }
+  ],
   "fonts": [
     {
-      "file": "Exo 2/Exo2-VariableFont_wght.woff2",
-      "source": "../../../../../Library/Containers/app.getwoffle.woffle/Data/Library/Application Support/app.getwoffle.woffle/Google Fonts/Exo 2/Exo2-VariableFont_wght.ttf",
-      "subsetFile": "Exo 2/Exo2-VariableFont_wght-subset.woff2",
+      "file": "Saira SemiCondensed/SairaSemiCondensed-Thin.woff2",
+      "source": "../../../../Library/Containers/app.getwoffle.woffle/Data/Library/Application Support/app.getwoffle.woffle/Google Fonts/Saira Semi Condensed/SairaSemiCondensed-Thin.ttf",
+      "subsetFile": "Saira SemiCondensed/SairaSemiCondensed-Thin-subset.woff2",
       "subset": "20,43,47,4C,61,65-66,69,6D-6F,73,77,79,2019",
-      "trim": {
-        "axes": {
-          "wght": [
-            700.0,
-            700.0
-          ]
-        }
-      },
       "subsetSources": [
         {
-          "block": "Basic Latin"
+          "set": "hnnp4ulox3",
+          "name": "Conway’s Game of Life",
+          "items": [
+            {
+              "added": " CGLaefimnoswy’",
+              "removed": ""
+            }
+          ]
         }
       ]
     },
     {
-      "file": "Exo 2/Exo2-Italic-VariableFont_wght.woff2",
-      "source": "../../../../../Library/Containers/app.getwoffle.woffle/Data/Library/Application Support/app.getwoffle.woffle/Google Fonts/Exo 2/Exo2-Italic-VariableFont_wght.ttf",
-      "subsetFile": "Exo 2/Exo2-Italic-VariableFont_wght-subset.woff2",
+      "file": "Saira SemiCondensed/SairaSemiCondensed-ExtraLight.woff2",
+      "source": "../../../../Library/Containers/app.getwoffle.woffle/Data/Library/Application Support/app.getwoffle.woffle/Google Fonts/Saira Semi Condensed/SairaSemiCondensed-ExtraLight.ttf",
+      "subsetFile": "Saira SemiCondensed/SairaSemiCondensed-ExtraLight-subset.woff2",
       "subset": "20,43,47,4C,61,65-66,69,6D-6F,73,77,79,2019",
-      "trim": {
-        "axes": {
-          "wght": [
-            700.0,
-            700.0
-          ]
-        }
-      },
       "subsetSources": [
         {
-          "block": "Basic Latin"
+          "set": "hnnp4ulox3",
+          "name": "Conway’s Game of Life",
+          "items": [
+            {
+              "added": " CGLaefimnoswy’",
+              "removed": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "Saira SemiCondensed/SairaSemiCondensed-Light.woff2",
+      "source": "../../../../Library/Containers/app.getwoffle.woffle/Data/Library/Application Support/app.getwoffle.woffle/Google Fonts/Saira Semi Condensed/SairaSemiCondensed-Light.ttf",
+      "subsetFile": "Saira SemiCondensed/SairaSemiCondensed-Light-subset.woff2",
+      "subset": "20,43,47,4C,61,65-66,69,6D-6F,73,77,79,2019",
+      "subsetSources": [
+        {
+          "set": "hnnp4ulox3",
+          "name": "Conway’s Game of Life",
+          "items": [
+            {
+              "added": " CGLaefimnoswy’",
+              "removed": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "Saira SemiCondensed/SairaSemiCondensed-Regular.woff2",
+      "source": "../../../../Library/Containers/app.getwoffle.woffle/Data/Library/Application Support/app.getwoffle.woffle/Google Fonts/Saira Semi Condensed/SairaSemiCondensed-Regular.ttf",
+      "subsetFile": "Saira SemiCondensed/SairaSemiCondensed-Regular-subset.woff2",
+      "subset": "20,43,47,4C,61,65-66,69,6D-6F,73,77,79,2019",
+      "subsetSources": [
+        {
+          "set": "hnnp4ulox3",
+          "name": "Conway’s Game of Life",
+          "items": [
+            {
+              "added": " CGLaefimnoswy’",
+              "removed": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "Saira SemiCondensed/SairaSemiCondensed-Medium.woff2",
+      "source": "../../../../Library/Containers/app.getwoffle.woffle/Data/Library/Application Support/app.getwoffle.woffle/Google Fonts/Saira Semi Condensed/SairaSemiCondensed-Medium.ttf",
+      "subsetFile": "Saira SemiCondensed/SairaSemiCondensed-Medium-subset.woff2",
+      "subset": "20,43,47,4C,61,65-66,69,6D-6F,73,77,79,2019",
+      "subsetSources": [
+        {
+          "set": "hnnp4ulox3",
+          "name": "Conway’s Game of Life",
+          "items": [
+            {
+              "added": " CGLaefimnoswy’",
+              "removed": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "Saira SemiCondensed/SairaSemiCondensed-SemiBold.woff2",
+      "source": "../../../../Library/Containers/app.getwoffle.woffle/Data/Library/Application Support/app.getwoffle.woffle/Google Fonts/Saira Semi Condensed/SairaSemiCondensed-SemiBold.ttf",
+      "subsetFile": "Saira SemiCondensed/SairaSemiCondensed-SemiBold-subset.woff2",
+      "subset": "20,43,47,4C,61,65-66,69,6D-6F,73,77,79,2019",
+      "subsetSources": [
+        {
+          "set": "hnnp4ulox3",
+          "name": "Conway’s Game of Life",
+          "items": [
+            {
+              "added": " CGLaefimnoswy’",
+              "removed": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "Saira SemiCondensed/SairaSemiCondensed-Bold.woff2",
+      "source": "../../../../Library/Containers/app.getwoffle.woffle/Data/Library/Application Support/app.getwoffle.woffle/Google Fonts/Saira Semi Condensed/SairaSemiCondensed-Bold.ttf",
+      "subsetFile": "Saira SemiCondensed/SairaSemiCondensed-Bold-subset.woff2",
+      "subset": "20,43,47,4C,61,65-66,69,6D-6F,73,77,79,2019",
+      "subsetSources": [
+        {
+          "set": "hnnp4ulox3",
+          "name": "Conway’s Game of Life",
+          "items": [
+            {
+              "added": " CGLaefimnoswy’",
+              "removed": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "Saira SemiCondensed/SairaSemiCondensed-ExtraBold.woff2",
+      "source": "../../../../Library/Containers/app.getwoffle.woffle/Data/Library/Application Support/app.getwoffle.woffle/Google Fonts/Saira Semi Condensed/SairaSemiCondensed-ExtraBold.ttf",
+      "subsetFile": "Saira SemiCondensed/SairaSemiCondensed-ExtraBold-subset.woff2",
+      "subset": "20,43,47,4C,61,65-66,69,6D-6F,73,77,79,2019",
+      "subsetSources": [
+        {
+          "set": "hnnp4ulox3",
+          "name": "Conway’s Game of Life",
+          "items": [
+            {
+              "added": " CGLaefimnoswy’",
+              "removed": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "Saira SemiCondensed/SairaSemiCondensed-Black.woff2",
+      "source": "../../../../Library/Containers/app.getwoffle.woffle/Data/Library/Application Support/app.getwoffle.woffle/Google Fonts/Saira Semi Condensed/SairaSemiCondensed-Black.ttf",
+      "subsetFile": "Saira SemiCondensed/SairaSemiCondensed-Black-subset.woff2",
+      "subset": "20,43,47,4C,61,65-66,69,6D-6F,73,77,79,2019",
+      "subsetSources": [
+        {
+          "set": "hnnp4ulox3",
+          "name": "Conway’s Game of Life",
+          "items": [
+            {
+              "added": " CGLaefimnoswy’",
+              "removed": ""
+            }
+          ]
         }
       ]
     }
