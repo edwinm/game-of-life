@@ -320,7 +320,7 @@ async function main() {
     <description>Play John Conway’s Game of Life in your browser</description>
     <link>https://playgameoflife.com/</link>
     <language>en-us</language>
-    <webMaster>edwin@bitstorm.org (Edwin Martin)</webMaster>
+    <webMaster>edwin@playgameoflife.com (Edwin Martin)</webMaster>
     <atom:link href="https://playgameoflife.com/list.rss" rel="self" type="application/rss+xml" />
 `,
         "utf8"
