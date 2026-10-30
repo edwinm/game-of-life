@@ -61,7 +61,7 @@
         "workbox-build": "^7.4.0"
     },
     "overrides": {
-        "serialize-javascript": "^7.0.5"
+        "serialize-javascript": "^7.1.4"
     },
     "dependencies": {
         "@rollup/plugin-terser": "^1.0.0",
