@@ -34,7 +34,7 @@ define(["./workbox-958dc79a"], function (e) {
     e.precacheAndRoute(
       [
         { url: "index.html", revision: "b4b956b622b1b274e41a1c2638447426" },
-        { url: "style.css", revision: "a9b463ae88ff61dffc67d468156aec14" },
+        { url: "style.css", revision: "a6f3dded34f6b85052fc51a5c5253195" },
         { url: "gol2.wasm", revision: "f2c95c4687189df267dbd750d7b461cf" },
         { url: "manifest.json", revision: "23d457c0f01d7872b096f4b40a4b385a" },
         { url: "bundle.min.js", revision: "3148445d998f274b4794f13086227c78" },
