@@ -279,8 +279,16 @@ export class GolControls extends HTMLElement implements CustomElement {
     }
   }
 
+  private resetOnDoubleClick(input: HTMLInputElement) {
+    fromEvent(input, "dblclick").subscribe(() => {
+      input.value = input.defaultValue;
+      input.dispatchEvent(new Event("input"));
+    });
+  }
+
   private setupSize() {
     const size = $<HTMLInputElement>("#size", this.shadowRoot);
+    this.resetOnDoubleClick(size);
     this.size$ = merge<Size>(
       fromEvent(size, "input").map((event) => ({
         size: Number((<HTMLInputElement>event.target).value),
@@ -338,6 +346,7 @@ export class GolControls extends HTMLElement implements CustomElement {
 
   private setupSpeed() {
     const speed = $<HTMLInputElement>("#speed", this.shadowRoot);
+    this.resetOnDoubleClick(speed);
     merge(
       fromEvent(speed, "input").map((event) =>
         Number((<HTMLInputElement>event.target).value)
